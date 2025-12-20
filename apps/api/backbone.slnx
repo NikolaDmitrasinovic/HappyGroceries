@@ -1,1 +1,5 @@
-<Solution />
+<Solution>
+  <Folder Name="/Bootstraper/" />
+  <Folder Name="/Modules/" />
+  <Folder Name="/Shared/" />
+</Solution>
