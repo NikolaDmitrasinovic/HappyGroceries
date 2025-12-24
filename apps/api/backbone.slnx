@@ -12,5 +12,7 @@
   <Folder Name="/Modules/Spending/">
     <Project Path="Modules/Spending/Spending/Spending.csproj" Id="9cf90557-c6a7-4628-9ce5-4941e68ad28f" />
   </Folder>
-  <Folder Name="/Shared/" />
+  <Folder Name="/Shared/">
+    <Project Path="Shared/Shared/Shared.csproj" Id="79c6b1ca-a01b-4a44-8f4f-0ad332b626d9" />
+  </Folder>
 </Solution>
