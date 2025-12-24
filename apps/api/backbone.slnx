@@ -6,7 +6,11 @@
   <Folder Name="/Modules/Inventory/">
     <Project Path="Modules/Inventory/Inventory/Inventory.csproj" Id="7daa6765-47bd-4f65-97f1-bea21bc9f1b8" />
   </Folder>
-  <Folder Name="/Modules/Receipts/" />
-  <Folder Name="/Modules/Spending/" />
+  <Folder Name="/Modules/Receipts/">
+    <Project Path="Modules/Receipts/Receipts/Receipts.csproj" Id="79c4b42f-d583-4463-baf6-6a289aa78fed" />
+  </Folder>
+  <Folder Name="/Modules/Spending/">
+    <Project Path="Modules/Spending/Spending/Spending.csproj" Id="9cf90557-c6a7-4628-9ce5-4941e68ad28f" />
+  </Folder>
   <Folder Name="/Shared/" />
 </Solution>
