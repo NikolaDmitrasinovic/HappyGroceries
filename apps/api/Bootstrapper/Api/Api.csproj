@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Modules\Inventory\Inventory\Inventory.csproj" />
-    <ProjectReference Include="..\..\Modules\Receipts\Receipts\Receipts.csproj" />
+    <ProjectReference Include="..\..\Modules\Receipts\Receipts\Receipt.csproj" />
     <ProjectReference Include="..\..\Modules\Spending\Spending\Spending.csproj" />
   </ItemGroup>
 
