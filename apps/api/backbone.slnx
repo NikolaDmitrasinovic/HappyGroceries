@@ -1,6 +1,6 @@
 <Solution>
   <Folder Name="/Bootstrapper/">
-    <Project Path="Bootstraper/Api/Api.csproj" Id="231fdd7a-33a3-4386-bea5-f37b235d34c2" />
+    <Project Path="Bootstrapper/Api/Api.csproj" />
   </Folder>
   <Folder Name="/Modules/" />
   <Folder Name="/Modules/Inventory/">
