@@ -1,6 +1,10 @@
+using Inventory;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services
+    .AddInventoryModule(builder.Configuration);
 
 var app = builder.Build();
 
