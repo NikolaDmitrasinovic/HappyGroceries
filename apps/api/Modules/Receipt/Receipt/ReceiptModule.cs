@@ -4,6 +4,6 @@ using System.Text;
 
 namespace Receipts;
 
-internal class ReceiptsModule
+internal class ReceiptModule
 {
 }
