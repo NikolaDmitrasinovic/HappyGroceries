@@ -1,10 +1,12 @@
 using Inventory;
+using Receipt;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services
-    .AddInventoryModule(builder.Configuration);
+    .AddInventoryModule(builder.Configuration)
+    .AddReceiptModule(builder.Configuration);
 
 var app = builder.Build();
 
