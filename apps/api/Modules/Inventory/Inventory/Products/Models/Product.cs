@@ -1,4 +1,6 @@
-﻿namespace Inventory.Products.Models;
+﻿using Inventory.Products.Events;
+
+namespace Inventory.Products.Models;
 
 public class Product : Aggregate<Guid>
 {
@@ -22,6 +24,8 @@ public class Product : Aggregate<Guid>
             Price = price
         };
 
+        product.AddDomainEvent(new ProductCreated(product));
+
         return product;
     }
 
@@ -33,9 +37,12 @@ public class Product : Aggregate<Guid>
         Category = category;
         Description = description;
         ImageFile = imageFile;
-        Price = price;
 
-        // TODO: if price changed, raise ProductPriceChanged domain event.
+        if (Price != price)
+        {
+            Price = price;
+            AddDomainEvent(new ProductPriceChanged(this));
+        }
     }
 
     private static void Validate(string name, decimal price)
