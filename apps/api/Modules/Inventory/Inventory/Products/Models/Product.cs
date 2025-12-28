@@ -1,6 +1,4 @@
-﻿using Shared.DDD;
-
-namespace Inventory.Products.Models;
+﻿namespace Inventory.Products.Models;
 
 public class Product : Entity<Guid>
 {
