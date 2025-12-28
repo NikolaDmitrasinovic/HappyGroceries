@@ -4,11 +4,11 @@ namespace Inventory.Products.Models;
 
 public class Product : Entity<Guid>
 {
-    public string Name { get; set; } = default!;
-    public List<string> Category { get; set; } = [];
-    public string Description { get; set; } = default!;
-    public string ImageFile { get; set; } = default!;
-    public decimal Price { get; set; }
+    public string Name { get; private set; } = default!;
+    public List<string> Category { get; private set; } = [];
+    public string Description { get; private set; } = default!;
+    public string ImageFile { get; private set; } = default!;
+    public decimal Price { get; private set; }
 
     public static Product Create(Guid id, string name,List<string> category,  decimal price, string description, string imageFile)
     {
