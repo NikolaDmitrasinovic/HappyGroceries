@@ -10,8 +10,7 @@ public class Product : Entity<Guid>
 
     public static Product Create(Guid id, string name,List<string> category,  decimal price, string description, string imageFile)
     {
-        ArgumentException.ThrowIfNullOrEmpty(name);
-        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(price);
+        Validate(name, price);
 
         var product = new Product
         {
@@ -28,8 +27,7 @@ public class Product : Entity<Guid>
 
     public void Update(string name, List<string> category, decimal price, string description, string imageFile)
     {
-        ArgumentException.ThrowIfNullOrEmpty(name);
-        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(price);
+        Validate(name, price);
 
         Name = name;
         Category = category;
@@ -38,5 +36,11 @@ public class Product : Entity<Guid>
         Price = price;
 
         // TODO: if price changed, raise ProductPriceChanged domain event.
+    }
+
+    private static void Validate(string name, decimal price)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(name);
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(price);
     }
 }
