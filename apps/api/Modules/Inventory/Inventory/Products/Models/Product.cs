@@ -27,4 +27,18 @@ public class Product : Entity<Guid>
 
         return product;
     }
+
+    public void Update(string name, List<string> category, decimal price, string description, string imageFile)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(name);
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(price);
+
+        Name = name;
+        Category = category;
+        Description = description;
+        ImageFile = imageFile;
+        Price = price;
+
+        // TODO: if price changed, raise ProductPriceChanged domain event.
+    }
 }
