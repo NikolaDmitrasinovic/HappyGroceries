@@ -1,4 +1,5 @@
 ﻿using Inventory.Products.Events;
+using System.Runtime.CompilerServices;
 
 namespace Inventory.Products.Models;
 
@@ -13,7 +14,7 @@ public class Product : Aggregate<Guid>
     public int Threshold { get; private set; }
     public bool LowStock { get; private set; }
 
-    public static Product Create(Guid id, string name,List<string> category,  decimal price, string description, string imageFile, int threshold)
+    public static Product Create(Guid id, string name,List<string> category,  decimal price, string description, string imageFile, decimal stock, int threshold)
     {
         Validate(name, price);
 
@@ -25,8 +26,11 @@ public class Product : Aggregate<Guid>
             Description = description,
             ImageFile = imageFile,
             Price = price,
+            Stock = stock,
             Threshold = threshold
         };
+
+        product.IsLowStock();
 
         product.AddDomainEvent(new ProductCreatedEvent(product));
 
