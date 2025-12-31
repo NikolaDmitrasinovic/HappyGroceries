@@ -11,7 +11,7 @@ public class Product : Aggregate<Guid>
     public decimal Price { get; private set; }
     public decimal Stock { get; private set; }
     public int Threshold { get; private set; }
-    public bool LoowStock { get; private set; }
+    public bool LowStock { get; private set; }
 
     public static Product Create(Guid id, string name,List<string> category,  decimal price, string description, string imageFile, int threshold)
     {
