@@ -53,5 +53,10 @@ public class Product : Aggregate<Guid>
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(price);
     }
 
+    public void SetThreshold(int threshold)
+    {
+        ArgumentOutOfRangeException.ThrowIfNegative(threshold);
 
+        Threshold = threshold;
+    }
 }
