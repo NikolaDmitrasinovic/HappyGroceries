@@ -9,6 +9,7 @@ public class Product : Aggregate<Guid>
     public string Description { get; private set; } = default!;
     public string ImageFile { get; private set; } = default!;
     public decimal Price { get; private set; }
+    public int Threshold { get; set; }
 
     public static Product Create(Guid id, string name,List<string> category,  decimal price, string description, string imageFile)
     {
