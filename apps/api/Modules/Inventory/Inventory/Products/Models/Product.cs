@@ -11,7 +11,7 @@ public class Product : Aggregate<Guid>
     public decimal Price { get; private set; }
     public int Threshold { get; private set; }
 
-    public static Product Create(Guid id, string name,List<string> category,  decimal price, string description, string imageFile)
+    public static Product Create(Guid id, string name,List<string> category,  decimal price, string description, string imageFile, int threshold)
     {
         Validate(name, price);
 
@@ -22,7 +22,8 @@ public class Product : Aggregate<Guid>
             Category = category,
             Description = description,
             ImageFile = imageFile,
-            Price = price
+            Price = price,
+            Threshold = threshold
         };
 
         product.AddDomainEvent(new ProductCreatedEvent(product));
