@@ -24,7 +24,7 @@ public class Product : Aggregate<Guid>
             Price = price
         };
 
-        product.AddDomainEvent(new ProductCreated(product));
+        product.AddDomainEvent(new ProductCreatedEvent(product));
 
         return product;
     }
