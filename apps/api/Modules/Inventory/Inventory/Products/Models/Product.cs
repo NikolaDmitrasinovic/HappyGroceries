@@ -61,4 +61,10 @@ public class Product : Aggregate<Guid>
 
         Threshold = threshold;
     }
+
+    private void IsLowStock()
+    {
+        if (Stock < Threshold)
+            LowStock = true;
+    }
 }
