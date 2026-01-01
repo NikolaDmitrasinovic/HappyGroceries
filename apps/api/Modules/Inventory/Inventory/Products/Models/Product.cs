@@ -30,8 +30,6 @@ public class Product : Aggregate<Guid>
             Threshold = threshold
         };
 
-        product.IsLowStock();
-
         product.AddDomainEvent(new ProductCreatedEvent(product));
 
         return product;
@@ -64,11 +62,5 @@ public class Product : Aggregate<Guid>
         ArgumentOutOfRangeException.ThrowIfNegative(threshold);
 
         Threshold = threshold;
-    }
-
-    private void IsLowStock()
-    {
-        if (Stock < Threshold)
-            LowStock = true;
     }
 }
