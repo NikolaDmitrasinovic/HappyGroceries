@@ -16,9 +16,9 @@ public class Product : Aggregate<Guid>
 
     public bool IsLowStock => Stock <= Threshold;
 
-    public static Product Create(Guid id, string name,List<string> category,  decimal price, string description, string imageFile, decimal stock, int threshold)
+    public static Product Create(Guid id, string name,List<string> category,  decimal price, string description, string imageFile, decimal stock, decimal threshold)
     {
-        Validate(name, price);
+        Validate(name, price, stock, threshold);
 
         var product = new Product
         {
@@ -39,7 +39,7 @@ public class Product : Aggregate<Guid>
 
     public void Update(string name, List<string> category, decimal price, string description, string imageFile)
     {
-        Validate(name, price);
+        Validate(name, price, price, price);
 
         Name = name;
         Category = category;
@@ -53,10 +53,12 @@ public class Product : Aggregate<Guid>
         }
     }
 
-    private static void Validate(string name, decimal price)
+    private static void Validate(string name, decimal price, decimal stock, decimal threshold)
     {
         ArgumentException.ThrowIfNullOrEmpty(name);
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(price);
+        ArgumentOutOfRangeException.ThrowIfNegative(stock);
+        ArgumentOutOfRangeException.ThrowIfNegative(threshold);
     }
 
     public void SetThreshold(int threshold)
