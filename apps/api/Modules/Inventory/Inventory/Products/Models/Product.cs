@@ -61,7 +61,14 @@ public class Product : Aggregate<Guid>
         ArgumentOutOfRangeException.ThrowIfNegative(threshold);
     }
 
-    public void SetThreshold(int threshold)
+    public void SetStock(decimal stock)
+    {
+        ArgumentOutOfRangeException.ThrowIfNegative(stock, nameof(stock));
+
+        Stock = stock;
+    }
+
+    public void SetThreshold(decimal threshold)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(threshold);
 
