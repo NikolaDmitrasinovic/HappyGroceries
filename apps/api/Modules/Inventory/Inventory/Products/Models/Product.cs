@@ -1,5 +1,4 @@
 ﻿using Inventory.Products.Events;
-using System.Runtime.CompilerServices;
 
 namespace Inventory.Products.Models;
 
@@ -18,7 +17,7 @@ public class Product : Aggregate<Guid>
 
     public static Product Create(Guid id, string name,List<string> category,  decimal price, string description, string imageFile, decimal stock, decimal threshold)
     {
-        Validate(name, price, stock, threshold);
+        Validate(name, price);
 
         var product = new Product
         {
@@ -27,10 +26,11 @@ public class Product : Aggregate<Guid>
             Category = category,
             Description = description,
             ImageFile = imageFile,
-            Price = price,
-            Stock = stock,
-            Threshold = threshold
+            Price = price
         };
+
+        product.SetStock(stock);
+        product.SetThreshold(threshold);
 
         product.AddDomainEvent(new ProductCreatedEvent(product));
 
@@ -39,7 +39,7 @@ public class Product : Aggregate<Guid>
 
     public void Update(string name, List<string> category, decimal price, string description, string imageFile)
     {
-        Validate(name, price, price, price);
+        Validate(name, price);
 
         Name = name;
         Category = category;
@@ -53,12 +53,10 @@ public class Product : Aggregate<Guid>
         }
     }
 
-    private static void Validate(string name, decimal price, decimal stock, decimal threshold)
+    private static void Validate(string name, decimal price)
     {
         ArgumentException.ThrowIfNullOrEmpty(name);
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(price);
-        ArgumentOutOfRangeException.ThrowIfNegative(stock);
-        ArgumentOutOfRangeException.ThrowIfNegative(threshold);
     }
 
     public void SetStock(decimal stock)
