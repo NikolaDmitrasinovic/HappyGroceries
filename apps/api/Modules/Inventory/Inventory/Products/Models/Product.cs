@@ -10,7 +10,12 @@ public class Product : Aggregate<Guid>
     public string ImageFile { get; private set; } = default!;
     public decimal Price { get; private set; }
 
-    public static Product Create(Guid id, string name,List<string> category,  decimal price, string description, string imageFile)
+    public decimal Stock { get; private set; }
+    public decimal Threshold { get; private set; }
+
+    public bool IsLowStock => Stock <= Threshold;
+
+    public static Product Create(Guid id, string name,List<string> category,  decimal price, string description, string imageFile, decimal stock, decimal threshold)
     {
         Validate(name, price);
 
@@ -24,7 +29,10 @@ public class Product : Aggregate<Guid>
             Price = price
         };
 
-        product.AddDomainEvent(new ProductCreated(product));
+        product.SetStock(stock);
+        product.SetThreshold(threshold);
+
+        product.AddDomainEvent(new ProductCreatedEvent(product));
 
         return product;
     }
@@ -41,7 +49,7 @@ public class Product : Aggregate<Guid>
         if (Price != price)
         {
             Price = price;
-            AddDomainEvent(new ProductPriceChanged(this));
+            AddDomainEvent(new ProductPriceChangedEvent(this));
         }
     }
 
@@ -49,5 +57,19 @@ public class Product : Aggregate<Guid>
     {
         ArgumentException.ThrowIfNullOrEmpty(name);
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(price);
+    }
+
+    public void SetStock(decimal stock)
+    {
+        ArgumentOutOfRangeException.ThrowIfNegative(stock, nameof(stock));
+
+        Stock = stock;
+    }
+
+    public void SetThreshold(decimal threshold)
+    {
+        ArgumentOutOfRangeException.ThrowIfNegative(threshold);
+
+        Threshold = threshold;
     }
 }
