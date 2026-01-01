@@ -10,8 +10,11 @@ public class Product : Aggregate<Guid>
     public string Description { get; private set; } = default!;
     public string ImageFile { get; private set; } = default!;
     public decimal Price { get; private set; }
+
     public decimal Stock { get; private set; }
     public int Threshold { get; private set; }
+
+    public bool IsLowStock => Stock <= Threshold;
 
     public static Product Create(Guid id, string name,List<string> category,  decimal price, string description, string imageFile, decimal stock, int threshold)
     {
