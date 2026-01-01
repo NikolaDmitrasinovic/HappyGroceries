@@ -12,7 +12,7 @@ public class Product : Aggregate<Guid>
     public decimal Price { get; private set; }
 
     public decimal Stock { get; private set; }
-    public int Threshold { get; private set; }
+    public decimal Threshold { get; private set; }
 
     public bool IsLowStock => Stock <= Threshold;
 
