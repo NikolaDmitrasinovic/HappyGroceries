@@ -1,0 +1,6 @@
+services:
+  nelidb:
+   image: postgres
+
+volumes:
+ postgres_nelidb:
