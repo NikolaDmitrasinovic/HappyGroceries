@@ -6,11 +6,11 @@
 
 -
 
-## Notes / Edge cases
+### Notes / Edge cases
 
 <!-- Anything reviewers should pay attention to. -->
 
-## Checklist
+### Checklist
 
 - [ ] I kept the change focused (no unrelated refactors)
 - [ ] Tests added/updated (or N/A with reason)
