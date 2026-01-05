@@ -29,8 +29,8 @@ body:
       description: Concrete conditions that must be met for this issue to be considered done.
       placeholder: |
         - [ ] condition
-      validations:
-        required: true
+    validations:
+      required: true
 
   - type: textarea
     id: notes
