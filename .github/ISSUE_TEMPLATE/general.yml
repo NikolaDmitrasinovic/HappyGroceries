@@ -1,0 +1,51 @@
+name: General issue
+description: Use this for most work items
+title: "[Module] "
+labels: []
+assignees: []
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What is the problem / desired outcome?
+      placeholder: A short description of what this issue is about.
+    validations:
+      required: true
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivation
+      description: Why do we need this? What user or business value does it bring?
+      placeholder: Context, user impact, and why now.
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance_criteria
+    attributes:
+      label: Acceptance criteria
+      description: Concrete conditions that must be met for this issue to be considered done.
+      placeholder: |
+        - [ ] condition
+    validations:
+      required: true
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes / Edge cases
+      description: Constraints, gotchas, assumptions, links, screenshots.
+      placeholder: Anything that might surprise the implementer.
+    validations:
+      required: false
+
+  - type: textarea
+    id: out_of_scope
+    attributes:
+      label: Out of scope
+      description: What are we explicitly NOT doing in this issue?
+      placeholder: Clear boundaries to prevent scope creep.
+    validations:
+      required: false
