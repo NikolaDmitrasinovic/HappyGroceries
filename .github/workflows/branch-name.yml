@@ -14,30 +14,33 @@ jobs:
         shell: bash
         run: |
           BRANCH="${{ github.head_ref }}"
-
           echo "Validatin branch: $BRANCH"
 
           # Allowed:
           # <type>/<SCOPE>(-<issueNumber>)?_<kebab-case>
 
           TYPES='(feat|fix|refactor|chore|docs|test|ci|hotfix)'
+          ISSUE_TYPES='(feat|fix|hotfix)'
           SCOPES='(BE|FE|CI|INFRA|DOCS)'
           REGEX="^${TYPES}\/${SCOPES}(-[0-9]+)?_[a-z0-9]+(-[a-z0-9]+)*$"
 
           if [[ "$BRANCH" =~ $REGEX ]]; then
            TYPE="${BASH_REMATCH[1]}"
            SCOPE="${BASH_REMATCH[2]}"
-           ISSUE="${BASH_REMATCH[3]}"
-
+           ISSUE_RAW="${BASH_REMATCH[3]}"
            ISSUE="${ISSUE_RAW#-}"
 
-           echo "✅ Branch name is valid."
            echo "Type : $TYPE"
            echo "Sope : $SCOPE"
+           echo "Issue : ${ISSUE:-none}"
 
-           if [[ -n "#ISSUE" ]]; then
-            echo "Issue : #$ISSUE"
+           if [[ "$TYPE" =~  ISSUE_TYPES ]] && [[ -z "$ISSUE" ]]; then
+            echo ""
+            echo "❌ Issue number is required for type '$TYPE'"
+            exit 1
            fi
+           
+           echo "✅ Branch name is valid."
           else
            echo ""
            echo "❌ Invalid branch name: $BRANCH"
