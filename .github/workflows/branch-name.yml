@@ -22,7 +22,21 @@ jobs:
 
           REGEX='^(feat|fix|refactor|chore|docs|test|ci|hotfix)\/(BE|FE|CI|INFRA|DOCS)+(-[0-9]+)?_[a-z0-9]+(-[a-z0-9]+)*$'
 
-          if [[ ! "$BRANCH" =~ $REGEX ]]; then
+          if [[ "$BRANCH" =~ $REGEX ]]; then
+           TYPE="${BASH_REMATCH[1]}"
+           SCOPE="${BASH_REMATCH[2]}"
+           ISSUE="${BASH_REMATCH[3]}"
+
+           ISSUE="${ISSUE_RAW#-}"
+
+           echo "✅ Branch name is valid."
+           echo "Type : $TYPE"
+           echo "Sope : $SCOPE"
+
+           if [[ -n "#ISSUE" ]]; then
+            echo "Issue : #$ISSUE"
+           fi
+          else
            echo ""
            echo "❌ Invalid branch name: $BRANCH"
            echo ""
@@ -32,5 +46,3 @@ jobs:
            echo "Check documentation for rules/examples"
            exit 1
           fi
-
-          echo "✅ Branch name is valid."
