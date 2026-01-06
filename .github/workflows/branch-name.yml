@@ -20,7 +20,7 @@ jobs:
           # Allowed:
           # <type>/<SCOPE>(-<issueNumber>)?_<kebab-case>
 
-          REGEX='^(feat|fix|refactor)\/[A-Z]+(-[0-9]+)?_[a-z0-9]+(-[a-z0-9]+)*$'
+          REGEX='^(feat|fix|refactor|chore|docs|test|ci|hotfix)\/(BE|FE|CI|INFRA|DOCS)+(-[0-9]+)?_[a-z0-9]+(-[a-z0-9]+)*$'
 
           if [[ ! "$BRANCH" =~ $REGEX ]]; then
            echo ""
