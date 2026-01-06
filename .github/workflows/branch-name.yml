@@ -1,0 +1,36 @@
+name: Validate branch name
+
+on:
+  pull_request:
+    types: [opened, edited, synchoronyze, reopened, ready_for_review]
+
+jobs:
+  branch-name:
+    name: Check PR source branch name
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Validate branch name format
+        shell: bash
+        run: |
+          BRANCH="${{ github.head_ref }}"
+
+          echo "Validatin branch: $BRANCH"
+
+          # Allowed:
+          # <type>/<SCOPE>(-<issueNumber>)?_<kebab-case>
+
+          REGEX='^(feat|fix|refactor)\/[A-Z]+(-[0-9]+)?_[a-z0-9]+(-[a-z0-9]+)*$'
+
+          if [[ ! "$BRANCH" =~ $REGEX ]]; then
+           echo ""
+           echo "❌ Invalid branch name: $BRANCH"
+           echo ""
+           echo "Expeted format:"
+           echo " <type>/<SCOPE>-<issue?>_<short-description>"
+           echo ""
+           echo "Check documentation for rules/examples"
+           exit 1
+          fi
+
+          echo "✅ Branch name is valid."
