@@ -2,7 +2,7 @@ name: Validate branch name
 
 on:
   pull_request:
-    types: [opened, edited, synchronyze, reopened, ready_for_review]
+    types: [opened, edited, synchronize, reopened, ready_for_review]
 
 jobs:
   branch-name:
@@ -13,6 +13,8 @@ jobs:
       - name: Validate branch name format
         shell: bash
         run: |
+          set -euo pipefail
+
           BRANCH="${{ github.head_ref }}"
           echo "Validating branch: $BRANCH"
 
@@ -20,7 +22,7 @@ jobs:
           # <type>/<SCOPE>(-<issueNumber>)?_<kebab-case>
 
           TYPES='(feat|fix|refactor|chore|docs|test|ci|hotfix)'
-          ISSUE_TYPES='(feat|fix|hotfix)'
+          ISSUE_TYPES='feat|fix|hotfix'
           SCOPES='(BE|FE|CI|INFRA|DOCS)'
           REGEX="^${TYPES}\/${SCOPES}(-[0-9]+)?_[a-z0-9]+(-[a-z0-9]+)*$"
 
@@ -34,21 +36,27 @@ jobs:
            echo "Scope : $SCOPE"
            echo "Issue : ${ISSUE:-none}"
 
-           if [[ "$TYPE" =~  ISSUE_TYPES ]] && [[ -z "$ISSUE" ]]; then
+           if [[ "$TYPE" =~  ^(${ISSUE_TYPES})$ ]] && [[ -z "$ISSUE" ]]; then
             echo ""
             echo "❌ Issue number is required for type '$TYPE'"
             exit 1
            fi
 
-           if [[ "$TYPE" =~ ^(docs)$ ]] && [[ ! SCOPE =~ ^(DOCS)$ ]]; then
+           if [[ "$TYPE" =~ "docs" ]] && [[ "$SCOPE" != "DOCS" ]]; then
             echo ""
             echo "❌ DOCS scope required for docs type PR"
             exit 1
            fi
 
-           if [[ "$TYPE" =~ ^(ci)$ ]] && [[ ! SCOPE =~ ^(CI)$ ]]; then
+           if [[ "$TYPE" =~ "ci" ]] && [[ "$SCOPE" != "CI" ]]; then
             echo ""
             echo "❌ CI scope required for ci type PR"
+            exit 1
+           fi
+
+           if [[ "$SCOPE" =~ ^(BE|FE)$ ]] && [[ "$TYPE" =~ ^(dock|ci)$ ]]; then
+            echo ""
+            echo "❌ Scope '$SCOPE' cannot be used with type '$TYPE'"
             exit 1
            fi
            
