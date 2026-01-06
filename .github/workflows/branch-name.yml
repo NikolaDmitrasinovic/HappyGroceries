@@ -2,7 +2,7 @@ name: Validate branch name
 
 on:
   pull_request:
-    types: [opened, edited, synchoronyze, reopened, ready_for_review]
+    types: [opened, edited, synchronyze, reopened, ready_for_review]
 
 jobs:
   branch-name:
@@ -14,7 +14,7 @@ jobs:
         shell: bash
         run: |
           BRANCH="${{ github.head_ref }}"
-          echo "Validatin branch: $BRANCH"
+          echo "Validating branch: $BRANCH"
 
           # Allowed:
           # <type>/<SCOPE>(-<issueNumber>)?_<kebab-case>
@@ -31,12 +31,24 @@ jobs:
            ISSUE="${ISSUE_RAW#-}"
 
            echo "Type : $TYPE"
-           echo "Sope : $SCOPE"
+           echo "Scope : $SCOPE"
            echo "Issue : ${ISSUE:-none}"
 
            if [[ "$TYPE" =~  ISSUE_TYPES ]] && [[ -z "$ISSUE" ]]; then
             echo ""
             echo "❌ Issue number is required for type '$TYPE'"
+            exit 1
+           fi
+
+           if [[ "$TYPE" =~ ^(docs)$ ]] && [[ ! SCOPE =~ ^(DOCS)$ ]]; then
+            echo ""
+            echo "❌ DOCS scope required for docs type PR"
+            exit 1
+           fi
+
+           if [[ "$TYPE" =~ ^(ci)$ ]] && [[ ! SCOPE =~ ^(CI)$ ]]; then
+            echo ""
+            echo "❌ CI scope required for ci type PR"
             exit 1
            fi
            
@@ -45,7 +57,7 @@ jobs:
            echo ""
            echo "❌ Invalid branch name: $BRANCH"
            echo ""
-           echo "Expeted format:"
+           echo "Expected format:"
            echo " <type>/<SCOPE>-<issue?>_<short-description>"
            echo ""
            echo "Check documentation for rules/examples"
