@@ -1,7 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Reflection;
-
-namespace Inventory.Data;
+﻿namespace Inventory.Data;
 
 public class InventoryDbContext(DbContextOptions<InventoryDbContext> options) : DbContext(options)
 {
