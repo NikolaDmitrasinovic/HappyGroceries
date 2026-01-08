@@ -1,8 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace Inventory.Data;
 
-public class InventoryDbContext : DbContext
+public class InventoryDbContext(DbContextOptions<InventoryDbContext> options) : DbContext(options)
 {
+    public DbSet<Product> Products => Set<Product>();
 
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+        base.OnModelCreating(modelBuilder);
+    }
 }
