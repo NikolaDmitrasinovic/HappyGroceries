@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-namespace Inventory.Data.Configurations;
+﻿namespace Inventory.Data.Configurations;
 
 public class ProductConfigurations : IEntityTypeConfiguration<Product>
 {
