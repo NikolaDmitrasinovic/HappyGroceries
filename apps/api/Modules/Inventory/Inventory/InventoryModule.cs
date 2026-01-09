@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Inventory.Data;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -8,10 +9,17 @@ public static class InventoryModule
 {
     public static IServiceCollection AddInventoryModule(this IServiceCollection services, IConfiguration configuration)
     {
-        //services
-        //    .AddApplicationServices()
-        //    .AddInfrastructureServices(configuration)
-        //    .AddApiServices(services);
+        // Add services to the container.
+
+        // Api Endpoint services
+
+        // Application Use Case services
+
+        // Data - Infrastructure services
+        var connectionString = configuration.GetConnectionString("Default");
+
+        services.AddDbContext<InventoryDbContext>(options =>
+        options.UseNpgsql(connectionString));
 
         return services;
     }
