@@ -10,7 +10,7 @@ builder.Services
 
 var app = builder.Build();
 
-var host = builder.Configuration["Db:Host"];
+var host = builder.Configuration["Db:Host"]!;
 var port = int.Parse(builder.Configuration["Db:Port"]!);
 
 using var tcpClient = new TcpClient(host, port);
