@@ -1,12 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Shared.Abstractions.Time;
 using Shared.DDD;
+using Shared.Security;
 
 namespace Shared.Data.Interceptors;
 
-public class AuditableEntityInterceptor : SaveChangesInterceptor
+public class AuditableEntityInterceptor(ICurrentUser currentUser, IClock clock) : SaveChangesInterceptor
 {
+    private readonly ICurrentUser _currentUser = currentUser;
+    private readonly IClock _clock = clock;
+
     public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
     {
         UpdateEntitites(eventData.Context);
@@ -19,7 +24,7 @@ public class AuditableEntityInterceptor : SaveChangesInterceptor
         return base.SavingChangesAsync(eventData, result, cancellationToken);
     }
 
-    private static void UpdateEntitites(DbContext? context)
+    private void UpdateEntitites(DbContext? context)
     {
         if (context == null) return;
 
@@ -27,14 +32,14 @@ public class AuditableEntityInterceptor : SaveChangesInterceptor
         {
             if (entry.State == EntityState.Added)
             {
-                entry.Entity.CreatedBy = "system";
-                entry.Entity.CreatedAt = DateTime.UtcNow;
+                entry.Entity.CreatedBy = _currentUser.Id;
+                entry.Entity.CreatedAt = _clock.UtcNow;
             }
 
             if (entry.State == EntityState.Added || entry.State == EntityState.Modified)
             {
-                entry.Entity.LastModifiedBy = "system";
-                entry.Entity.LastModified = DateTime.UtcNow;
+                entry.Entity.LastModifiedBy = _currentUser.Id;
+                entry.Entity.LastModified = _clock.UtcNow;
             }
         }
     }
