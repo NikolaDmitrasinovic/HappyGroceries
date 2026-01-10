@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Shared.Data.Interceptors;
 
 namespace Inventory;
 
@@ -18,7 +19,10 @@ public static class InventoryModule
         var connectionString = configuration.GetConnectionString("Default");
 
         services.AddDbContext<InventoryDbContext>(options =>
-        options.UseNpgsql(connectionString));
+        {
+            options.AddInterceptors(new AuditableEntityInterceptor());
+            options.UseNpgsql(connectionString);
+        });
 
         services.AddScoped<IDataSeeder, InventoryDataSeeder>();
 
