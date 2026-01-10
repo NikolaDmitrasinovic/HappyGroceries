@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Shared.Data;
 
 namespace Inventory;
 
@@ -27,13 +28,15 @@ public static class InventoryModule
 
     public static IApplicationBuilder UseInventoryModule(this IApplicationBuilder app)
     {
-        // HTTP request pipeline
-        //app
-        //    .UseApplicationServices()
-        //    .UseInfrastructureServices()
-        //    .UseApiServices();
+        // Configure the HTTP request pipeline
 
-        InitialiseDatabaseAsync(app).GetAwaiter().GetResult();
+        // Use Api Endpoint services
+
+        // Use Application Use Case services
+
+        // Use Data - Infrastructure services
+        app.UseMigration<InventoryDbContext>();
+
         SeedDatabaseAsync(app.ApplicationServices).GetAwaiter().GetResult();
 
         return app;
@@ -48,14 +51,5 @@ public static class InventoryModule
         {
             await seeder.SeedAllAsync();
         }
-    }
-
-    private static async Task InitialiseDatabaseAsync(IApplicationBuilder app)
-    {
-        using var scope = app.ApplicationServices.CreateScope();
-
-        var context = scope.ServiceProvider.GetRequiredService<InventoryDbContext>();
-
-        await context.Database.MigrateAsync();
     }
 }
