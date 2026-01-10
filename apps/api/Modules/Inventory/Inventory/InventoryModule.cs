@@ -27,35 +27,15 @@ public static class InventoryModule
 
     public static IApplicationBuilder UseInventoryModule(this IApplicationBuilder app)
     {
-        // HTTP request pipeline
-        //app
-        //    .UseApplicationServices()
-        //    .UseInfrastructureServices()
-        //    .UseApiServices();
+        // Configure the HTTP request pipeline
 
-        InitialiseDatabaseAsync(app).GetAwaiter().GetResult();
-        SeedDatabaseAsync(app.ApplicationServices).GetAwaiter().GetResult();
+        // Use Api Endpoint services
+
+        // Use Application Use Case services
+
+        // Use Data - Infrastructure services
+        app.UseMigration<InventoryDbContext>();
 
         return app;
-    }
-
-    private static async Task SeedDatabaseAsync(IServiceProvider serviceProvider)
-    {
-        using var scope = serviceProvider.CreateScope();
-
-        var seeders = scope.ServiceProvider.GetServices<IDataSeeder>();
-        foreach (var seeder in seeders)
-        {
-            await seeder.SeedAllAsync();
-        }
-    }
-
-    private static async Task InitialiseDatabaseAsync(IApplicationBuilder app)
-    {
-        using var scope = app.ApplicationServices.CreateScope();
-
-        var context = scope.ServiceProvider.GetRequiredService<InventoryDbContext>();
-
-        await context.Database.MigrateAsync();
     }
 }

@@ -10,12 +10,14 @@ builder.Services
 
 var app = builder.Build();
 
+// Proof of concept - conainerized postgres reachable
 var host = builder.Configuration["Db:Host"]!;
 var port = int.Parse(builder.Configuration["Db:Port"]!);
 
 using var tcpClient = new TcpClient(host, port);
 
 app.MapGet("/health", () => Results.Ok("API is up and DB port is reachable"));
+//
 
 // Configure the HTTP request pipeline.
 app
