@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Shared.Data;
 
 namespace Inventory;
 
@@ -37,19 +36,6 @@ public static class InventoryModule
         // Use Data - Infrastructure services
         app.UseMigration<InventoryDbContext>();
 
-        SeedDatabaseAsync(app.ApplicationServices).GetAwaiter().GetResult();
-
         return app;
-    }
-
-    private static async Task SeedDatabaseAsync(IServiceProvider serviceProvider)
-    {
-        using var scope = serviceProvider.CreateScope();
-
-        var seeders = scope.ServiceProvider.GetServices<IDataSeeder>();
-        foreach (var seeder in seeders)
-        {
-            await seeder.SeedAllAsync();
-        }
     }
 }
