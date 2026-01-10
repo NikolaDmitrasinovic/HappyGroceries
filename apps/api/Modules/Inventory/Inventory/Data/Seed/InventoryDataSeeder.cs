@@ -1,6 +1,4 @@
-﻿using Shared.Data.Seed;
-
-namespace Inventory.Data.Seed;
+﻿namespace Inventory.Data.Seed;
 
 public class InventoryDataSeeder(InventoryDbContext dbContext) 
     : IDataSeeder
