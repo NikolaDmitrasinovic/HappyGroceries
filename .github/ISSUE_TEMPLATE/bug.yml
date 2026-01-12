@@ -6,7 +6,6 @@ assignees: []
 body:
  - type: markdown
    attributes:
-    label: "Report a bug"
     value: |
      Thanks for reporting a bug! Please fiil out the sections below as clearly as possible.
 
@@ -16,7 +15,7 @@ body:
     label: Summary
     description: What is the bug? Keep it short and precise.
     placeholder: Product stock is not updated when calling Update method
-   validatons:
+   validations:
     required: true
 
  - type: textarea
