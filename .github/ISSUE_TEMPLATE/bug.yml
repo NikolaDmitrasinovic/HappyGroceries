@@ -1,0 +1,60 @@
+name: Bug / Fix
+description: Report a bug or an issue that requires fixing
+title: "[BUG] "
+labels: ["bug"]
+assignees: []
+body:
+ - type: markdown
+   attributes:
+    value: |
+     Thanks for reporting a bug! Please fiil out the sections below as clearly as possible.
+
+ - type: textarea
+   id: summary
+   attributes: 
+    label: Summary
+    description: What is the bug? Keep it short and precise.
+    placeholder: Product stock is not updated when calling Update method
+   validations:
+    required: true
+
+ - type: textarea
+   id: expected
+   attributes:
+    label: Expected behavior
+    description: What should happen?
+    placeholder: Stock should be updated and StockChanged event emitted
+   validations:
+    required: true
+
+ - type: textarea
+   id: actual
+   attributes:
+    label: Actual behavior
+    description: What actually happens?
+    placeholder: Stock remains unchanged and no domain event is raised
+   validations:
+    requred: true
+
+ - type: textarea
+   id: steps
+   attributes:
+    label: Steps to reproduce
+    description: How can the bug be reproduced?
+    placeholder: |
+     1. Create a Product
+     2. Call Update with a new stock
+     3. Save changes
+   validations:
+    required: false
+
+ - type: textarea
+   id: context
+   attributes:
+    label: Context / Notes
+    description: Any additional context, logs, screenshots, or links to related PRs/issues.
+    placeholder: |
+     - Occurs when using EF Core interceptor
+     - Introduced in PR #42
+   validations: 
+    required: false
