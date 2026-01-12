@@ -23,7 +23,7 @@ body:
    attributes:
     label: Expected behavior
     description: What should happen?
-    placeholder: Example: Stock should be updated and StockChanged event emitted
+    placeholder: Stock should be updated and StockChanged event emitted
    validations:
     required: true
 
@@ -32,7 +32,7 @@ body:
    attribures:
     label: Actual behavior
     description: What actually happens?
-    placeholder: Example: Stock remains unchanged and no domain event is raised
+    placeholder: Stock remains unchanged and no domain event is raised
    validations:
     requred: true
 
