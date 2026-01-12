@@ -14,7 +14,7 @@ body:
    attributes: 
     label: Summary
     description: What is the bug? Keep it short and precise.
-    placeholder: Example: Product stock is not updated when calling Update method
+    placeholder: Product stock is not updated when calling Update method
    validatons:
     required: true
 
