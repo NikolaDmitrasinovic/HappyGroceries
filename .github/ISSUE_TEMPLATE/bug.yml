@@ -6,6 +6,7 @@ assignees: []
 body:
  - type: markdown
    attributes:
+    label: "Report a bug"
     value: |
      Thanks for reporting a bug! Please fiil out the sections below as clearly as possible.
 
@@ -27,9 +28,9 @@ body:
    validations:
     required: true
 
- - type: textares
+ - type: textarea
    id: actual
-   attribures:
+   attributes:
     label: Actual behavior
     description: What actually happens?
     placeholder: Stock remains unchanged and no domain event is raised
@@ -38,7 +39,7 @@ body:
 
  - type: textarea
    id: steps
-   attribures:
+   attributes:
     label: Steps to reproduce
     description: How can the bug be reproduced?
     placeholder: |
@@ -50,7 +51,7 @@ body:
 
  - type: textarea
    id: context
-   atributes:
+   attributes:
     label: Context / Notes
     description: Any additional context, logs, screenshots, or links to related PRs/issues.
     placeholder: |
