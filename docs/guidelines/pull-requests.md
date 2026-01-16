@@ -30,14 +30,16 @@ type(scope): short, imperative summary
 
 Use the type that best describes the primary purpose of the change:
 
-|Type     |	When to use it                             |
-|feat	  |New feature or new behavior                 |
-|fix	  |Bug fix                                     |
-|docs	  |Documentation only                          |
-|refactor |	Code change with no behavior change        |
-|test	  |Tests only                                  |
-|chore	  |Tooling, CI, dependencies, repo maintenance |
-|perf	  |Performance improvements                    |
+| Type       | When to use it                              |
+| ---------- | ------------------------------------------- |
+| `feat`     | New feature or new behavior                 |
+| `fix`      | Bug fix                                     |
+| `docs`     | Documentation only                          |
+| `refactor` | Code change with no behavior change         |
+| `test`     | Tests only                                  |
+| `chore`    | Tooling, dependencies, repo maintenance     |
+| `perf`     | Performance improvements                    |
+| `ci`       | CI                                          |
 
 If unsure, prefer feat, fix, or refactor.
 
