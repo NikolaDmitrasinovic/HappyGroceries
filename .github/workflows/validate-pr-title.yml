@@ -1,0 +1,31 @@
+name: Validate PR title
+
+on:
+ pull_request:
+  types: [opened, edited, reopened, synchronize, ready_for_review]
+
+jobs:
+ pr-title:
+  name: Check PR title matches convention
+  runs-on: ubuntu-latest
+
+  steps:
+   - name: Validate title
+     shell: bash
+     run: |
+      set -euo pipefail
+
+      TITLE="${{ github.event.pull_request.title }}"
+      echo "PR title: $TITLE"
+
+      # Format: type(scope): sumary
+
+      REGEX='^(feat|fix|docs|refactor|test|chore|perf|ci)\([a-z0-9-]+|): [a-z0-9].{2,}$'
+
+      if [[ ! "$TITLE" =~ $REGEX ]]; then
+       echo "::error title=Invalid PR title::Exprected: type(scope): summary"
+       echo "Check documentation for convention"
+       exit 1
+      fi
+
+      echo "✅ PR title matches convention."
