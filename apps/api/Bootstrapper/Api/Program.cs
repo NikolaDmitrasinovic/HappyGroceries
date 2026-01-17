@@ -1,5 +1,3 @@
-using Shared.Abstractions.Time;
-using Shared.Security;
 using System.Net.Sockets;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +8,7 @@ builder.Services
     .AddReceiptModule(builder.Configuration)
     .AddSpendingModule(builder.Configuration);
 
+builder.Services.AddMediator();
 builder.Services.AddScoped<ICurrentUser, SystemCurrentUser>();
 builder.Services.AddSingleton<IClock, SystemClock>();
 
