@@ -42,7 +42,7 @@ public class Mediator(IServiceProvider serviceProvider) : IMediator
 
         return (Task<TResponse>)taskObj;
     }
-        
+    
     public async Task Publish(INotification notification, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(notification);
