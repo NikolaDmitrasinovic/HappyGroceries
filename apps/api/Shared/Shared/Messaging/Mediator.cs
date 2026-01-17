@@ -11,6 +11,8 @@ public interface IMediator
 
 public class Mediator(IServiceProvider serviceProvider) : IMediator
 {
+    private static readonly string HandleMethodName = nameof(IRequestHandler<,>.Handle);
+
     public Task<TResponse> Send<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(request);
@@ -47,8 +49,8 @@ public class Mediator(IServiceProvider serviceProvider) : IMediator
 
     private static MethodInfo GetHandleMethodOrThrow(Type handlerInterfaceType)
     {
-        return handlerInterfaceType.GetMethod("Handle")
+        return handlerInterfaceType.GetMethod(HandleMethodName)
             ?? throw new InvalidOperationException(
-                $"Could not find 'Handle' method on '{handlerInterfaceType.FullName}'.");
+                $"Could not find '{HandleMethodName}' method on '{handlerInterfaceType.FullName}'.");
     }
 }
