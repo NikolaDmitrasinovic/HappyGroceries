@@ -15,10 +15,6 @@ public static class InventoryModule
         // Api Endpoint services
 
         // Application Use Case services
-        services.AddMediatR(config =>
-        {
-            config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
-        });
 
         // Data - Infrastructure services
         var connectionString = configuration.GetConnectionString("Default");
