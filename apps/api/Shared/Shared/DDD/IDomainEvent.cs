@@ -1,4 +1,4 @@
-﻿using MediatR;
+﻿using Shared.Messaging;
 
 namespace Shared.DDD;
 
