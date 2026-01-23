@@ -7,3 +7,4 @@ global using Inventory.Data;
 global using Inventory.Data.Seed;
 global using Shared.Data.Seed;
 global using Shared.Data;
+global using Shared.CQRS;
