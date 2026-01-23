@@ -12,19 +12,24 @@ internal class CreateProductHandler(InventoryDbContext dbContext)
 {
     public async Task<CreateProductResult> Handle(CreateProductCommand command, CancellationToken cancellationToken)
     {
-        var product = Product.Create(
-            Guid.NewGuid(),
-            command.Product.Name,
-            command.Product.Category,
-            command.Product.Price,
-            command.Product.Description,
-            command.Product.ImageFile,
-            command.Product.Stock,
-            command.Product.Threshold);
+        Product product = CreateNewPRoduct(command.Product);
 
         dbContext.Products.Add(product);
         await dbContext.SaveChangesAsync(cancellationToken);
 
         return new CreateProductResult(product.Id);
+    }
+
+    private static Product CreateNewPRoduct(ProductDto productDto)
+    {
+        return Product.Create(
+            Guid.NewGuid(),
+            productDto.Name,
+            productDto.Category,
+            productDto.Price,
+            productDto.Description,
+            productDto.ImageFile,
+            productDto.Stock,
+            productDto.Threshold);
     }
 }
