@@ -15,13 +15,13 @@ public class Product : Aggregate<Guid>
 
     public bool IsLowStock => Stock <= Threshold;
 
-    public static Product Create(Guid id, string name,List<string> category,  decimal price, string description, string imageFile, decimal stock, decimal threshold)
+    public static Product Create(string name,List<string> category,  decimal price, string description, string imageFile, decimal stock, decimal threshold)
     {
         Validate(name, price);
 
         var product = new Product
         {
-            Id = id,
+            Id = Guid.NewGuid(),
             Name = name,
             Category = category,
             Description = description,

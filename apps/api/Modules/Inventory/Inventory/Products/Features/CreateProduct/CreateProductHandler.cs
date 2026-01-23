@@ -10,18 +10,17 @@ internal class CreateProductHandler(InventoryDbContext dbContext)
 {
     public async Task<CreateProductResult> Handle(CreateProductCommand command, CancellationToken cancellationToken)
     {
-        Product product = CreateNewPRoduct(command.Product);
+        Product product = CreateNewProduct(command.Product);
 
-        dbContext.Products.Add(product);
+        await dbContext.Products.AddAsync(product, cancellationToken);
         await dbContext.SaveChangesAsync(cancellationToken);
 
         return new CreateProductResult(product.Id);
     }
 
-    private static Product CreateNewPRoduct(ProductDto productDto)
+    private static Product CreateNewProduct(ProductDto productDto)
     {
         return Product.Create(
-            Guid.NewGuid(),
             productDto.Name,
             productDto.Category,
             productDto.Price,

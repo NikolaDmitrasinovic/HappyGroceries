@@ -2,7 +2,7 @@
 
 public record ProductDto(
     string Name,
-    List<string> Category,
+    List<string> Category, // TODO: consider IReadOnlyList
     string Description,
     string ImageFile,
     decimal Price,
