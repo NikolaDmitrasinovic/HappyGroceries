@@ -1,9 +1,13 @@
-﻿global using Shared.DDD;
-global using Inventory.Products.Models;
-global using Microsoft.EntityFrameworkCore;
-global using System.Reflection;
+﻿global using Microsoft.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore.Metadata.Builders;
-global using Inventory.Data;
-global using Inventory.Data.Seed;
+global using System.Reflection;
+
+global using Shared.DDD;
 global using Shared.Data.Seed;
 global using Shared.Data;
+global using Shared.CQRS;
+
+global using Inventory.Products.Models;
+global using Inventory.Data;
+global using Inventory.Data.Seed;
+global using Inventory.Products.Dtos;
