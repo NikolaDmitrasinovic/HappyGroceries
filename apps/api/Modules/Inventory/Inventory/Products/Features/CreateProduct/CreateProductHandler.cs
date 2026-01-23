@@ -1,6 +1,4 @@
-﻿using Inventory.Products.Dtos;
-
-namespace Inventory.Products.Features.CreateProduct;
+﻿namespace Inventory.Products.Features.CreateProduct;
 
 public record CreateProductCommand(ProductDto Product)
     : ICommand<CreateProductResult>;
