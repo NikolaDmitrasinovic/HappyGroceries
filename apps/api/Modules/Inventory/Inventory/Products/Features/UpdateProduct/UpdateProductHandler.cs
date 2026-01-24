@@ -10,9 +10,8 @@ internal class UpdateProductHandler(InventoryDbContext dbContext)
 {
     public async Task<UpdateProductResult> Handle(UpdateProductCommand command, CancellationToken cancellationToken)
     {
-        var product = await dbContext.Products.FirstOrDefaultAsync(p => p.Id.ToString() == command.Id);
-
-        if (product == null) throw new ArgumentNullException($"Product with {command.Id} can not be found");
+        var product = await dbContext.Products.FirstOrDefaultAsync(p => p.Id.ToString() == command.Id) 
+            ?? throw new ArgumentNullException($"Product with {command.Id} can not be found");
 
         product.Update(
             command.ProductDto.Name,
