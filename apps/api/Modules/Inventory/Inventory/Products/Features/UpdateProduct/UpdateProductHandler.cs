@@ -1,36 +1,27 @@
 ﻿namespace Inventory.Products.Features.UpdateProduct;
 
-public record UpdateProductCommand(string Id, ProductDto ProductDto)
+public record UpdateProductCommand(Guid Id, ProductDto ProductDto)
     : ICommand<UpdateProductResult>;
 
-public record UpdateProductResult(ProductDto ProductDto);
+public record UpdateProductResult(Guid Id);
 
 internal class UpdateProductHandler(InventoryDbContext dbContext)
     : ICommandHandler<UpdateProductCommand, UpdateProductResult>
 {
     public async Task<UpdateProductResult> Handle(UpdateProductCommand command, CancellationToken cancellationToken)
     {
-        var product = await dbContext.Products.FirstOrDefaultAsync(p => p.Id.ToString() == command.Id) 
-            ?? throw new ArgumentNullException($"Product with {command.Id} can not be found");
+        var product = await dbContext.Products.FindAsync([command.Id], cancellationToken)
+            ?? throw new KeyNotFoundException($"Product with id '{command.Id}' was not be found");
 
         product.Update(
             command.ProductDto.Name,
-            command.ProductDto.Category,
+            [.. command.ProductDto.Category],
             command.ProductDto.Price,
             command.ProductDto.Description,
             command.ProductDto.ImageFile);
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        var productDto = new ProductDto(
-            product.Name,
-            product.Category,
-            product.Description,
-            product.ImageFile,
-            product.Price,
-            product.Stock,
-            product.Threshold);
-
-        return new UpdateProductResult(productDto);
+        return new UpdateProductResult(product.Id);
     }
 }
