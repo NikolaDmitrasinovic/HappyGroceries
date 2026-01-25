@@ -72,4 +72,11 @@ public class Product : Aggregate<Guid>
 
         Threshold = threshold;
     }
+
+    public void AdjustStock(decimal delta)
+    {
+        ArgumentOutOfRangeException.ThrowIfNegative(Stock + delta);
+
+        Stock += delta;
+    }
 }
