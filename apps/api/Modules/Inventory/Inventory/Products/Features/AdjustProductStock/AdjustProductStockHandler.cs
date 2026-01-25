@@ -11,7 +11,7 @@ internal class AdjustProductStockHandler(InventoryDbContext dbContext)
     public async Task<AdjustProductStockResult> Handle(AdjustProductStockCommand command, CancellationToken cancellationToken)
     {
         var product = await dbContext.Products.FindAsync([command.Id], cancellationToken)
-            ?? throw new KeyNotFoundException($"Product with id '{command.Id}' was not found");
+            ?? throw new KeyNotFoundException($"Product with id '{command.Id}' was not found.");
 
         product.AdjustStock(command.Delta);
         await dbContext.SaveChangesAsync(cancellationToken);

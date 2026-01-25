@@ -11,7 +11,7 @@ internal class UpdateProductHandler(InventoryDbContext dbContext)
     public async Task<UpdateProductResult> Handle(UpdateProductCommand command, CancellationToken cancellationToken)
     {
         var product = await dbContext.Products.FindAsync([command.Id], cancellationToken)
-            ?? throw new KeyNotFoundException($"Product with id '{command.Id}' was not found");
+            ?? throw new KeyNotFoundException($"Product with id '{command.Id}' was not found.");
 
         product.Update(
             command.ProductDto.Name,
