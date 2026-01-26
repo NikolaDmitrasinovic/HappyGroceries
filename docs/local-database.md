@@ -78,7 +78,7 @@ Creating migrations (Package Manager Console)
 
 Migrations are created using the Package Manager Console in Visual Studio.
 ```powershell
-Add-Migration <MigrationName> Data/Migrations -Project <InfrastructureProject> -StartupProject <ApiProject>
+Add-Migration <MigrationName> -OutputDir Data/Migrations -Project <InfrastructureProject> -StartupProject <ApiProject>
 ```
 
 ---
