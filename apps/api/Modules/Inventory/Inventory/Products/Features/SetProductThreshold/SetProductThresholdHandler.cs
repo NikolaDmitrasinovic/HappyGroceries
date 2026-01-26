@@ -1,6 +1,6 @@
 ﻿namespace Inventory.Products.Features.SetProductThreshold;
 
-public record SetProductThresholdCommand(Guid Id, decimal Threshold)
+public record SetProductThresholdCommand(Guid Id, int Threshold)
     : ICommand<SetProductThresholdResult>;
 
 public record SetProductThresholdResult(Guid Id);

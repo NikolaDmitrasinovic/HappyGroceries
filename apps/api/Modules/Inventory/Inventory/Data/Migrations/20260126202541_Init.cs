@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -22,12 +21,8 @@ namespace Inventory.Data.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    Category = table.Column<List<string>>(type: "text[]", nullable: false),
-                    Description = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: false),
-                    ImageFile = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    Price = table.Column<decimal>(type: "numeric", nullable: false),
-                    Stock = table.Column<decimal>(type: "numeric", nullable: false),
-                    Threshold = table.Column<decimal>(type: "numeric", nullable: false),
+                    Stock = table.Column<int>(type: "integer", nullable: false),
+                    Threshold = table.Column<int>(type: "integer", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
                     LastModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
