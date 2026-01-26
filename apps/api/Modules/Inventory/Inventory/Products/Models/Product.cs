@@ -5,28 +5,19 @@ namespace Inventory.Products.Models;
 public class Product : Aggregate<Guid>
 {
     public string Name { get; private set; } = default!;
-    public List<string> Category { get; private set; } = [];
-    public string Description { get; private set; } = default!;
-    public string ImageFile { get; private set; } = default!;
-    public decimal Price { get; private set; }
-
-    public decimal Stock { get; private set; }
-    public decimal Threshold { get; private set; }
+    public int Stock { get; private set; }
+    public int Threshold { get; private set; }
 
     public bool IsLowStock => Stock <= Threshold;
 
-    public static Product Create(string name,List<string> category,  decimal price, string description, string imageFile, decimal stock, decimal threshold)
+    public static Product Create(string name, int stock = 0, int threshold = 0)
     {
-        Validate(name, price);
+        ArgumentException.ThrowIfNullOrEmpty(name);
 
         var product = new Product
         {
             Id = Guid.NewGuid(),
             Name = name,
-            Category = category,
-            Description = description,
-            ImageFile = imageFile,
-            Price = price
         };
 
         product.SetStock(stock);
@@ -37,43 +28,28 @@ public class Product : Aggregate<Guid>
         return product;
     }
 
-    public void Update(string name, List<string> category, decimal price, string description, string imageFile)
-    {
-        Validate(name, price);
-
-        Name = name;
-        Category = category;
-        Description = description;
-        ImageFile = imageFile;
-
-        if (Price != price)
-        {
-            Price = price;
-            AddDomainEvent(new ProductPriceChangedEvent(this));
-        }
-    }
-
-    private static void Validate(string name, decimal price)
+    public void Update(string name)
     {
         ArgumentException.ThrowIfNullOrEmpty(name);
-        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(price);
+
+        Name = name;
     }
 
-    public void SetStock(decimal stock)
+    public void SetStock(int stock)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(stock, nameof(stock));
 
         Stock = stock;
     }
 
-    public void SetThreshold(decimal threshold)
+    public void SetThreshold(int threshold)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(threshold);
 
         Threshold = threshold;
     }
 
-    public void AdjustStock(decimal delta)
+    public void AdjustStock(int delta)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(Stock + delta);
 
