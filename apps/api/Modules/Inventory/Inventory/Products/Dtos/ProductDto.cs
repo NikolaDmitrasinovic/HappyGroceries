@@ -2,10 +2,6 @@
 
 public record ProductDto(
     string Name,
-    List<string> Category, // TODO: consider IReadOnlyList
-    string Description,
-    string ImageFile,
-    decimal Price,
-    decimal Stock,
-    decimal Threshold
+    int Stock,
+    int Threshold
     );
