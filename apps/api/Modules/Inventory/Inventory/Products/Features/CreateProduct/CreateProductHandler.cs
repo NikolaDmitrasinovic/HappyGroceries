@@ -22,10 +22,6 @@ internal class CreateProductHandler(InventoryDbContext dbContext)
     {
         return Product.Create(
             productDto.Name,
-            productDto.Category,
-            productDto.Price,
-            productDto.Description,
-            productDto.ImageFile,
             productDto.Stock,
             productDto.Threshold);
     }
