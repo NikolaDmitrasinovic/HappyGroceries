@@ -1,8 +1,17 @@
+using Carter;
 using System.Net.Sockets;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddCarter(configurator: config =>
+{
+    var inventroyModules = typeof(InventoryModule).Assembly.GetTypes()
+    .Where(t => t.IsAssignableTo(typeof(InventoryModule))).ToArray();
+
+    config.WithModules(inventroyModules);
+});
+
 builder.Services
     .AddInventoryModule(builder.Configuration)
     .AddReceiptModule(builder.Configuration)
