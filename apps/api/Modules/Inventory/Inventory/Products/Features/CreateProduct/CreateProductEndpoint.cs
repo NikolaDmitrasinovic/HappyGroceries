@@ -15,13 +15,13 @@ public class CreateProductEndpoint : ICarterModule
     {
         app.MapPost("/products", async (CreateProductRequest requset, IMediator sender) =>
         {
-            var command = new CreateProductCommand(requset.Product);
+            var command = new CreateProductCommand(new ProductDto(requset.Product.Name, requset.Product.Stock, requset.Product.Threshold));
 
             var result = await sender.Send(command);
 
             var response = new CreateProductResponse(result.Id);
 
-            return Results.Created();
+            return Results.Created<CreateProductResponse>($"/products/{response.Id}", response);
         })
         .WithName("CreteProduct")
         .Produces<CreateProductResponse>(StatusCodes.Status201Created)
