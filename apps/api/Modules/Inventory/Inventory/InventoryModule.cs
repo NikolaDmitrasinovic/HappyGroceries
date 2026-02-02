@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Inventory.Products.Features.CreateProduct;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Shared.Data.Interceptors;
+using Shared.Messaging;
 
 namespace Inventory;
 
@@ -15,6 +17,7 @@ public static class InventoryModule
         // Api Endpoint services
 
         // Application Use Case services
+        services.AddScoped<IRequestHandler<CreateProductCommand, CreateProductResult>, CreateProductHandler>();
 
         // Data - Infrastructure services
         var connectionString = configuration.GetConnectionString("Default");
