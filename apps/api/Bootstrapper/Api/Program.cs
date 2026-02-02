@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCarter(configurator: config =>
 {
     var inventroyModules = typeof(InventoryModule).Assembly.GetTypes()
-    .Where(t => t.IsAssignableTo(typeof(InventoryModule))).ToArray();
+    .Where(t => t.IsAssignableTo(typeof(ICarterModule))).ToArray();
 
     config.WithModules(inventroyModules);
 });
@@ -33,6 +33,8 @@ app.MapGet("/health", () => Results.Ok("API is up and DB port is reachable"));
 //
 
 // Configure the HTTP request pipeline.
+app.MapCarter();
+
 app
     .UseInventoryModule()
     .UseReceiptModule()
