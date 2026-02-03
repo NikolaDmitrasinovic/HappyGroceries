@@ -1,4 +1,5 @@
-﻿using Inventory.Products.Features.CreateProduct;
+﻿using Inventory.Products.Features.AdjustProductStock;
+using Inventory.Products.Features.CreateProduct;
 using Inventory.Products.Features.SetProductThreshold;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -20,6 +21,7 @@ public static class InventoryModule
         // Application Use Case services
         services.AddScoped<IRequestHandler<CreateProductCommand, CreateProductResult>, CreateProductHandler>();
         services.AddScoped<IRequestHandler<SetProductThresholdCommand, SetProductThresholdResult>, SetProductThresholdHandler>();
+        services.AddScoped<IRequestHandler<AdjustProductStockCommand, AdjustProductStockResult>, AdjustProductStockHandler>();
 
         // Data - Infrastructure services
         var connectionString = configuration.GetConnectionString("Default");
