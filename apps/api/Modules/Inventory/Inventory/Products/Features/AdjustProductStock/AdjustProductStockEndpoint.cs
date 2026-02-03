@@ -24,7 +24,7 @@ public class AdjustProductStockEndpoint : ICarterModule
             return Results.Ok(response);
         })
         .WithName("AdjustProductStock")
-        .Produces<AdjustProductStockResponse>(StatusCodes.Status201Created)
+        .Produces<AdjustProductStockResponse>(StatusCodes.Status200OK)
         .ProducesProblem(StatusCodes.Status400BadRequest)
         .WithSummary("Adjust Product Stock")
         .WithDescription("Adjust Product Stock");
