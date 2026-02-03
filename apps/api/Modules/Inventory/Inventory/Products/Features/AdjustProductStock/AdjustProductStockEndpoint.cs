@@ -21,7 +21,7 @@ public class AdjustProductStockEndpoint : ICarterModule
 
             var response = new AdjustProductStockResponse(result.Id);
 
-            return Results.Created<AdjustProductStockResponse>($"/products/{response.Id}", response);
+            return Results.Ok(response);
         })
         .WithName("AdjustProductStock")
         .Produces<AdjustProductStockResponse>(StatusCodes.Status201Created)
