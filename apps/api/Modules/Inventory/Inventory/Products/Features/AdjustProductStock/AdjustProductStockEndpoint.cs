@@ -1,5 +1,4 @@
 ﻿using Carter;
-using Inventory.Products.Features.CreateProduct;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -25,7 +24,7 @@ public class AdjustProductStockEndpoint : ICarterModule
             return Results.Created<AdjustProductStockResponse>($"/products/{response.Id}", response);
         })
         .WithName("AdjustProductStock")
-        .Produces<CreateProductResponse>(StatusCodes.Status201Created)
+        .Produces<AdjustProductStockResponse>(StatusCodes.Status201Created)
         .ProducesProblem(StatusCodes.Status400BadRequest)
         .WithSummary("Adjust Product Stock")
         .WithDescription("Adjust Product Stock");
