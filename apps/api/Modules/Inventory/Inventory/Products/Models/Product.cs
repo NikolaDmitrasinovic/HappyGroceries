@@ -51,11 +51,15 @@ public class Product : Aggregate<Guid>
 
     public void AdjustStock(int delta)
     {
+        var wasLowStock = IsLowStock;
+
         ArgumentOutOfRangeException.ThrowIfNegative(Stock + delta);
 
         Stock += delta;
 
-        if (IsLowStock)
+        var isLowStock = IsLowStock;
+
+        if (!wasLowStock && isLowStock)
             this.AddDomainEvent(new RestockWarningEvent(this));
     }
 }
