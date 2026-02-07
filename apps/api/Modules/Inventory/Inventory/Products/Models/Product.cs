@@ -54,5 +54,8 @@ public class Product : Aggregate<Guid>
         ArgumentOutOfRangeException.ThrowIfNegative(Stock + delta);
 
         Stock += delta;
+
+        if (IsLowStock)
+            this.AddDomainEvent(new RestockWarningEvent(this));
     }
 }
