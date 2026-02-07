@@ -40,6 +40,9 @@ public class Product : Aggregate<Guid>
         ArgumentOutOfRangeException.ThrowIfNegative(stock, nameof(stock));
 
         Stock = stock;
+
+        if (IsLowStock)
+            this.AddDomainEvent(new RestockWarningEvent(this));
     }
 
     public void SetThreshold(int threshold)
