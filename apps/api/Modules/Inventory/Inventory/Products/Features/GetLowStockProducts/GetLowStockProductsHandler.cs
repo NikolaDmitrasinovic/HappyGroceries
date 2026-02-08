@@ -11,16 +11,14 @@ internal class GetLowStockProductsHandler(InventoryDbContext dbContext)
     {
         var products = await dbContext.Products
             .AsNoTracking()
-            .Where(p => p.IsLowStock)
+            // TODO: Replace with domain-owned expression to avoid rule duplication
+            .Where(p => p.Stock <= p.Threshold)
             .OrderBy(p => p.Name)
             .ToListAsync(cancellationToken);
 
-        var productDtos = new List<ProductDto>();
-        foreach (var product in products)
-        {
-            var productDto = new ProductDto(product.Name, product.Stock, product.Threshold);
-            productDtos.Add(productDto);
-        }
+        var productDtos = products
+            .Select(p => new ProductDto(p.Name, p.Stock, p.Threshold))
+            .ToList();
 
         return new GetLowStockProductsResult(productDtos);
     }
