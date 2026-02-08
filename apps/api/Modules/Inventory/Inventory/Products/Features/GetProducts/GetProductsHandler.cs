@@ -1,5 +1,4 @@
-﻿
-namespace Inventory.Products.Features.GetProducts;
+﻿namespace Inventory.Products.Features.GetProducts;
 
 public record GetProductsQuery() : IQuery<GetProductsResult>;
 
