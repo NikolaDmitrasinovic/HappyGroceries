@@ -1,5 +1,6 @@
 ﻿using Inventory.Products.Features.AdjustProductStock;
 using Inventory.Products.Features.CreateProduct;
+using Inventory.Products.Features.GetLowStockProducts;
 using Inventory.Products.Features.GetProducts;
 using Inventory.Products.Features.SetProductThreshold;
 using Microsoft.AspNetCore.Builder;
@@ -21,6 +22,7 @@ public static class InventoryModule
 
         // Application Use Case services
         services.AddScoped<IRequestHandler<GetProductsQuery, GetProductsResult>, GetProductsHandler>();
+        services.AddScoped<IRequestHandler<GetLowStockProductsQuery, GetLowStockProductsResult>, GetLowStockProductsHandler>();
         services.AddScoped<IRequestHandler<CreateProductCommand, CreateProductResult>, CreateProductHandler>();
         services.AddScoped<IRequestHandler<SetProductThresholdCommand, SetProductThresholdResult>, SetProductThresholdHandler>();
         services.AddScoped<IRequestHandler<AdjustProductStockCommand, AdjustProductStockResult>, AdjustProductStockHandler>();
