@@ -22,7 +22,7 @@ public class ProductsController(IMediator mediator) : ControllerBase
         return Ok(resonse);
     }
 
-    [HttpGet("/restock")]
+    [HttpGet("restock")]
     [ProducesResponseType(typeof(GetLowStockProductsResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<GetLowStockProductsResponse>> GetAllLowStock(CancellationToken cancellationToken)
@@ -40,7 +40,7 @@ public class ProductsController(IMediator mediator) : ControllerBase
         return Created($"{response.Id}", response);
     }
 
-    [HttpPatch("/threshold")]
+    [HttpPatch("threshold")]
     [ProducesResponseType(typeof(SetProductThresholdResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<SetProductThresholdResponse>> SetThreshold(SetProductThresholdRequest request, CancellationToken cancellationToken)
@@ -49,7 +49,7 @@ public class ProductsController(IMediator mediator) : ControllerBase
         return Ok(response);
     }
 
-    [HttpPatch("/stock")]
+    [HttpPatch("stock")]
     [ProducesResponseType(typeof(AdjustProductStockResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<AdjustProductStockResponse>> AdjustStock(AdjustProductStockRequest request, CancellationToken cancellationToken)
