@@ -1,17 +1,8 @@
-using Carter;
 using System.Net.Sockets;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-// TODO: remove after controller is tested
-//builder.Services.AddCarter(configurator: config =>
-//{
-//    var inventroyModules = typeof(InventoryModule).Assembly.GetTypes()
-//    .Where(t => t.IsAssignableTo(typeof(ICarterModule))).ToArray();
-
-//    config.WithModules(inventroyModules);
-//});
 builder.Services.AddControllers();
 
 builder.Services
@@ -35,8 +26,6 @@ app.MapGet("/health", () => Results.Ok("API is up and DB port is reachable"));
 //
 
 // Configure the HTTP request pipeline.
-// TODO: remove after controller is tested
-//app.MapCarter();
 app.MapControllers();
 
 app
