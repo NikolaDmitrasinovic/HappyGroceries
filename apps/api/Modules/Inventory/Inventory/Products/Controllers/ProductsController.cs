@@ -1,4 +1,5 @@
-﻿using Inventory.Products.Features.GetProducts;
+﻿using Inventory.Products.Features.GetLowStockProducts;
+using Inventory.Products.Features.GetProducts;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Messaging;
 
@@ -11,7 +12,14 @@ public class ProductsController(IMediator mediator) : ControllerBase
     [HttpGet]
     public async Task<ActionResult<GetProductsResponse>> GetProducts(CancellationToken cancellationToken)
     {
-        var resonse = mediator.Send(new GetProductsQuery(), cancellationToken);
+        var resonse = await mediator.Send(new GetProductsQuery(), cancellationToken);
         return Ok(resonse);
+    }
+
+    [HttpGet("/restock")]
+    public async Task<ActionResult<GetLowStockProductsResponse>> GetLowStockProducts(CancellationToken cancellationToken)
+    {
+        var response = await mediator.Send(new GetLowStockProductsQuery(), cancellationToken);
+        return Ok(response);
     }
 }
