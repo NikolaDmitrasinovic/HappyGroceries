@@ -1,4 +1,5 @@
-﻿using Inventory.Products.Features.CreateProduct;
+﻿using Inventory.Products.Features.AdjustProductStock;
+using Inventory.Products.Features.CreateProduct;
 using Inventory.Products.Features.GetLowStockProducts;
 using Inventory.Products.Features.GetProducts;
 using Inventory.Products.Features.SetProductThreshold;
@@ -45,6 +46,15 @@ public class ProductsController(IMediator mediator) : ControllerBase
     public async Task<ActionResult<SetProductThresholdResponse>> SetThreshold(SetProductThresholdRequest request, CancellationToken cancellationToken)
     {
         var response = await mediator.Send(new SetProductThresholdCommand(request.Id, request.Threshold), cancellationToken);
+        return Ok(response);
+    }
+
+    [HttpPatch]
+    [ProducesResponseType(typeof(AdjustProductStockResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<AdjustProductStockResponse>> AdjustStock(AdjustProductStockRequest request, CancellationToken cancellationToken)
+    {
+        var response = await mediator.Send(new AdjustProductStockCommand(request.Id, request.Delta), cancellationToken);
         return Ok(response);
     }
 }
