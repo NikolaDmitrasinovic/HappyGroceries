@@ -1,6 +1,7 @@
 ﻿using Inventory.Products.Features.CreateProduct;
 using Inventory.Products.Features.GetLowStockProducts;
 using Inventory.Products.Features.GetProducts;
+using Inventory.Products.Features.SetProductThreshold;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Messaging;
@@ -36,5 +37,14 @@ public class ProductsController(IMediator mediator) : ControllerBase
     {
         var response = await mediator.Send(new CreateProductCommand(request.Product), cancellationToken);
         return Created($"{response.Id}", response);
+    }
+
+    [HttpPatch]
+    [ProducesResponseType(typeof(SetProductThresholdResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<SetProductThresholdResponse>> SetThreshold(SetProductThresholdRequest request, CancellationToken cancellationToken)
+    {
+        var response = await mediator.Send(new SetProductThresholdCommand(request.Id, request.Threshold), cancellationToken);
+        return Ok(response);
     }
 }
