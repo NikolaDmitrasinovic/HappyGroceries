@@ -1,4 +1,5 @@
-﻿using Inventory.Products.Features.GetLowStockProducts;
+﻿using Inventory.Products.Features.CreateProduct;
+using Inventory.Products.Features.GetLowStockProducts;
 using Inventory.Products.Features.GetProducts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -26,5 +27,14 @@ public class ProductsController(IMediator mediator) : ControllerBase
     {
         var response = await mediator.Send(new GetLowStockProductsQuery(), cancellationToken);
         return Ok(response);
+    }
+
+    [HttpPost]
+    [ProducesResponseType(typeof(CreateProductResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<CreateProductResponse>> CreateProduct(CreateProductRequest request, CancellationToken cancellationToken)
+    {
+        var response = await mediator.Send(new CreateProductCommand(request.Product), cancellationToken);
+        return Created($"{response.Id}", response);
     }
 }
