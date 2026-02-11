@@ -11,6 +11,7 @@ builder.Services.AddCarter(configurator: config =>
 
     config.WithModules(inventroyModules);
 });
+builder.Services.AddControllers();
 
 builder.Services
     .AddInventoryModule(builder.Configuration)
@@ -34,6 +35,7 @@ app.MapGet("/health", () => Results.Ok("API is up and DB port is reachable"));
 
 // Configure the HTTP request pipeline.
 app.MapCarter();
+app.MapControllers();
 
 app
     .UseInventoryModule()
