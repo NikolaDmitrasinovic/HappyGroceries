@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Microsoft.AspNetCore.Mvc;
+using Shared.Messaging;
 
-namespace Inventory.Products.Controllers
+namespace Inventory.Products.Controllers;
+
+public class ProductsController(IMediator mediator) : ControllerBase
 {
-    internal class ProductsController
-    {
-    }
 }
