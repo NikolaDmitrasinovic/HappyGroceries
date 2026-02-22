@@ -11,3 +11,4 @@ global using Inventory.Products.Models;
 global using Inventory.Data;
 global using Inventory.Data.Seed;
 global using Inventory.Products.Dtos;
+global using Inventory.Products.Queries;

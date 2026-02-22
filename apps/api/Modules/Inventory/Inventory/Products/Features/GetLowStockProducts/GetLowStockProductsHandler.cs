@@ -1,6 +1,4 @@
-﻿using Inventory.Products.Queries;
-
-namespace Inventory.Products.Features.GetLowStockProducts;
+﻿namespace Inventory.Products.Features.GetLowStockProducts;
 
 public record GetLowStockProductsQuery() : IQuery<GetLowStockProductsResult>;
 
