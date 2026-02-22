@@ -11,8 +11,7 @@ internal class GetLowStockProductsHandler(InventoryDbContext dbContext)
     {
         var products = await dbContext.Products
             .AsNoTracking()
-            // TODO: Replace with domain-owned expression to avoid rule duplication
-            .Where(p => p.Stock <= p.Threshold)
+            .Where(ProductPredicates.IsLowStockExpression)
             .OrderBy(p => p.Name)
             .ToListAsync(cancellationToken);
 
