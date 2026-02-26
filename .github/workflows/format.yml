@@ -1,0 +1,34 @@
+name: Format
+
+on:
+ pull_request:
+  branches: [ "main" ]
+ push:
+  branches: [ "main" ]
+
+permissions:
+ contents: read
+
+jobs:
+ format:
+  name: dotnet_format
+  runs-on: ubuntu-latest
+
+  defaults:
+   run:
+    working-directory: apps/api
+
+  steps:
+   - name: Checkout
+     uses: actions/checkout@v4
+
+   - name: Setup .NET
+     uses: actions/setup-dotnet@v4
+     with:
+      dotnet-version: "10.0.x"
+
+   - name: Restore
+     run: dotnet restore ./backbone.slnx
+
+   - name: Verify formatting
+     run: dotnet format ./backbone.slnx --verify-no-changes

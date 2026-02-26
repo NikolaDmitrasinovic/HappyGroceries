@@ -1,6 +1,6 @@
 ﻿namespace Inventory.Data.Seed;
 
-public class InventoryDataSeeder(InventoryDbContext dbContext) 
+public class InventoryDataSeeder(InventoryDbContext dbContext)
     : IDataSeeder
 {
     public async Task SeedAllAsync()
