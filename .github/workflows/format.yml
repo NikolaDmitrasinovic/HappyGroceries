@@ -23,6 +23,10 @@ jobs:
      with:
       dotnet-version: "10.0.x"
 
+   - defaults:
+      run:
+       working-directory: apps/api
+
    - name: Restore
      run: dotnet restore ./backbone.slnx
 
