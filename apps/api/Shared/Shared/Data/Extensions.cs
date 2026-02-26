@@ -35,5 +35,5 @@ public static class Extensions
         {
             await seeder.SeedAllAsync();
         }
-    }    
+    }
 }
