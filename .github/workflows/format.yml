@@ -10,7 +10,7 @@ permissions:
  contents: read
 
 jobs:
- Format:
+ format:
   name: dotnet_format
   runs-on: ubuntu-latest
 
