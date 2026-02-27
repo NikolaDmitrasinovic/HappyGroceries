@@ -15,6 +15,7 @@
   <Folder Name="/Shared/">
     <Project Path="Shared/Shared/Shared.csproj" Id="79c6b1ca-a01b-4a44-8f4f-0ad332b626d9" />
   </Folder>
+  <Folder Name="/Tests/" />
   <Project Path="docker-compose.dcproj">
     <Build />
   </Project>
