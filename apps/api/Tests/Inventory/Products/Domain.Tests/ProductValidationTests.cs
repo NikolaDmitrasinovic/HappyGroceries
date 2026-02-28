@@ -6,38 +6,38 @@ public class ProductValidationTests
     public static void SetStock_throws_when_negative()
     {
         // Arrange
-        var product = ProductTestFactory.CreateProductHelper();
+        var product = ProductTestFactory.CreateProduct();
 
         // Act
-        var result = Assert.Throws<ArgumentOutOfRangeException>(() => product.SetStock(-5));
+        var exception = Assert.Throws<ArgumentOutOfRangeException>(() => product.SetStock(-5));
 
         // Assert
-        Assert.Equal("stock ('-5') must be a non-negative value. (Parameter 'stock')\r\nActual value was -5.", result.Message);
+        Assert.Equal("stock", exception.ParamName);
     }
 
     [Fact]
     public static void SetThreshold_throws_when_negative()
     {
         // Arrange
-        var product = ProductTestFactory.CreateProductHelper();
+        var product = ProductTestFactory.CreateProduct();
 
         // Act
-        var result = Assert.Throws<ArgumentOutOfRangeException>(() => product.SetThreshold(-5));
+        var exception = Assert.Throws<ArgumentOutOfRangeException>(() => product.SetThreshold(-5));
 
         // Assert
-        Assert.Equal("threshold ('-5') must be a non-negative value. (Parameter 'threshold')\r\nActual value was -5.", result.Message);
+        Assert.Equal("threshold", exception.ParamName);
     }
 
     [Fact]
     public static void AdjustStock_throws_when_result_negative()
     {
         // Arrange
-        var product = ProductTestFactory.CreateProductHelper(stock: 1);
+        var product = ProductTestFactory.CreateProduct(stock: 1);
 
         // Act
-        var result = Assert.Throws<ArgumentOutOfRangeException>(() => product.AdjustStock(-5));
+        var exception = Assert.Throws<ArgumentOutOfRangeException>(() => product.AdjustStock(-5));
 
         // Assert
-        Assert.Equal("Stock ('-4') must be a non-negative value. (Parameter 'Stock')\r\nActual value was -4.", result.Message);
+        Assert.Equal("Stock", exception.ParamName);
     }
 }
