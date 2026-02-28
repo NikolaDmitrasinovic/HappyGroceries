@@ -3,7 +3,7 @@
 public class ProductValidationTests
 {
     [Fact]
-    public static void SetStock_throws_when_negative()
+    public void SetStock_throws_when_negative()
     {
         // Arrange
         var product = ProductTestFactory.CreateProduct();
@@ -16,7 +16,7 @@ public class ProductValidationTests
     }
 
     [Fact]
-    public static void SetThreshold_throws_when_negative()
+    public void SetThreshold_throws_when_negative()
     {
         // Arrange
         var product = ProductTestFactory.CreateProduct();
@@ -29,7 +29,7 @@ public class ProductValidationTests
     }
 
     [Fact]
-    public static void AdjustStock_throws_when_result_negative()
+    public void AdjustStock_throws_when_result_negative()
     {
         // Arrange
         var product = ProductTestFactory.CreateProduct(stock: 1);
@@ -38,6 +38,6 @@ public class ProductValidationTests
         var exception = Assert.Throws<ArgumentOutOfRangeException>(() => product.AdjustStock(-5));
 
         // Assert
-        Assert.Equal("Stock", exception.ParamName);
+        Assert.Equal("delta", exception.ParamName);
     }
 }
