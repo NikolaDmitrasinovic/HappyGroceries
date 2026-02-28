@@ -59,7 +59,7 @@ public class Product : Aggregate<Guid>
     {
         var wasLowStock = IsLowStock;
 
-        ArgumentOutOfRangeException.ThrowIfNegative(Stock + delta);
+        ArgumentOutOfRangeException.ThrowIfNegative(Stock + delta, nameof(delta));
 
         Stock += delta;
 

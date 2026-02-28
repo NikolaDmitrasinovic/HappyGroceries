@@ -4,7 +4,7 @@ namespace Domain.Tests;
 
 public static class ProductTestFactory
 {
-    public static Product CreateProductHelper(
+    public static Product CreateProduct(
         string name = "NewProduct",
         int stock = 0,
         int threshold = 0)
