@@ -3,7 +3,7 @@
 public class ProductValidationTests
 {
     [Fact]
-    public void SetStock_throws_when_negative()
+    public void SetStock_Throws_When_Negative()
     {
         // Arrange
         var product = ProductTestFactory.CreateProduct();
@@ -16,7 +16,7 @@ public class ProductValidationTests
     }
 
     [Fact]
-    public void SetThreshold_throws_when_negative()
+    public void SetThreshold_Throws_When_Negative()
     {
         // Arrange
         var product = ProductTestFactory.CreateProduct();
@@ -29,7 +29,7 @@ public class ProductValidationTests
     }
 
     [Fact]
-    public void AdjustStock_throws_when_result_negative()
+    public void AdjustStock_Throws_When_Result_Negative()
     {
         // Arrange
         var product = ProductTestFactory.CreateProduct(stock: 1);
