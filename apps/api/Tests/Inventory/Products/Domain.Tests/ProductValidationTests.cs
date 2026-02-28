@@ -9,8 +9,9 @@ public class ProductValidationTests
         var product = ProductTestFactory.CreateProductHelper();
 
         // Act
+        var result = Assert.Throws<ArgumentOutOfRangeException>(() => product.SetStock(-5));
 
         // Assert
-        Assert.Throws<ArgumentOutOfRangeException>(() => product.SetStock(-5));
+        Assert.Equal("stock ('-5') must be a non-negative value. (Parameter 'stock')\r\nActual value was -5.", result.Message);
     }
 }
