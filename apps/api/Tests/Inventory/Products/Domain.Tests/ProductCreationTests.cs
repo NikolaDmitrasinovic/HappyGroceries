@@ -32,4 +32,17 @@ public class ProductCreationTests
         Assert.Equal(stock, product.Stock);
         Assert.Equal(threshold, product.Threshold);
     }
+
+    [Fact]
+    public void Create_Sets_Id_to_Non_Empty_Guid()
+    {
+        // Arrange
+
+        // Act
+        var product = Product.Create("NewProduct");
+
+        // Assert
+        Assert.IsType<Guid>(product.Id);
+        Assert.NotEqual(Guid.Empty, product.Id);
+    }
 }
