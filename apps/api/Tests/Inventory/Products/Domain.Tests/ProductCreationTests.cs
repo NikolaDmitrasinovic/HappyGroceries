@@ -43,7 +43,6 @@ public class ProductCreationTests
         var product = Product.Create("NewProduct");
 
         // Assert
-        Assert.IsType<Guid>(product.Id);
         Assert.NotEqual(Guid.Empty, product.Id);
     }
 
