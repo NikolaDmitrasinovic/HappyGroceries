@@ -11,7 +11,7 @@ public class ProductCreationTests
         // Arrange
 
         // Act
-        var exception = Assert.Throws<ArgumentException>(() =>Product.Create(""));
+        var exception = Assert.Throws<ArgumentException>(() => Product.Create(""));
 
         // Assert
         Assert.Equal("name", exception.ParamName);
