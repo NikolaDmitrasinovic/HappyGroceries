@@ -13,15 +13,16 @@ public class Product : Aggregate<Guid>
     public static Product Create(string name, int stock = 0, int threshold = 0)
     {
         ArgumentException.ThrowIfNullOrEmpty(name);
+        ArgumentOutOfRangeException.ThrowIfNegative(stock, nameof(stock));
+        ArgumentOutOfRangeException.ThrowIfNegative(threshold, nameof(threshold));
 
         var product = new Product
         {
             Id = Guid.NewGuid(),
             Name = name,
+            Stock = stock,
+            Threshold = threshold
         };
-
-        product.SetStock(stock);
-        product.SetThreshold(threshold);
 
         product.AddDomainEvent(new ProductCreatedEvent(product));
 
@@ -42,17 +43,17 @@ public class Product : Aggregate<Guid>
         Stock = stock;
 
         if (IsLowStock)
-            this.AddDomainEvent(new RestockWarningEvent(this));
+            AddDomainEvent(new RestockWarningEvent(this));
     }
 
     public void SetThreshold(int threshold)
     {
-        ArgumentOutOfRangeException.ThrowIfNegative(threshold);
+        ArgumentOutOfRangeException.ThrowIfNegative(threshold, nameof(threshold));
 
         Threshold = threshold;
 
         if (IsLowStock)
-            this.AddDomainEvent(new RestockWarningEvent(this));
+            AddDomainEvent(new RestockWarningEvent(this));
     }
 
     public void AdjustStock(int delta)
@@ -66,6 +67,6 @@ public class Product : Aggregate<Guid>
         var isLowStock = IsLowStock;
 
         if (!wasLowStock && isLowStock)
-            this.AddDomainEvent(new RestockWarningEvent(this));
+            AddDomainEvent(new RestockWarningEvent(this));
     }
 }

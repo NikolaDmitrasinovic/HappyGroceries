@@ -58,4 +58,17 @@ public class ProductCreationTests
         // Assert
         Assert.Contains(events, e => e is ProductCreatedEvent);
     }
+
+    [Fact]
+    public void Create_Does_Not_Raise_RestockWarningEvent()
+    {
+        // Arrange
+        var product = Product.Create("NewProduct", stock: 0, threshold: 100);
+
+        // Act
+        var events = product.ClearDomainEvents();
+
+        // Assert
+        Assert.DoesNotContain(events, e => e is RestockWarningEvent);
+    }
 }
