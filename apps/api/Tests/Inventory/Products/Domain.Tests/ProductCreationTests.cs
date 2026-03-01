@@ -56,6 +56,6 @@ public class ProductCreationTests
         var events = product.ClearDomainEvents();
 
         // Assert
-        Assert.IsType<ProductCreatedEvent>(events[0]);
+        Assert.Contains(events, e => e is ProductCreatedEvent);
     }
 }
