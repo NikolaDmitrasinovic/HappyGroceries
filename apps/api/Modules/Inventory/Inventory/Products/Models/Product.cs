@@ -43,17 +43,17 @@ public class Product : Aggregate<Guid>
         Stock = stock;
 
         if (IsLowStock)
-            this.AddDomainEvent(new RestockWarningEvent(this));
+            AddDomainEvent(new RestockWarningEvent(this));
     }
 
     public void SetThreshold(int threshold)
     {
-        ArgumentOutOfRangeException.ThrowIfNegative(threshold);
+        ArgumentOutOfRangeException.ThrowIfNegative(threshold, nameof(threshold));
 
         Threshold = threshold;
 
         if (IsLowStock)
-            this.AddDomainEvent(new RestockWarningEvent(this));
+            AddDomainEvent(new RestockWarningEvent(this));
     }
 
     public void AdjustStock(int delta)
@@ -67,6 +67,6 @@ public class Product : Aggregate<Guid>
         var isLowStock = IsLowStock;
 
         if (!wasLowStock && isLowStock)
-            this.AddDomainEvent(new RestockWarningEvent(this));
+            AddDomainEvent(new RestockWarningEvent(this));
     }
 }
