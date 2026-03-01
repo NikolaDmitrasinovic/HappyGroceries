@@ -15,4 +15,21 @@ public class ProductCreationTests
         // Assert
         Assert.Equal("name", exception.ParamName);
     }
+
+    [Fact]
+    public void Create_Sets_Name_Stock_Threshold()
+    {
+        // Arrange
+        var name = "NewProduct";
+        var stock = 4;
+        var threshold = 2;
+
+        // Act
+        var product = Product.Create(name, stock, threshold);
+
+        // Assert
+        Assert.Equal(name, product.Name);
+        Assert.Equal(stock, product.Stock);
+        Assert.Equal(threshold, product.Threshold);
+    }
 }
