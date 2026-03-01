@@ -13,15 +13,16 @@ public class Product : Aggregate<Guid>
     public static Product Create(string name, int stock = 0, int threshold = 0)
     {
         ArgumentException.ThrowIfNullOrEmpty(name);
+        ArgumentOutOfRangeException.ThrowIfNegative(stock, nameof(stock));
+        ArgumentOutOfRangeException.ThrowIfNegative(threshold, nameof(threshold));
 
         var product = new Product
         {
             Id = Guid.NewGuid(),
             Name = name,
+            Stock = stock,
+            Threshold = threshold
         };
-
-        product.SetStock(stock);
-        product.SetThreshold(threshold);
 
         product.AddDomainEvent(new ProductCreatedEvent(product));
 
