@@ -19,7 +19,7 @@ public class ProductRestockWarningTests
     }
 
     [Fact]
-    public void AdjustStock_Raises_Warning_Only_on_Crossing_into_Low_Stock()
+    public void AdjustStock_Raises_Warning_on_Crossing_into_Low_Stock()
     {
         // Arrange
         var product = ProductTestFactory.CreateProduct(stock: 3, threshold: 2);
