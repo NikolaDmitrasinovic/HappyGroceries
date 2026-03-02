@@ -22,6 +22,20 @@ public class ProductRestockWarningTests
     public void AdjustStock_Raises_Warning_Only_on_Crossing_into_Low_Stock()
     {
         // Arrange
+        var product = ProductTestFactory.CreateProduct(stock: 3, threshold: 2);
+
+        // Act
+        product.AdjustStock(-2);
+        var events = product.ClearDomainEvents();
+
+        // Assert
+        Assert.Contains(events, e => e is RestockWarningEvent);
+    }
+
+    [Fact]
+    public void AdjustStock_Does_Not_Raise_Warning_When_Already_Low_Stock()
+    {
+        // Arrange
         var product = ProductTestFactory.CreateProduct(stock: 1, threshold: 2);
 
         // Act
