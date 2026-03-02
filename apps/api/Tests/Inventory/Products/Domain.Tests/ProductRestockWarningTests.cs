@@ -15,7 +15,7 @@ public class ProductRestockWarningTests
         var events = product.ClearDomainEvents();
 
         // Assert
-        Assert.Contains(events, e => e is RestockWarningEvent);
+        Assert.Single(events.OfType<RestockWarningEvent>());
     }
 
     [Fact]
