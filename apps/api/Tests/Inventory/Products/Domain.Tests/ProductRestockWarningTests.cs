@@ -17,4 +17,18 @@ public class ProductRestockWarningTests
         // Assert
         Assert.Contains(events, e => e is RestockWarningEvent);
     }
+
+    [Fact]
+    public void AdjustStock_Raises_Warning_Only_on_Crossing_into_Low_Stock()
+    {
+        // Arrange
+        var product = ProductTestFactory.CreateProduct(stock: 1, threshold: 2);
+
+        // Act
+        product.AdjustStock(-1);
+        var events = product.ClearDomainEvents();
+
+        // Assert
+        Assert.DoesNotContain(events, e => e is RestockWarningEvent);
+    }
 }
