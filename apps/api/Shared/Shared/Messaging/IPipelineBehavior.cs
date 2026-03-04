@@ -1,9 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿namespace Shared.Messaging;
 
-namespace Shared.Messaging;
-
-internal interface IPipelineBehavior
+public interface IPipelineBehavior<TRequest, TResponse>
+    where TRequest : IRequest<TResponse>
 {
+    Task<TResponse> HandleAsync(
+        TRequest request,
+        RequestHandlerDelegate<TResponse> next,
+        CancellationToken cancellationToken);
 }
+
+public delegate Task<TResponse> RequestHandlerDelegate<TResponse>();
