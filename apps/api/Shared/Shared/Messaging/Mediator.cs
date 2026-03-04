@@ -37,10 +37,58 @@ public class Mediator(IServiceProvider serviceProvider) : IMediator
 
         var handleMethod = GetHandleMethodOrThrow(handlerType);
 
-        var method = handlerType.GetMethod(nameof(IRequestHandler<,>.Handle))!;
-        var taskObj = method.Invoke(handler, [request, cancellationToken])!;
+        RequestHandlerDelegate<TResponse> next = () =>
+        {
+            object? taskObject;
+            try
+            {
+                taskObject = handleMethod.Invoke(handler, [request, cancellationToken]);
+            }
+            catch (TargetInvocationException ex) when (ex.InnerException is not null)
+            {
+                throw ex.InnerException;
+            }
 
-        return (Task<TResponse>)taskObj;
+            if (taskObject is not Task<TResponse> task)
+                throw new InvalidOperationException($"Hanlder '{handlerType.FullName}' retruned unexpected type. Expected Task<{typeof(TResponse).Name}>.");
+
+            return task;
+        };
+
+        var behaviorInterfaceType = typeof(IPipelineBehavior<,>).MakeGenericType(requstType, typeof(TResponse));
+        var behaviors = _serviceProvider.GetServices(behaviorInterfaceType);
+
+        foreach (var behavior in behaviors.Reverse())
+        {
+            if (behavior is null)
+                throw new InvalidOperationException($"DI returned a null pipeline behavior for '{behaviorInterfaceType.FullName}'.");
+
+            var behaviorHandleMethod = GetHandleMethodOrThrow(behaviorInterfaceType);
+
+            var currentNext = next;
+
+            next = () =>
+            {
+                object? taskObject;
+                try
+                {
+                    taskObject = behaviorHandleMethod.Invoke(
+                        behavior,
+                        [request, cancellationToken, currentNext]);
+                }
+                catch (TargetInvocationException ex) when (ex.InnerException is not null)
+                {
+                    throw ex.InnerException;
+                }
+
+                if (taskObject is not Task<TResponse> task)
+                    throw new InvalidOperationException($"Pipeline behavior '{behavior.GetType().FullName}' returned unexpected type. Expected Task<{typeof(TResponse).Name}>.");
+
+                return task;
+            };
+        }
+
+        return next();
     }
 
     public async Task Publish(INotification notification, CancellationToken cancellationToken = default)
