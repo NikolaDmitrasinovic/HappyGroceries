@@ -1,7 +1,7 @@
 # ADR-0001: Internal Mediator Abstraction for CQRS and Domain Events
 
 ## Status
-Accepted
+Superseded by ADR-0003: Mediator Pipeline Behaviors for Cross-Cutting Concerns
 
 ## Date
 2026-01-17
