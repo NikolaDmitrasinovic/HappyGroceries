@@ -17,54 +17,31 @@ public class Mediator(IServiceProvider serviceProvider) : IMediator
     public Task<TResponse> Send<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(request);
+        var requestType = request.GetType();
 
-        var requstType = request.GetType();
-        var handlerType = typeof(IRequestHandler<,>).MakeGenericType(requstType, typeof(TResponse));
+        var handlerType = typeof(IRequestHandler<,>).MakeGenericType(requestType, typeof(TResponse));
 
-        object handler;
-        try
-        {
-            handler = _serviceProvider.GetRequiredService(handlerType);
-        }
-        catch (Exception ex)
-        {
-            throw new InvalidOperationException(
-                $"No handler is registerd for request '{requstType.FullName}' " +
-                $"with response '{typeof(TResponse).FullName}'. " +
-                $"Expected DI registration for '{handlerType.FullName}'.",
-                ex);
-        }
+        object handler = ResolveRequiredHandler<TResponse>(requestType, handlerType);
 
         var handleMethod = GetHandleMethodOrThrow(handlerType);
 
-        RequestHandlerDelegate<TResponse> next = () =>
-        {
-            object? taskObject;
-            try
-            {
-                taskObject = handleMethod.Invoke(handler, [request, cancellationToken]);
-            }
-            catch (TargetInvocationException ex) when (ex.InnerException is not null)
-            {
-                throw ex.InnerException;
-            }
+        RequestHandlerDelegate<TResponse> next = BuildBaseDelegate(request, handler, handleMethod, cancellationToken);
 
-            if (taskObject is not Task<TResponse> task)
-                throw new InvalidOperationException($"Hanlder '{handlerType.FullName}' retruned unexpected type. Expected Task<{typeof(TResponse).Name}>.");
+        var behaviorInterfaceType = typeof(IPipelineBehavior<,>).MakeGenericType(requestType, typeof(TResponse));
+        var behaviors = _serviceProvider.GetServices(behaviorInterfaceType).Cast<object>();
 
-            return task;
-        };
+        next = WrapDelegateWithBehaviors(request, next, behaviorInterfaceType, behaviors, cancellationToken);
 
-        var behaviorInterfaceType = typeof(IPipelineBehavior<,>).MakeGenericType(requstType, typeof(TResponse));
-        var behaviors = _serviceProvider.GetServices(behaviorInterfaceType);
+        return next();
+    }
+
+    private static RequestHandlerDelegate<TResponse> WrapDelegateWithBehaviors<TResponse>(
+        IRequest<TResponse> request, RequestHandlerDelegate<TResponse> next, Type behaviorInterfaceType, IEnumerable<object> behaviors, CancellationToken cancellationToken)
+    {
+        var behaviorHandleMethod = GetHandleMethodOrThrow(behaviorInterfaceType);
 
         foreach (var behavior in behaviors.Reverse())
         {
-            if (behavior is null)
-                throw new InvalidOperationException($"DI returned a null pipeline behavior for '{behaviorInterfaceType.FullName}'.");
-
-            var behaviorHandleMethod = GetHandleMethodOrThrow(behaviorInterfaceType);
-
             var currentNext = next;
 
             next = () =>
@@ -88,7 +65,47 @@ public class Mediator(IServiceProvider serviceProvider) : IMediator
             };
         }
 
-        return next();
+        return next;
+    }
+
+    private static RequestHandlerDelegate<TResponse> BuildBaseDelegate<TResponse>(IRequest<TResponse> request, object handler, MethodInfo handleMethod, CancellationToken cancellationToken)
+    {
+        return () =>
+        {
+            object? taskObject;
+            try
+            {
+                taskObject = handleMethod.Invoke(handler, [request, cancellationToken]);
+            }
+            catch (TargetInvocationException ex) when (ex.InnerException is not null)
+            {
+                throw ex.InnerException;
+            }
+
+            if (taskObject is not Task<TResponse> task)
+                throw new InvalidOperationException($"Handler '{handler.GetType().FullName}' returned unexpected type. Expected Task<{typeof(TResponse).Name}>.");
+
+            return task;
+        };
+    }
+
+    private object ResolveRequiredHandler<TResponse>(Type requestType, Type handlerType)
+    {
+        object handler;
+        try
+        {
+            handler = _serviceProvider.GetRequiredService(handlerType);
+        }
+        catch (Exception ex)
+        {
+            throw new InvalidOperationException(
+                $"No handler is registered for request '{requestType.FullName}' " +
+                $"with response '{typeof(TResponse).FullName}'. " +
+                $"Expected DI registration for '{handlerType.FullName}'.",
+                ex);
+        }
+
+        return handler;
     }
 
     public async Task Publish(INotification notification, CancellationToken cancellationToken = default)
