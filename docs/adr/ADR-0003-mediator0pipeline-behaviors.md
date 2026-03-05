@@ -1,10 +1,10 @@
-# ADR-0002: Mediator Pipeline Behaviors for Cross-Cutting Concerns
+# ADR-0003: Mediator Pipeline Behaviors for Cross-Cutting Concerns
 
 ## Status
 Accepted
 
 ## Date
-2026-02-xx
+2026-03-05
 
 ## Context
 The internal mediator abstraction introduced in ADR-0001 successfully decoupled
