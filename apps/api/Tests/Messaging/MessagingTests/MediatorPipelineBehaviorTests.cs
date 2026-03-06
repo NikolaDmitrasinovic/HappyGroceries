@@ -25,6 +25,9 @@ public class MediatorPipelineBehaviorTests
         // Assert
         Assert.Equal("handler-response", result);
         Assert.Equal(1, TestRequestHandler.HandleCallCount);
+
+        TestExecutionLog.Clear();
+        TestRequestHandler.Reset();
     }
 
     [Fact]
@@ -62,6 +65,32 @@ public class MediatorPipelineBehaviorTests
                 "Behavior1 after"
             ],
             TestExecutionLog.Entries);
+
+        TestExecutionLog.Clear();
+        TestRequestHandler.Reset();
+    }
+
+    [Fact]
+    public async Task Send_WhenBehaviorSortCircuts_DoesNotInvoke_Handler()
+    {
+        // Arrange
+        var services = new ServiceCollection();
+
+        services.AddScoped<IMediator, Mediator>();
+        services.AddScoped<IRequestHandler<TestRequest, string>, TestRequestHandler>();
+        services.AddScoped<IPipelineBehavior<TestRequest, string>, ShortCircuitBehavior>();
+
+        using var serviceProvider = services.BuildServiceProvider();
+        using var scope = serviceProvider.CreateScope();
+
+        var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+
+        // Act
+        var result = await mediator.Send(new TestRequest());
+
+        // Assert
+        Assert.Equal("short-circuited", result);
+        Assert.Equal(0, TestRequestHandler.HandleCallCount);
 
         TestExecutionLog.Clear();
         TestRequestHandler.Reset();
@@ -113,6 +142,14 @@ public class MediatorPipelineBehaviorTests
             TestExecutionLog.Add($"{_name} after");
 
             return response;
+        }
+    }
+
+    private class ShortCircuitBehavior : IPipelineBehavior<TestRequest, string>
+    {
+        public Task<string> Handle(TestRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<string> next)
+        {
+            return Task.FromResult("short-circuited");
         }
     }
 }
