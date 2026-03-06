@@ -96,7 +96,32 @@ public class MediatorPipelineBehaviorTests
         TestRequestHandler.Reset();
     }
 
+    [Fact]
+    public async Task Send_WhenHandlerThrows_Propagates_Original_Exception()
+    {
+        // Arrange
+        var services = new ServiceCollection();
+
+        services.AddScoped<IMediator, Mediator>();
+        services.AddScoped<IRequestHandler<ThrowingRequest, string>, ThrowingRequestHandler>();
+
+        using var serviceProvider = services.BuildServiceProvider();
+        using var scope = serviceProvider.CreateScope();
+
+        var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+
+        // Act
+        var exception = await Assert.ThrowsAsync<InvalidOperationException>(
+            () => mediator.Send(new ThrowingRequest()));
+
+        // Assert
+        Assert.Equal("boom", exception.Message);
+    }
+
     private sealed record TestRequest : IRequest<string>;
+
+    private sealed record ThrowingRequest : IRequest<string>;
+
     private sealed class TestRequestHandler : IRequestHandler<TestRequest, string>
     {
         public static int HandleCallCount { get; private set; }
@@ -150,6 +175,14 @@ public class MediatorPipelineBehaviorTests
         public Task<string> Handle(TestRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<string> next)
         {
             return Task.FromResult("short-circuited");
+        }
+    }
+
+    private class ThrowingRequestHandler : IRequestHandler<ThrowingRequest, string>
+    {
+        public Task<string> Handle(ThrowingRequest request, CancellationToken cancellationToken)
+        {
+            throw new InvalidOperationException("boom");
         }
     }
 }
