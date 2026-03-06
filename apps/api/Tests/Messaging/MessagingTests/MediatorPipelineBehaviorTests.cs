@@ -63,6 +63,9 @@ public class MediatorPipelineBehaviorTests
                 "Behavior1 after"
             },
             TestExecutionLog.Entries);
+
+        TestExecutionLog.Clear();
+        TestRequestHandler.Reset();
     }
 
     private sealed record TestRequest : IRequest<string>;
