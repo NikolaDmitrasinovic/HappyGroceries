@@ -27,6 +27,44 @@ public class MediatorPipelineBehaviorTests
         Assert.Equal(1, TestRequestHandler.HandleCallCount);
     }
 
+    [Fact]
+    public async Task Send_WithMultipleBehaviors_Executes_in_Registration_Order()
+    {
+        // Arrange
+        var services = new ServiceCollection();
+
+        services.AddScoped<IMediator, Mediator>();
+        services.AddScoped<IRequestHandler<TestRequest, string>, TestRequestHandler>();
+
+        services.AddScoped<IPipelineBehavior<TestRequest, string>>(
+            _ => new RecordingBehavior<TestRequest, string>("Behavior1"));
+
+        services.AddScoped<IPipelineBehavior<TestRequest, string>>(
+            _ => new RecordingBehavior<TestRequest, string>("Behavior2"));
+
+        using var serviceProvider = services.BuildServiceProvider();
+        using var scope = serviceProvider.CreateScope();
+
+        var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+
+        // Act
+        var result = await mediator.Send(new TestRequest());
+
+        // Assert
+        Assert.Equal("handler-response", result);
+
+        Assert.Equal(
+            new[]
+            {
+                "Behavior1 before",
+                "Behavior2 before",
+                "handler",
+                "Behavior2 after",
+                "Behavior1 after"
+            },
+            TestExecutionLog.Entries);
+    }
+
     private sealed record TestRequest : IRequest<string>;
     private sealed class TestRequestHandler : IRequestHandler<TestRequest, string>
     {
@@ -56,5 +94,28 @@ public class MediatorPipelineBehaviorTests
         internal static void Add(string entry) => _entries.Add(entry);
 
         internal static void Clear() => _entries.Clear();
+    }
+
+    private class RecordingBehavior<TRequest, TResponse> :
+        IPipelineBehavior<TRequest, TResponse>
+        where TRequest : IRequest<TResponse>
+    {
+        private readonly string _name;
+
+        public RecordingBehavior(string name)
+        {
+            _name = name;
+        }
+
+        public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
+        {
+            TestExecutionLog.Add($"{_name} before");
+
+            var response = await next();
+
+            TestExecutionLog.Add($"{_name} after");
+
+            return response;
+        }
     }
 }
