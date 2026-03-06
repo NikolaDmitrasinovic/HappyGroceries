@@ -54,14 +54,13 @@ public class MediatorPipelineBehaviorTests
         Assert.Equal("handler-response", result);
 
         Assert.Equal(
-            new[]
-            {
+            [
                 "Behavior1 before",
                 "Behavior2 before",
                 "handler",
                 "Behavior2 after",
                 "Behavior1 after"
-            },
+            ],
             TestExecutionLog.Entries);
 
         TestExecutionLog.Clear();
