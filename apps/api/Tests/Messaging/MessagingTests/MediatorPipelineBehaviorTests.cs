@@ -28,7 +28,7 @@ public class MediatorPipelineBehaviorTests
         Assert.Equal("handler-response", result);
         Assert.Equal(1, TestRequestHandler.HandleCallCount);
     }
-    
+
     [Fact]
     public async Task Send_WithMultipleBehaviors_Executes_in_Registration_Order()
     {
