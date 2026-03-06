@@ -98,16 +98,11 @@ public class MediatorPipelineBehaviorTests
         internal static void Clear() => _entries.Clear();
     }
 
-    private class RecordingBehavior<TRequest, TResponse> :
+    private class RecordingBehavior<TRequest, TResponse>(string name) :
         IPipelineBehavior<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
     {
-        private readonly string _name;
-
-        public RecordingBehavior(string name)
-        {
-            _name = name;
-        }
+        private readonly string _name = name;
 
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
