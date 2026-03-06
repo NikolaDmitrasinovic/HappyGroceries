@@ -9,6 +9,8 @@ public class MediatorPipelineBehaviorTests
     public async Task Send_WithoutBehaviors_Invokes_Handler()
     {
         // Arrange
+        ResetTestState();
+
         var services = new ServiceCollection();
 
         services.AddScoped<IMediator, Mediator>();
@@ -25,15 +27,14 @@ public class MediatorPipelineBehaviorTests
         // Assert
         Assert.Equal("handler-response", result);
         Assert.Equal(1, TestRequestHandler.HandleCallCount);
-
-        TestExecutionLog.Clear();
-        TestRequestHandler.Reset();
     }
-
+    
     [Fact]
     public async Task Send_WithMultipleBehaviors_Executes_in_Registration_Order()
     {
         // Arrange
+        ResetTestState();
+
         var services = new ServiceCollection();
 
         services.AddScoped<IMediator, Mediator>();
@@ -65,15 +66,14 @@ public class MediatorPipelineBehaviorTests
                 "Behavior1 after"
             ],
             TestExecutionLog.Entries);
-
-        TestExecutionLog.Clear();
-        TestRequestHandler.Reset();
     }
 
     [Fact]
-    public async Task Send_WhenBehaviorSortCircuts_DoesNotInvoke_Handler()
+    public async Task Send_WhenBehaviorShortCircuits_DoesNotInvoke_Handler()
     {
         // Arrange
+        ResetTestState();
+
         var services = new ServiceCollection();
 
         services.AddScoped<IMediator, Mediator>();
@@ -91,15 +91,14 @@ public class MediatorPipelineBehaviorTests
         // Assert
         Assert.Equal("short-circuited", result);
         Assert.Equal(0, TestRequestHandler.HandleCallCount);
-
-        TestExecutionLog.Clear();
-        TestRequestHandler.Reset();
     }
 
     [Fact]
     public async Task Send_WhenHandlerThrows_Propagates_Original_Exception()
     {
         // Arrange
+        ResetTestState();
+
         var services = new ServiceCollection();
 
         services.AddScoped<IMediator, Mediator>();
@@ -118,6 +117,12 @@ public class MediatorPipelineBehaviorTests
         Assert.Equal("boom", exception.Message);
     }
 
+    private static void ResetTestState()
+    {
+        TestExecutionLog.Clear();
+        TestRequestHandler.Reset();
+    }
+
     private sealed record TestRequest : IRequest<string>;
 
     private sealed record ThrowingRequest : IRequest<string>;
@@ -129,7 +134,6 @@ public class MediatorPipelineBehaviorTests
         public static void Reset()
         {
             HandleCallCount = 0;
-            TestExecutionLog.Clear();
         }
 
         public Task<string> Handle(TestRequest request, CancellationToken cancellationToken)
@@ -152,7 +156,7 @@ public class MediatorPipelineBehaviorTests
         internal static void Clear() => _entries.Clear();
     }
 
-    private class RecordingBehavior<TRequest, TResponse>(string name) :
+    private sealed class RecordingBehavior<TRequest, TResponse>(string name) :
         IPipelineBehavior<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
     {
@@ -170,7 +174,7 @@ public class MediatorPipelineBehaviorTests
         }
     }
 
-    private class ShortCircuitBehavior : IPipelineBehavior<TestRequest, string>
+    private sealed class ShortCircuitBehavior : IPipelineBehavior<TestRequest, string>
     {
         public Task<string> Handle(TestRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<string> next)
         {
@@ -178,7 +182,7 @@ public class MediatorPipelineBehaviorTests
         }
     }
 
-    private class ThrowingRequestHandler : IRequestHandler<ThrowingRequest, string>
+    private sealed class ThrowingRequestHandler : IRequestHandler<ThrowingRequest, string>
     {
         public Task<string> Handle(ThrowingRequest request, CancellationToken cancellationToken)
         {
