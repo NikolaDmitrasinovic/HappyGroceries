@@ -44,25 +44,11 @@ public class Mediator(IServiceProvider serviceProvider) : IMediator
         {
             var currentNext = next;
 
-            next = () =>
-            {
-                object? taskObject;
-                try
-                {
-                    taskObject = behaviorHandleMethod.Invoke(
-                        behavior,
-                        [request, cancellationToken, currentNext]);
-                }
-                catch (TargetInvocationException ex) when (ex.InnerException is not null)
-                {
-                    throw ex.InnerException;
-                }
-
-                if (taskObject is not Task<TResponse> task)
-                    throw new InvalidOperationException($"Pipeline behavior '{behavior.GetType().FullName}' returned unexpected type. Expected Task<{typeof(TResponse).Name}>.");
-
-                return task;
-            };
+            next = () => InvokeHandleMethod<TResponse>(
+                behavior,
+                behaviorHandleMethod,
+                [request, cancellationToken, currentNext],
+                behavior.GetType().FullName ?? behavior.GetType().Name);
         }
 
         return next;
@@ -70,23 +56,11 @@ public class Mediator(IServiceProvider serviceProvider) : IMediator
 
     private static RequestHandlerDelegate<TResponse> BuildBaseDelegate<TResponse>(IRequest<TResponse> request, object handler, MethodInfo handleMethod, CancellationToken cancellationToken)
     {
-        return () =>
-        {
-            object? taskObject;
-            try
-            {
-                taskObject = handleMethod.Invoke(handler, [request, cancellationToken]);
-            }
-            catch (TargetInvocationException ex) when (ex.InnerException is not null)
-            {
-                throw ex.InnerException;
-            }
-
-            if (taskObject is not Task<TResponse> task)
-                throw new InvalidOperationException($"Handler '{handler.GetType().FullName}' returned unexpected type. Expected Task<{typeof(TResponse).Name}>.");
-
-            return task;
-        };
+        return () => InvokeHandleMethod<TResponse>(
+            handler,
+            handleMethod,
+            [request, cancellationToken],
+            handler.GetType().FullName ?? handler.GetType().Name);
     }
 
     private object ResolveRequiredHandler<TResponse>(Type requestType, Type handlerType)
@@ -106,6 +80,24 @@ public class Mediator(IServiceProvider serviceProvider) : IMediator
         }
 
         return handler;
+    }
+
+    private static Task<TResponse> InvokeHandleMethod<TResponse>(object target, MethodInfo method, object[] argumetns, string targetName)
+    {
+        object? taskObject;
+        try
+        {
+            taskObject = method.Invoke(target, argumetns);
+        }
+        catch (TargetInvocationException ex) when (ex.InnerException is not null)
+        {
+            throw ex.InnerException;
+        }
+
+        if (taskObject is not Task<TResponse> task)
+            throw new InvalidOperationException($"'{targetName}' returned unexpected type. Expected Task<{typeof(TResponse).Name}>.");
+
+        return task;
     }
 
     public async Task Publish(INotification notification, CancellationToken cancellationToken = default)
