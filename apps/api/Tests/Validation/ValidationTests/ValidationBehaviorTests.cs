@@ -96,7 +96,7 @@ public class ValidationBehaviorTests
 
         var behavior = new ValidationBehavior<TestRequest, string>(validators);
 
-        Task<string> Next() => Task.FromResult("ok");
+        Task<string> Next() => throw new Exception("Next should not be called");
 
         // Act
         var exception = await Assert.ThrowsAsync<RequestValidationException>(
