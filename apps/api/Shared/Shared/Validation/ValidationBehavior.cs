@@ -12,6 +12,7 @@ public sealed class ValidationBehavior<TRequest, TResponse>(IEnumerable<IRequest
     {
         var failures = _validators
             .SelectMany(v => v.Validate(request))
+            .Where(f => f is not null)
             .ToArray();
 
         if (failures.Length != 0)
