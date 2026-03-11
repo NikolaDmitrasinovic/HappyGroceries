@@ -1,6 +1,7 @@
 ﻿using Shared.Messaging;
+using Shared.Validation;
 
-namespace Shared.Validation;
+namespace Shared.Behaviors;
 
 public sealed class ValidationBehavior<TRequest, TResponse>(IEnumerable<IRequestValidator<TRequest>> validators)
     : IPipelineBehavior<TRequest, TResponse>
