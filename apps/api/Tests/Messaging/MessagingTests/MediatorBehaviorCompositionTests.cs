@@ -45,6 +45,10 @@ public class MediatorBehaviorCompositionTests
         Assert.NotNull(errorLog.Exception);
         Assert.IsType<RequestValidationException>(errorLog.Exception);
         Assert.Contains("Request failed after", errorLog.Message);
+
+        Assert.Contains(logger.Entries, e =>
+            e.Level == LogLevel.Information &&
+            e.Message.Contains("Handling request"));
     }
 
     public sealed record TestRequest(string Name) : IRequest<string>;
