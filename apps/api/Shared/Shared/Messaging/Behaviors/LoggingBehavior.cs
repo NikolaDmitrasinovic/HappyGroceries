@@ -25,7 +25,7 @@ public sealed class LoggingBehavior<TRequest, TResponse>(ILogger<LoggingBehavior
 
                 stopwatch.Stop();
 
-                if (stopwatch.ElapsedMilliseconds > SlowRequestThresholdMiliseconds)
+                if (stopwatch.ElapsedMilliseconds > SlowRequestThresholdMilliseconds)
                     _logger.LogWarning("Handled slow request {RequestName} in {ElapsedMilliseconds} ms", requestName, stopwatch.ElapsedMilliseconds);
                 else
                     _logger.LogInformation("Handled request in {ElapsedMilliseconds} ms", stopwatch.ElapsedMilliseconds);
