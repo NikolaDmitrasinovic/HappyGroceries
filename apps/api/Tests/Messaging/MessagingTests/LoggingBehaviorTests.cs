@@ -7,7 +7,7 @@ namespace MessagingTests;
 public class LoggingBehaviorTests
 {
     [Fact]
-    public async Task Handle_CallsNext_AndReturnsResponse() // Happy Path
+    public async Task Handle_CallsNext_AndReturnsResponse()
     {
         // Arrange
         var logger = new TestLogger<LoggingBehavior<TestRequest, string>>();
