@@ -1,8 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
-using Shared.Messaging;
 using System.Diagnostics;
 
-namespace Shared.Behaviors;
+namespace Shared.Messaging.Behaviors;
 
 public sealed class LoggingBehavior<TRequest, TResponse>(ILogger<LoggingBehavior<TRequest, TResponse>> logger)
     : IPipelineBehavior<TRequest, TResponse>
@@ -15,8 +14,10 @@ public sealed class LoggingBehavior<TRequest, TResponse>(ILogger<LoggingBehavior
         var requestName = typeof(TRequest).Name;
         var stopwatch = Stopwatch.StartNew();
 
-        using (_logger.BeginScope("Request {RwquestName}", requestName))
+        using (_logger.BeginScope("Request {RequestName}", requestName))
         {
+            _logger.LogInformation("Handling request");
+
             try
             {
                 var response = await next();
@@ -31,7 +32,7 @@ public sealed class LoggingBehavior<TRequest, TResponse>(ILogger<LoggingBehavior
             {
                 stopwatch.Stop();
 
-                _logger.LogError(ex, "Request failed after {ElapseMilliseconds} ms", stopwatch.ElapsedMilliseconds);
+                _logger.LogError(ex, "Request failed after {ElapsedMilliseconds} ms", stopwatch.ElapsedMilliseconds);
 
                 throw;
             }
