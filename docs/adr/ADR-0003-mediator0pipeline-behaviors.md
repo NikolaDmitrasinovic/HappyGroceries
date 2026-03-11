@@ -69,6 +69,50 @@ This decision includes:
  - updates to the mediator Send method to compose behaviors
  - execution ordering determined by DI registration order
 
+The request logging behavior records execution time for each request handled through the mediator pipeline.
+
+To improve observability, the logging behavior distinguishes slow requests using a lightweight threshold.
+
+Requests that exceed the configured threshold are logged with Warning level, while normal successful requests continue to be logged with Information level.
+
+The current slow-request threshold is: 300 milliseconds
+
+### Rationale for the threshold
+
+The threshold is intended to highlight requests that are noticeably slower than typical application operations while avoiding excessive log noise.
+
+In the current architecture, most mediator requests consist of:
+
+ - request validation
+ - domain logic
+ - database access
+ - domain event dispatch
+
+Typical execution times for such operations are generally below 150–200 ms under normal conditions.
+
+A threshold of 300 ms provides a practical signal that:
+
+ - the request performed more work than usual
+ - a database query may be inefficient
+ - external dependencies may be slowing down execution
+ - performance regressions may be emerging
+
+At the same time, it avoids flagging normal requests as slow.
+
+### Implementation constraints
+
+The threshold is intentionally implemented as a simple constant inside the logging behavior to keep the infrastructure lightweight.
+
+This avoids introducing configuration complexity at the current stage of the project.
+
+### Future considerations
+
+The slow-request threshold may be revisited in the future if:
+
+ - application performance characteristics change
+ - configuration-based thresholds become desirable
+ - more advanced telemetry or performance monitoring is introduced
+
 ## Out of Scope
 
 This ADR does not introduce:
