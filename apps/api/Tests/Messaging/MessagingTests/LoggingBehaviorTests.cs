@@ -47,5 +47,26 @@ public class LoggingBehaviorTests
         Assert.Contains(logger.Entries, e => e.Level == LogLevel.Information && e.Message.Contains("Handled request in"));
     }
 
+    [Fact]
+    public async Task Handle_LogsError_AndRethrows_OnFailure()
+    {
+        // Arrange
+        var logger = new TestLogger<LoggingBehavior<TestRequest, string>>();
+        var behavior = new LoggingBehavior<TestRequest, string>(logger);
+
+        Task<string> Next() => throw new InvalidOperationException("boom");
+
+        // Act
+        var exception = await Assert.ThrowsAsync<InvalidOperationException>(
+            () => behavior.Handle(new TestRequest(), CancellationToken.None, Next));
+
+        // Assert
+        Assert.Equal("boom", exception.Message);
+
+        var errorLog = Assert.Single(logger.Entries, e => e.Level == LogLevel.Error);
+        Assert.Equal("boom", errorLog.Exception?.Message);
+        Assert.Contains("Request failed after", errorLog.Message);
+    }
+
     private sealed record TestRequest : IRequest<string>;
 }
