@@ -1,4 +1,5 @@
-﻿using Shared.Messaging;
+﻿using Microsoft.Extensions.Logging;
+using Shared.Messaging;
 using Shared.Messaging.Behaviors;
 
 namespace MessagingTests;
@@ -26,6 +27,24 @@ public class LoggingBehaviorTests
         // Assert
         Assert.True(nextCalled);
         Assert.Equal("ok", result);
+    }
+
+    [Fact]
+    public async Task Handle_LogsInformation_OnSuccess()
+    {
+        // Arrange
+        var logger = new TestLogger<LoggingBehavior<TestRequest, string>>();
+        var behavior = new LoggingBehavior<TestRequest, string>(logger);
+
+        Task<string> Next() => Task.FromResult("ok");
+
+        // Act
+        var result = await behavior.Handle(new TestRequest(), CancellationToken.None, Next);
+
+        // Assert
+        Assert.Equal("ok", result);
+        Assert.Contains(logger.Entries, e => e.Level == LogLevel.Information && e.Message.Contains("Handling request"));
+        Assert.Contains(logger.Entries, e => e.Level == LogLevel.Information && e.Message.Contains("Handled request in"));
     }
 
     private sealed record TestRequest : IRequest<string>;
