@@ -36,6 +36,6 @@ public sealed class LoggingBehavior<TRequest, TResponse>(ILogger<LoggingBehavior
 
                 throw;
             }
-        }        
+        }
     }
 }
