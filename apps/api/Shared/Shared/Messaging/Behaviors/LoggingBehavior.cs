@@ -8,6 +8,7 @@ public sealed class LoggingBehavior<TRequest, TResponse>(ILogger<LoggingBehavior
     where TRequest : IRequest<TResponse>
 {
     private readonly ILogger<LoggingBehavior<TRequest, TResponse>> _logger = logger;
+    private const long SlowRequestThresholdMiliseconds = 300;
 
     public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
     {
@@ -24,7 +25,10 @@ public sealed class LoggingBehavior<TRequest, TResponse>(ILogger<LoggingBehavior
 
                 stopwatch.Stop();
 
-                _logger.LogInformation("Handled request in {ElapsedMilliseconds} ms", stopwatch.ElapsedMilliseconds);
+                if (stopwatch.ElapsedMilliseconds > SlowRequestThresholdMiliseconds)
+                    _logger.LogWarning("Handled slow request {RequestName} in {ElapsedMilliseconds} ms", requestName, stopwatch.ElapsedMilliseconds);
+                else
+                    _logger.LogInformation("Handled request in {ElapsedMilliseconds} ms", stopwatch.ElapsedMilliseconds);
 
                 return response;
             }
