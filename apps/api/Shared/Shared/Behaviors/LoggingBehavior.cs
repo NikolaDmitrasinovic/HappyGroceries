@@ -15,25 +15,26 @@ public sealed class LoggingBehavior<TRequest, TResponse>(ILogger<LoggingBehavior
         var requestName = typeof(TRequest).Name;
         var stopwatch = Stopwatch.StartNew();
 
-        _logger.LogInformation("Handling request {RequestName}", requestName);
-
-        try
+        using (_logger.BeginScope("Request {RwquestName}", requestName))
         {
-            var response = await next();
+            try
+            {
+                var response = await next();
 
-            stopwatch.Stop();
+                stopwatch.Stop();
 
-            _logger.LogInformation("Handled request {RequestName} in {ElapsedMilliseconds} ms", requestName, stopwatch.ElapsedMilliseconds);
+                _logger.LogInformation("Handled request in {ElapsedMilliseconds} ms", stopwatch.ElapsedMilliseconds);
 
-            return response;
-        }
-        catch (Exception ex)
-        {
-            stopwatch.Stop();
+                return response;
+            }
+            catch (Exception ex)
+            {
+                stopwatch.Stop();
 
-            _logger.LogError("Request {RequestName} failed after {ElapseMilliseconds} ms", requestName, stopwatch.ElapsedMilliseconds);
+                _logger.LogError(ex, "Request failed after {ElapseMilliseconds} ms", stopwatch.ElapsedMilliseconds);
 
-            throw;
-        }
+                throw;
+            }
+        }        
     }
 }
