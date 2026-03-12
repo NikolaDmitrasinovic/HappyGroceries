@@ -23,7 +23,7 @@ public class ExceptionHandlingMiddleware(
 
             if (problem.Status >= 500)
                 _logger.LogError(ex, "Unhandled exception occurred.");
-            
+
             context.Response.ContentType = "application/problem+json";
             await context.Response.WriteAsJsonAsync(problem);
         }
