@@ -15,7 +15,7 @@ public class ExceptionToProblemDetailsMapper
             _ => ProblemDetailsFactory.Create(
                 context,
                 StatusCodes.Status500InternalServerError,
-                "Server error",
+                "Server error.",
                 "An unexpected error occurred.")
         };
     }
