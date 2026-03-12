@@ -52,13 +52,13 @@ public class ExceptionHandlingMiddleware(
 
         var problemDetails = new ProblemDetails
         {
-            Title = "Server error",
+            Title = "Server error.",
             Detail = "An unexpected error occurred.",
             Status = StatusCodes.Status500InternalServerError,
             Instance = context.Request.Path
         };
 
-        problemDetails.Extensions["tracedId"] = context.TraceIdentifier;
+        problemDetails.Extensions["traceId"] = context.TraceIdentifier;
 
         await context.Response.WriteAsJsonAsync(problemDetails);
     }
