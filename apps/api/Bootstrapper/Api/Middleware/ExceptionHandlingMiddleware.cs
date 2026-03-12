@@ -46,8 +46,20 @@ public class ExceptionHandlingMiddleware(
         await context.Response.WriteAsJsonAsync(problemDetails);
     }
 
-    private async Task HandleInternalServerErrorAsync(HttpContext context)
+    private static async Task HandleInternalServerErrorAsync(HttpContext context)
     {
-        throw new NotImplementedException();
+        context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+
+        var problemDetails = new ProblemDetails
+        {
+            Title = "Server error",
+            Detail = "An unexpected error occurred.",
+            Status = StatusCodes.Status500InternalServerError,
+            Instance = context.Request.Path
+        };
+
+        problemDetails.Extensions["tracedId"] = context.TraceIdentifier;
+
+        await context.Response.WriteAsJsonAsync(problemDetails);
     }
 }
