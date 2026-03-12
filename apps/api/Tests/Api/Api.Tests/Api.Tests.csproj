@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Bootstrapper\Api\Api.csproj" />
+    <ProjectReference Include="..\..\..\Shared\Shared\Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>
