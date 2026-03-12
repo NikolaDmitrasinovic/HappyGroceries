@@ -40,7 +40,7 @@ public class ExceptionHandlingMiddleware(
             Instance = context.Request.Path
         };
 
-        problemDetails.Extensions["tracedId"] = context.TraceIdentifier;
+        problemDetails.Extensions["traceId"] = context.TraceIdentifier;
         problemDetails.Extensions["errors"] = exception.Errors;
 
         await context.Response.WriteAsJsonAsync(problemDetails);
