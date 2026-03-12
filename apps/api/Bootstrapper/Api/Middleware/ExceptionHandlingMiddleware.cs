@@ -1,4 +1,5 @@
-﻿using Shared.Validation;
+﻿using Microsoft.AspNetCore.Mvc;
+using Shared.Validation;
 
 namespace Api.Middleware;
 
@@ -27,9 +28,22 @@ public class ExceptionHandlingMiddleware(
         }
     }
 
-    private async Task HandleValidationExceptionAsync(HttpContext context, RequestValidationException ex)
+    private static async Task HandleValidationExceptionAsync(HttpContext context, RequestValidationException exception)
     {
-        throw new NotImplementedException();
+        context.Response.StatusCode = StatusCodes.Status400BadRequest;
+
+        var problemDetails = new ProblemDetails
+        {
+            Title = "Validation failed.",
+            Detail = "One or more validation errors occurred.",
+            Status = StatusCodes.Status400BadRequest,
+            Instance = context.Request.Path
+        };
+
+        problemDetails.Extensions["tracedId"] = context.TraceIdentifier;
+        problemDetails.Extensions["errors"] = exception.Errors;
+
+        await context.Response.WriteAsJsonAsync(problemDetails);
     }
 
     private async Task HandleInternalServerErrorAsync(HttpContext context)
