@@ -1,6 +1,4 @@
-﻿using Api.Errors;
-using Microsoft.AspNetCore.Mvc;
-using Shared.Validation;
+﻿using Mapper = Api.Errors.ExceptionToProblemDetailsMapper;
 
 namespace Api.Middleware;
 
@@ -19,7 +17,7 @@ public class ExceptionHandlingMiddleware(
         }
         catch (Exception ex)
         {
-            var problem = MapException(context, ex);
+            var problem = Mapper.Map(context, ex);
 
             if (problem.Status >= 500)
                 _logger.LogError(ex, "Unhandled exception occurred.");
@@ -29,20 +27,5 @@ public class ExceptionHandlingMiddleware(
 
             await context.Response.WriteAsJsonAsync(problem);
         }
-    }
-
-    private static ProblemDetails MapException(HttpContext context, Exception exception)
-    {
-        return exception switch
-        {
-            RequestValidationException validationException
-                => ProblemDetailsFactory.CreateValidation(context, validationException.Errors),
-
-            _ => ProblemDetailsFactory.Create(
-                context,
-                StatusCodes.Status500InternalServerError,
-                "Server error",
-                "An unexpected error occured.")
-        };
     }
 }
