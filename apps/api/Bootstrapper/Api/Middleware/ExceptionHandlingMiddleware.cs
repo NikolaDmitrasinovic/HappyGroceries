@@ -17,29 +17,32 @@ public class ExceptionHandlingMiddleware(
         {
             await _next(context);
         }
-        catch (RequestValidationException ex)
+        catch (Exception ex)
         {
-            var problem = ProblemDetailsFactory.CreateValidation(
-                context,
-                ex.Errors);
+            var problem = MapException(context, ex);
+
+            if (problem.Status >= 500)
+                _logger.LogError(ex, "Unhandled exception occurred.");
 
             context.Response.StatusCode = problem.Status!.Value;
+            context.Response.ContentType = "application/json";
 
             await context.Response.WriteAsJsonAsync(problem);
         }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Unhandled exception occurred.");
+    }
 
-            var problem = ProblemDetailsFactory.Create(
+    private static ProblemDetails MapException(HttpContext context, Exception exception)
+    {
+        return exception switch
+        {
+            RequestValidationException validationException
+                => ProblemDetailsFactory.CreateValidation(context, validationException.Errors),
+
+            _ => ProblemDetailsFactory.Create(
                 context,
                 StatusCodes.Status500InternalServerError,
                 "Server error",
-                "An unexpected error occurred.");
-
-            context.Response.StatusCode = problem.Status!.Value;
-
-            await context.Response.WriteAsJsonAsync(problem);
-        }
+                "An unexpected error occured.")
+        };
     }
 }
