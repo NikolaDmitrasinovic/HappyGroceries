@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Shared.Validation;
 
 namespace Api.Errors;
 
@@ -19,7 +20,7 @@ public class ProblemDetailsFactory
         return problemDetails;
     }
 
-    public static ProblemDetails CreateValidation(HttpContext context, IReadOnlyCollection<object> errors)
+    public static ProblemDetails CreateValidation(HttpContext context, IReadOnlyCollection<ValidationFailure> errors)
     {
         var problemDetails = Create(
             context,

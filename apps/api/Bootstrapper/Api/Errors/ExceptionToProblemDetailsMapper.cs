@@ -16,7 +16,7 @@ public class ExceptionToProblemDetailsMapper
                 context,
                 StatusCodes.Status500InternalServerError,
                 "Server error",
-                "An unexpected error occured.")
+                "An unexpected error occurred.")
         };
     }
 }

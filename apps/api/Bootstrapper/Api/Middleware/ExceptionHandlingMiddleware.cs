@@ -19,12 +19,12 @@ public class ExceptionHandlingMiddleware(
         {
             var problem = Mapper.Map(context, ex);
 
+            context.Response.StatusCode = problem.Status ?? StatusCodes.Status500InternalServerError;
+
             if (problem.Status >= 500)
                 _logger.LogError(ex, "Unhandled exception occurred.");
-
-            context.Response.StatusCode = problem.Status!.Value;
-            context.Response.ContentType = "application/json";
-
+            
+            context.Response.ContentType = "application/problem+json";
             await context.Response.WriteAsJsonAsync(problem);
         }
     }
