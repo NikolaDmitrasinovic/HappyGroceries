@@ -1,3 +1,4 @@
+using Api.Middleware;
 using System.Net.Sockets;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,6 +27,7 @@ app.MapGet("/health", () => Results.Ok("API is up and DB port is reachable"));
 //
 
 // Configure the HTTP request pipeline.
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.MapControllers();
 
 app
