@@ -33,7 +33,7 @@ public class ProductsController(IMediator mediator) : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(typeof(CreateProductResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<CreateProductResponse>> Create(CreateProductRequest request, CancellationToken cancellationToken)
     {
         var response = await mediator.Send(new CreateProductCommand(request.Product), cancellationToken);
