@@ -21,6 +21,8 @@ public static class InventoryModule
         // Api Endpoint services
 
         // Application Use Case services
+        services.AddScoped<IRequestValidator<CreateProductCommand>, CreateProductCommandValidatior>();
+
         services.AddScoped<IRequestHandler<GetProductsQuery, GetProductsResult>, GetProductsHandler>();
         services.AddScoped<IRequestHandler<GetLowStockProductsQuery, GetLowStockProductsResult>, GetLowStockProductsHandler>();
         services.AddScoped<IRequestHandler<CreateProductCommand, CreateProductResult>, CreateProductHandler>();
