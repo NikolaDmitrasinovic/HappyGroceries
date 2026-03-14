@@ -1,6 +1,4 @@
-﻿using Shared.Validation;
-
-namespace Inventory.Products.Features.CreateProduct;
+﻿namespace Inventory.Products.Features.CreateProduct;
 
 public record CreateProductCommand(ProductDto Product)
     : ICommand<CreateProductResult>;
