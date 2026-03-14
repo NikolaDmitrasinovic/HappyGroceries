@@ -5,6 +5,25 @@ public record CreateProductCommand(ProductDto Product)
 
 public record CreateProductResult(Guid Id);
 
+internal sealed class CreateProductCommandValidatior : IRequestValidator<CreateProductCommand>
+{
+    public IReadOnlyCollection<ValidationFailure> Validate(CreateProductCommand request)
+    {
+        List<ValidationFailure> failures = [];
+
+        if (String.IsNullOrWhiteSpace(request.Product.Name))
+            failures.Add(new ValidationFailure(nameof(request.Product.Name), "Name is required."));
+
+        if (request.Product.Stock < 0)
+            failures.Add(new ValidationFailure(nameof(request.Product.Stock), "Stock cannot be negative."));
+
+        if (request.Product.Threshold < 0)
+            failures.Add(new ValidationFailure(nameof(request.Product.Threshold), "Threshold cannot be negative."));
+
+        return failures;
+    }
+}
+
 internal class CreateProductHandler(InventoryDbContext dbContext)
     : ICommandHandler<CreateProductCommand, CreateProductResult>
 {

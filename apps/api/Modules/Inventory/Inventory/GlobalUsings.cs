@@ -2,10 +2,11 @@
 global using Microsoft.EntityFrameworkCore.Metadata.Builders;
 global using System.Reflection;
 
-global using Shared.DDD;
-global using Shared.Data.Seed;
-global using Shared.Data;
 global using Shared.CQRS;
+global using Shared.DDD;
+global using Shared.Data;
+global using Shared.Data.Seed;
+global using Shared.Validation;
 
 global using Inventory.Products.Models;
 global using Inventory.Data;
