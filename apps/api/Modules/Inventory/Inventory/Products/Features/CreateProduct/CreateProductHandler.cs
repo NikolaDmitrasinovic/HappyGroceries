@@ -5,7 +5,7 @@ public record CreateProductCommand(ProductDto Product)
 
 public record CreateProductResult(Guid Id);
 
-public sealed class CreateProductCommandValidatior : IRequestValidator<CreateProductCommand>
+internal sealed class CreateProductCommandValidatior : IRequestValidator<CreateProductCommand>
 {
     public IReadOnlyCollection<ValidationFailure> Validate(CreateProductCommand request)
     {
