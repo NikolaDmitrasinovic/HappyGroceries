@@ -5,6 +5,22 @@ public record UpdateProductCommand(Guid Id, ProductDto ProductDto)
 
 public record UpdateProductResult(Guid Id);
 
+internal sealed class UpdateProductCommandValidator : IRequestValidator<UpdateProductCommand>
+{
+    public IReadOnlyCollection<ValidationFailure> Validate(UpdateProductCommand request)
+    {
+        List<ValidationFailure> failures = [];
+
+        if (request.Id == Guid.Empty)
+            failures.Add(new ValidationFailure(nameof(request.Id), "Id is required."));
+
+        if (String.IsNullOrEmpty(request.ProductDto.Name))
+            failures.Add(new ValidationFailure(nameof(request.ProductDto.Name), "New name cannot be empty"));
+
+        return failures;
+    }
+}
+
 internal class UpdateProductHandler(InventoryDbContext dbContext)
     : ICommandHandler<UpdateProductCommand, UpdateProductResult>
 {
