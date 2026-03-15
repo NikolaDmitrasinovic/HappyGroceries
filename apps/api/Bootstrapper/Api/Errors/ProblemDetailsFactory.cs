@@ -32,4 +32,13 @@ public class ProblemDetailsFactory
 
         return problemDetails;
     }
+
+    public static ProblemDetails CreateNotFound(HttpContext context, string message)
+    {
+        return Create(
+            context,
+            StatusCodes.Status404NotFound,
+            "Resource not found.",
+            message);
+    }
 }
