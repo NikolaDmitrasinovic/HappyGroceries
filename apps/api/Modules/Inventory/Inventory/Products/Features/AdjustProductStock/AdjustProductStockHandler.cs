@@ -5,6 +5,22 @@ public record AdjustProductStockCommand(Guid Id, int Delta)
 
 public record AdjustProductStockResult(Guid Id);
 
+internal sealed class AdjustProductStockCommandValidator : IRequestValidator<AdjustProductStockCommand>
+{
+    public IReadOnlyCollection<ValidationFailure> Validate(AdjustProductStockCommand request)
+    {
+        List<ValidationFailure> failures = [];
+
+        if (request.Id == Guid.Empty)
+            failures.Add(new ValidationFailure(nameof(request.Id), "Id is required."));
+
+        if (request.Delta == 0)
+            failures.Add(new ValidationFailure(nameof(request.Delta), "Delta cannot be 0."));
+
+        return failures;
+    }
+}
+
 internal class AdjustProductStockHandler(InventoryDbContext dbContext)
     : ICommandHandler<AdjustProductStockCommand, AdjustProductStockResult>
 {
