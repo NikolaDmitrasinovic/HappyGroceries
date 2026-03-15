@@ -42,7 +42,7 @@ public class ProductsController(IMediator mediator) : ControllerBase
 
     [HttpPatch("threshold")]
     [ProducesResponseType(typeof(SetProductThresholdResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<SetProductThresholdResponse>> SetThreshold(SetProductThresholdRequest request, CancellationToken cancellationToken)
     {
         var response = await mediator.Send(new SetProductThresholdCommand(request.Id, request.Threshold), cancellationToken);
@@ -51,7 +51,7 @@ public class ProductsController(IMediator mediator) : ControllerBase
 
     [HttpPatch("stock")]
     [ProducesResponseType(typeof(AdjustProductStockResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<AdjustProductStockResponse>> AdjustStock(AdjustProductStockRequest request, CancellationToken cancellationToken)
     {
         var response = await mediator.Send(new AdjustProductStockCommand(request.Id, request.Delta), cancellationToken);
