@@ -5,6 +5,22 @@ public record SetProductThresholdCommand(Guid Id, int Threshold)
 
 public record SetProductThresholdResult(Guid Id);
 
+internal sealed class SetProductThresholdCommandValidator : IRequestValidator<SetProductThresholdCommand>
+{
+    public IReadOnlyCollection<ValidationFailure> Validate(SetProductThresholdCommand request)
+    {
+        List<ValidationFailure> failures = [];
+
+        if (request.Id == Guid.Empty)
+            failures.Add(new ValidationFailure(nameof(request.Id), "Id is required."));
+
+        if (request.Threshold < 0)
+            failures.Add(new ValidationFailure(nameof(request.Threshold), "Threshold cannot be negative."));
+
+        return failures;
+    }
+}
+
 internal class SetProductThresholdHandler(InventoryDbContext dbContext)
     : ICommandHandler<SetProductThresholdCommand, SetProductThresholdResult>
 {
