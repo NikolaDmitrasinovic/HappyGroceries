@@ -27,7 +27,7 @@ internal class SetProductThresholdHandler(InventoryDbContext dbContext)
     public async Task<SetProductThresholdResult> Handle(SetProductThresholdCommand command, CancellationToken cancellationToken)
     {
         var product = await dbContext.Products.FindAsync([command.Id], cancellationToken)
-            ?? throw new KeyNotFoundException($"Product with id '{command.Id}' was not found.");
+            ?? throw new ProductNotFoundException(command.Id);
 
         product.SetThreshold(command.Threshold);
         await dbContext.SaveChangesAsync(cancellationToken);
