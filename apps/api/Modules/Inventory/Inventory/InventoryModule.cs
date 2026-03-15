@@ -3,6 +3,7 @@ using Inventory.Products.Features.CreateProduct;
 using Inventory.Products.Features.GetLowStockProducts;
 using Inventory.Products.Features.GetProducts;
 using Inventory.Products.Features.SetProductThreshold;
+using Inventory.Products.Features.UpdateProduct;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
@@ -22,6 +23,8 @@ public static class InventoryModule
 
         // Application Use Case services
         services.AddScoped<IRequestValidator<CreateProductCommand>, CreateProductCommandValidatior>();
+        services.AddScoped<IRequestValidator<UpdateProductCommand>, UpdateProductCommandValidator>();
+        services.AddScoped<IRequestValidator<SetProductThresholdCommand>, SetProductThresholdCommandValidator>();
         services.AddScoped<IRequestValidator<AdjustProductStockCommand>, AdjustProductStockCommandValidator>();
 
         services.AddScoped<IRequestHandler<GetProductsQuery, GetProductsResult>, GetProductsHandler>();
