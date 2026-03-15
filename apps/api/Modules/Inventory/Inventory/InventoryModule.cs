@@ -22,6 +22,7 @@ public static class InventoryModule
 
         // Application Use Case services
         services.AddScoped<IRequestValidator<CreateProductCommand>, CreateProductCommandValidatior>();
+        services.AddScoped<IRequestValidator<AdjustProductStockCommand>, AdjustProductStockCommandValidator>();
 
         services.AddScoped<IRequestHandler<GetProductsQuery, GetProductsResult>, GetProductsHandler>();
         services.AddScoped<IRequestHandler<GetLowStockProductsQuery, GetLowStockProductsResult>, GetLowStockProductsHandler>();
