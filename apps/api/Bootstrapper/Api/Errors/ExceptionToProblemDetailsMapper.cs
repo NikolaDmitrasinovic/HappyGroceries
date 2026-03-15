@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Shared.Exceptions;
 using Shared.Validation;
 
 namespace Api.Errors;
@@ -11,6 +12,9 @@ public class ExceptionToProblemDetailsMapper
         {
             RequestValidationException validationException
                 => ProblemDetailsFactory.CreateValidation(context, validationException.Errors),
+
+            NotFoundException notFoundException
+                => ProblemDetailsFactory.CreateNotFound(context, notFoundException.Message),
 
             _ => ProblemDetailsFactory.Create(
                 context,
