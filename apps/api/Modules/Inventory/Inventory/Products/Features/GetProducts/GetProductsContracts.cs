@@ -1,3 +1,5 @@
-﻿namespace Inventory.Products.Features.GetProducts;
+﻿using Shared.Pagination;
 
-public record GetProductsResponse(IEnumerable<ProductDto> Products);
+namespace Inventory.Products.Features.GetProducts;
+
+public record GetProductsResponse(PaginatedResult<ProductDto> Products);
