@@ -1,6 +1,4 @@
-﻿using Shared.Pagination;
-
-namespace Inventory.Products.Features.GetProducts;
+﻿namespace Inventory.Products.Features.GetProducts;
 
 public record GetProductsQuery(PaginationRequest PaginationRequest) : IQuery<GetProductsResult>;
 
@@ -11,31 +9,12 @@ internal class GetProductsHandler(InventoryDbContext dbContext)
 {
     public async Task<GetProductsResult> Handle(GetProductsQuery query, CancellationToken cancellationToken)
     {
-        var pageIndex = query.PaginationRequest.PageIndex;
-        var pageSize = query.PaginationRequest.PageSize;
-
-        var totalCount = await dbContext.Products.LongCountAsync(cancellationToken);
-
-        var products = await dbContext.Products
+        var pagedProducts = await dbContext.Products
             .AsNoTracking()
             .OrderBy(p => p.Name)
-            .Skip(pageSize * pageIndex)
-            .Take(pageSize)
-            .ToListAsync(cancellationToken);
+            .Select(p => new ProductDto(p.Name, p.Stock, p.Threshold))
+            .ToPaginatedResultAsync(query.PaginationRequest, cancellationToken);
 
-        var productDtos = new List<ProductDto>();
-        foreach (var product in products)
-        {
-            var productDto = new ProductDto(product.Name, product.Stock, product.Threshold);
-            productDtos.Add(productDto);
-        }
-
-        return new GetProductsResult(
-            new PaginatedResult<ProductDto>(
-                pageIndex,
-                pageSize,
-                totalCount,
-                productDtos)
-            );
+        return new GetProductsResult(pagedProducts);
     }
 }
