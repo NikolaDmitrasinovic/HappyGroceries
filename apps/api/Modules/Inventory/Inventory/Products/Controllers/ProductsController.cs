@@ -6,7 +6,6 @@ using Inventory.Products.Features.SetProductThreshold;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Messaging;
-using Shared.Pagination;
 
 namespace Inventory.Products.Controllers;
 
