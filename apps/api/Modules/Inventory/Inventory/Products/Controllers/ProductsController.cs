@@ -16,18 +16,18 @@ public class ProductsController(IMediator mediator) : ControllerBase
     [HttpGet]
     [ProducesResponseType(typeof(GetProductsResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<GetProductsResponse>> GetAll(CancellationToken cancellationToken)
+    public async Task<ActionResult<GetProductsResponse>> GetAll([FromQuery] PaginationRequest request, CancellationToken cancellationToken)
     {
-        var resonse = await mediator.Send(new GetProductsQuery(), cancellationToken);
-        return Ok(resonse);
+        var response = await mediator.Send(new GetProductsQuery(request), cancellationToken);
+        return Ok(response);
     }
 
     [HttpGet("restock")]
     [ProducesResponseType(typeof(GetLowStockProductsResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<GetLowStockProductsResponse>> GetAllLowStock(CancellationToken cancellationToken)
+    public async Task<ActionResult<GetLowStockProductsResponse>> GetAllLowStock([FromQuery] PaginationRequest request, CancellationToken cancellationToken)
     {
-        var response = await mediator.Send(new GetLowStockProductsQuery(), cancellationToken);
+        var response = await mediator.Send(new GetLowStockProductsQuery(request), cancellationToken);
         return Ok(response);
     }
 

@@ -1,3 +1,3 @@
 ﻿namespace Inventory.Products.Features.GetProducts;
 
-public record GetProductsResponse(IEnumerable<ProductDto> Products);
+public record GetProductsResponse(PaginatedResult<ProductDto> Products);

@@ -1,26 +1,20 @@
 ﻿namespace Inventory.Products.Features.GetProducts;
 
-public record GetProductsQuery() : IQuery<GetProductsResult>;
+public record GetProductsQuery(PaginationRequest PaginationRequest) : IQuery<GetProductsResult>;
 
-public record GetProductsResult(IEnumerable<ProductDto> Products);
+public record GetProductsResult(PaginatedResult<ProductDto> Products);
 
 internal class GetProductsHandler(InventoryDbContext dbContext)
     : IQueryHandler<GetProductsQuery, GetProductsResult>
 {
     public async Task<GetProductsResult> Handle(GetProductsQuery query, CancellationToken cancellationToken)
     {
-        var products = await dbContext.Products
+        var pagedProducts = await dbContext.Products
             .AsNoTracking()
             .OrderBy(p => p.Name)
-            .ToListAsync(cancellationToken);
+            .Select(p => new ProductDto(p.Name, p.Stock, p.Threshold))
+            .ToPaginatedResultAsync(query.PaginationRequest, cancellationToken);
 
-        var productDtos = new List<ProductDto>();
-        foreach (var product in products)
-        {
-            var productDto = new ProductDto(product.Name, product.Stock, product.Threshold);
-            productDtos.Add(productDto);
-        }
-
-        return new GetProductsResult(productDtos);
+        return new GetProductsResult(pagedProducts);
     }
 }

@@ -6,6 +6,7 @@ global using Shared.CQRS;
 global using Shared.DDD;
 global using Shared.Data;
 global using Shared.Data.Seed;
+global using Shared.Pagination;
 global using Shared.Validation;
 
 global using Inventory.Data;
