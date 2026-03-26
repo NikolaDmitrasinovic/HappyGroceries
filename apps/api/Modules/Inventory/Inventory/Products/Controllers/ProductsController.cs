@@ -1,4 +1,5 @@
-﻿using Inventory.Products.Features.AdjustProductStock;
+﻿using Asp.Versioning;
+using Inventory.Products.Features.AdjustProductStock;
 using Inventory.Products.Features.CreateProduct;
 using Inventory.Products.Features.GetLowStockProducts;
 using Inventory.Products.Features.GetProducts;
@@ -10,7 +11,8 @@ using Shared.Messaging;
 namespace Inventory.Products.Controllers;
 
 [ApiController]
-[Route("products")]
+[ApiVersion("1.0")]
+[Route("api/v{version: apiVersion}/inventory/products")]
 public class ProductsController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
