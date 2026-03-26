@@ -12,7 +12,7 @@ namespace Inventory.Products.Controllers;
 
 [ApiController]
 [ApiVersion("1.0")]
-[Route("api/v{version: apiVersion}/inventory/products")]
+[Route("api/v{version:apiVersion}/inventory/products")]
 public class ProductsController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
