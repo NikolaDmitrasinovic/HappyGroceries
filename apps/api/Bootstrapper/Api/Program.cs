@@ -1,4 +1,5 @@
 using Api.Middleware;
+using Asp.Versioning;
 using System.Net.Sockets;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +15,14 @@ builder.Services
 builder.Services.AddMediator();
 builder.Services.AddScoped<ICurrentUser, SystemCurrentUser>();
 builder.Services.AddSingleton<IClock, SystemClock>();
+
+builder.Services
+    .AddApiVersioning(options =>
+    {
+        options.DefaultApiVersion = new ApiVersion(1, 0);
+        options.AssumeDefaultVersionWhenUnspecified = true;
+        options.ReportApiVersions = true;
+    });
 
 var app = builder.Build();
 
