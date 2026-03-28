@@ -9,10 +9,15 @@ public class Receipt : Aggregate<Guid>
     public DateTime PurchaseDate { get; private set; }
     public ReceiptStatus Status { get; private set; }
     public IReadOnlyList<ReceiptLine> Lines => _lines.AsReadOnly();
-    public decimal TotalAmount => Lines.Sum(l => l.LineTotal);
+    public decimal TotalAmount { get; private set; }
     public string Location { get; private set; } = string.Empty;
 
     private Receipt() { }
+
+    private void RecalculateTotalAmount()
+    {
+        TotalAmount = _lines.Sum(l => l.LineTotal);
+    }
 }
 
 public enum ReceiptStatus
