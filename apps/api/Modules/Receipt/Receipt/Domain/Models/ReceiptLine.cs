@@ -4,6 +4,7 @@ namespace Receipt.Domain.Models;
 
 public class ReceiptLine : Entity<Guid>
 {
+    public Guid ReceiptId { get; set; }
     public string ProductName { get; set; } = default!;
     public decimal UnitPrice { get; set; }
     public int Quantity { get; set; }
