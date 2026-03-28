@@ -12,6 +12,27 @@ public class Receipt : Aggregate<Guid>
 
     private Receipt() { }
 
+    public void Open(DateTime purchaseDate, string? location)
+    {
+        PurchaseDate = purchaseDate;
+        Status = ReceiptStatus.Open;
+        TotalAmount = 0;
+        Location = location ?? "N/A";
+    }
+
+    public void AddLine(ReceiptLine line)
+    {
+        _lines.Add(line);
+        RecalculateTotalAmount();
+    }
+
+    public void Complete()
+    {
+        if (_lines.Count == 0) return;
+
+        Status = ReceiptStatus.Finalized;
+    }
+
     private void RecalculateTotalAmount()
     {
         TotalAmount = _lines.Sum(l => l.LineTotal);
@@ -21,5 +42,5 @@ public class Receipt : Aggregate<Guid>
 public enum ReceiptStatus
 {
     Open = 0,
-    Finalizes = 1
+    Finalized = 1
 }
