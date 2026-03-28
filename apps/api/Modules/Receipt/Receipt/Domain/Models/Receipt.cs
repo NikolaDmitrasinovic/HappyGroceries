@@ -12,12 +12,16 @@ public class Receipt : Aggregate<Guid>
 
     private Receipt() { }
 
-    public void Open(DateTime purchaseDate, string? location)
+    public static Receipt Open(DateTime purchaseDate, string? location)
     {
-        PurchaseDate = purchaseDate;
-        Status = ReceiptStatus.Open;
-        TotalAmount = 0;
-        Location = location ?? "N/A";
+        return new Receipt
+        {
+            Id = Guid.NewGuid(),
+            PurchaseDate = purchaseDate,
+            Status = ReceiptStatus.Open,
+            TotalAmount = 0,
+            Location = location ?? "N/A"
+        };
     }
 
     public void AddLine(ReceiptLine line)
