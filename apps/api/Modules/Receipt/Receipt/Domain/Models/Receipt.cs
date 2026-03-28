@@ -28,7 +28,8 @@ public class Receipt : Aggregate<Guid>
 
     public void Complete()
     {
-        if (_lines.Count == 0) return;
+        if (_lines.Count == 0)
+            throw new InvalidOperationException("A receipt cannot be finalized without at least one line.");
 
         Status = ReceiptStatus.Finalized;
     }
