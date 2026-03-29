@@ -29,7 +29,7 @@ public class ReceiptLineCreationTests
         // Arrange
 
         // Act
-        var exception = Assert.Throws<ArgumentException>(() => 
+        var exception = Assert.Throws<ArgumentException>(() =>
             ReceiptLine.Create(Guid.Empty, "some-product", 1.5m, 1));
 
         // Assert

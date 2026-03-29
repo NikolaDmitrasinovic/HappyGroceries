@@ -11,7 +11,7 @@ public class ReceiptLine : Entity<Guid>
 
     private ReceiptLine() { }
 
-    public static ReceiptLine Create(Guid receiptId, string productName,  decimal unitPrice, int quantity)
+    public static ReceiptLine Create(Guid receiptId, string productName, decimal unitPrice, int quantity)
     {
         if (receiptId == Guid.Empty)
             throw new ArgumentException("Receipt id cannot be empty.", nameof(receiptId));

@@ -72,7 +72,7 @@ public class PurchaseReceiptTests
         var receipt = ReceiptTestFactory.CreateFinalizedReceipt();
 
         // Act
-        var exception = Assert.Throws<InvalidOperationException>(() => 
+        var exception = Assert.Throws<InvalidOperationException>(() =>
             receipt.AddLine("some-product", 1.0m, 1));
 
         // Assert
