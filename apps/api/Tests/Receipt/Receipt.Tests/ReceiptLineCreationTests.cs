@@ -25,7 +25,7 @@ public class ReceiptLineCreationTests
     }
 
     [Fact]
-    public void Create_Thorws_Wehn_ReceiptId_Is_Empty()
+    public void Create_Throws_Wehn_ReceiptId_Is_Empty()
     {
         // Arrange
 
@@ -40,7 +40,7 @@ public class ReceiptLineCreationTests
     [Theory]
     [InlineData("")]
     [InlineData(" ")]
-    public void Create_Thorws_Wehn_ProductName_Is_Empty_or_WhiteSpace(string productName)
+    public void Create_Throws_Wehn_ProductName_Is_Empty_or_WhiteSpace(string productName)
     {
         // Arrange
 
@@ -53,7 +53,21 @@ public class ReceiptLineCreationTests
     }
 
     [Fact]
-    public void Create_Thorws_Wehn_UnitPrice_Is_Negative()
+    public void Create_Allows_Zero_UnitPrice()
+    {
+        // Arrange
+        var unitPrice = 0m;
+
+        // Act
+        var receiptLine = ReceiptLine.Create(Guid.NewGuid(), "some-product", unitPrice, 1);
+
+        // Assert
+        Assert.Equal(unitPrice, receiptLine.UnitPrice);
+        Assert.Equal(0m, receiptLine.LineTotal);
+    }
+
+    [Fact]
+    public void Create_Throws_Wehn_UnitPrice_Is_Negative()
     {
         // Arrange
         var negativePrice = -1.5m;
@@ -69,7 +83,7 @@ public class ReceiptLineCreationTests
     [Theory]
     [InlineData(-1)]
     [InlineData(0)]
-    public void Create_Thorws_Wehn_Quntity_Is_Negative_or_Zero(int quantity)
+    public void Create_Throws_Wehn_Quntity_Is_Negative_or_Zero(int quantity)
     {
         // Arrange
 
