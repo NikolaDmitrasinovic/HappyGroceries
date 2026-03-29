@@ -46,6 +46,6 @@ public class Receipt : Aggregate<Guid>
 
 public enum ReceiptStatus
 {
-    Open = 0,
-    Finalized = 1
+    Open = 1,
+    Finalized = 2
 }
