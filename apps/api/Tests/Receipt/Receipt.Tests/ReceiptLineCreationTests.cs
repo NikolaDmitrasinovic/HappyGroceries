@@ -51,4 +51,48 @@ public class ReceiptLineCreationTests
         // Assert
         Assert.Equal("productName", exception.ParamName);
     }
+
+    [Fact]
+    public void Create_Thorws_Wehn_UnitPrice_Is_Negative()
+    {
+        // Arrange
+        var negativePrice = -1.5m;
+
+        // Act
+        var exception = Assert.Throws<ArgumentOutOfRangeException>(() =>
+            ReceiptLine.Create(Guid.NewGuid(), "some-product", negativePrice, 1));
+
+        // Assert
+        Assert.Equal("unitPrice", exception.ParamName);
+        Assert.Equal("Receipt id cannot be empty.", exception.Message);
+    }
+
+    [Theory]
+    [InlineData(-1)]
+    [InlineData(0)]
+    public void Create_Thorws_Wehn_Quntity_Is_Negative_or_Zero(int quantity)
+    {
+        // Arrange
+
+        // Act
+        var exception = Assert.Throws<ArgumentException>(() =>
+            ReceiptLine.Create(Guid.NewGuid(), "some-product", 1.5m, quantity));
+
+        // Assert
+        Assert.Equal("quantity", exception.ParamName);
+    }
+
+    [Fact]
+    public void Create_Calculated_LineTotal_Correctly()
+    {
+        // Arrange
+        var unitPrice = 1.0m;
+        var quantity = 2;
+
+        // Act
+        var receiptLine = ReceiptLine.Create(Guid.NewGuid(), "some-product", unitPrice, quantity);
+
+        // Assert
+        Assert.Equal(unitPrice * quantity, receiptLine.LineTotal);
+    }
 }
