@@ -33,7 +33,7 @@ public class Receipt : Aggregate<Guid>
         RecalculateTotalAmount();
     }
 
-    public void MarkeAsFinalized()
+    public void MarkAsFinalized()
     {
         if (_lines.Count == 0)
             throw new InvalidOperationException("A receipt cannot be finalized without at least one line.");
