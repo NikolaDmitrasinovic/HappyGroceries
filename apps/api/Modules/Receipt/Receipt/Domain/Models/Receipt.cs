@@ -26,6 +26,9 @@ public class Receipt : Aggregate<Guid>
 
     public void AddLine(string productName, decimal unitPrice, int quantity)
     {
+        if (Status != ReceiptStatus.Open)
+            throw new InvalidOperationException("Lines can only be added to an open receipt.");
+
         _lines.Add(ReceiptLine.Create(Id, productName, unitPrice, quantity));
         RecalculateTotalAmount();
     }
