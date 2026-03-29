@@ -26,6 +26,9 @@
   <Folder Name="/Tests/Messaging/">
     <Project Path="Tests/Messaging/MessagingTests/MessagingTests.csproj" Id="20cc20f9-132e-402b-9718-1a657d1791b1" />
   </Folder>
+  <Folder Name="/Tests/Receipt/">
+    <Project Path="Tests/Receipt/Receipt.Tests/Receipt.Tests.csproj" />
+  </Folder>
   <Project Path="docker-compose.dcproj">
     <Build />
   </Project>
