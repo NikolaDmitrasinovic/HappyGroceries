@@ -1,6 +1,6 @@
 ﻿using Receipt.Domain.Models;
 
-namespace Receipt.Tests;
+namespace Receipt.Domain.Tests;
 
 public class ReceiptLineCreationTests
 {
@@ -8,16 +8,16 @@ public class ReceiptLineCreationTests
     public void Create_Sets_All_Properties_Correctly()
     {
         // Arrange
-        var receiptId = Guid.NewGuid();
+        var guid = Guid.NewGuid();
         var productName = "some-product";
         var unitPrice = 1.5m;
         var quantity = 1;
 
         // Act
-        var receiptLine = ReceiptLine.Create(receiptId, productName, unitPrice, quantity);
+        var receiptLine = ReceiptLine.Create(guid, productName, unitPrice, quantity);
 
         // Assert
-        Assert.Equal(receiptId, receiptLine.ReceiptId);
+        Assert.Equal(guid, receiptLine.ReceiptId);
         Assert.Equal(productName, receiptLine.ProductName);
         Assert.Equal(unitPrice, receiptLine.UnitPrice);
         Assert.Equal(quantity, receiptLine.Quantity);

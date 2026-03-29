@@ -1,6 +1,6 @@
 ﻿namespace Receipt.Domain.Models;
 
-public class Receipt : Aggregate<Guid>
+public class PurchaseReceipt : Aggregate<Guid>
 {
     private readonly List<ReceiptLine> _lines = [];
 
@@ -10,11 +10,11 @@ public class Receipt : Aggregate<Guid>
     public decimal TotalAmount { get; private set; }
     public string Location { get; private set; } = string.Empty;
 
-    private Receipt() { }
+    private PurchaseReceipt() { }
 
-    public static Receipt Open(DateOnly purchaseDate, string? location)
+    public static PurchaseReceipt Open(DateOnly purchaseDate, string? location)
     {
-        return new Receipt
+        return new PurchaseReceipt
         {
             Id = Guid.NewGuid(),
             PurchaseDate = purchaseDate,

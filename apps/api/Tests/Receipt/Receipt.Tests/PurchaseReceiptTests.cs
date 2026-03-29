@@ -1,9 +1,8 @@
 ﻿using Receipt.Domain.Models;
-using ReceiptModel = Receipt.Domain.Models.Receipt;
 
 namespace Receipt.Tests;
 
-public class ReceiptCreationTests
+public class PurchaseReceiptTests
 {
     [Fact]
     public void Open_Sets_All_Properties_Correctly()
@@ -14,32 +13,33 @@ public class ReceiptCreationTests
 
 
         // Act
-        var receipt = ReceiptModel.Open(purchaseDate, location);
+        var receipt = PurchaseReceipt.Open(purchaseDate, location);
 
         // Assert
         Assert.Equal(purchaseDate, receipt.PurchaseDate);
         Assert.Equal(ReceiptStatus.Open, receipt.Status);
         Assert.Empty(receipt.Lines);
-        Assert.Equal(0, receipt.TotalAmount);
+        Assert.Equal(0m, receipt.TotalAmount);
         Assert.Equal(location, receipt.Location);
     }
 
     [Theory]
+    [InlineData(null)]
     [InlineData("")]
     [InlineData(" ")]
-    public void Open_Sets_Location_To_NA_When_Location_Is_Empty_Or_Whitespace(string location)
+    public void Open_Sets_Location_To_NA_When_Location_Is_NullEmptyWhitespace(string? location)
     {
         // Arrange
 
         // Act
-        var receipt = ReceiptModel.Open(DateOnly.MinValue, location);
+        var receipt = PurchaseReceipt.Open(DateOnly.MinValue, location);
 
         // Assert
         Assert.Equal("N/A", receipt.Location);
     }
 
     [Fact]
-    public void AddLine_Adds_Line_And_Recalculates()
+    public void AddLine_Adds_Line_And_Recalculates_TotalAmount()
     {
         // Arrange
         var receipt = ReceiptTestFactory.CreateOpenReceipt();
