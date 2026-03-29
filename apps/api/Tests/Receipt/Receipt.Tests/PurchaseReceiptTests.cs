@@ -11,7 +11,6 @@ public class PurchaseReceiptTests
         var purchaseDate = DateOnly.Parse("2026-04-01");
         var location = "some-location";
 
-
         // Act
         var receipt = PurchaseReceipt.Open(purchaseDate, location);
 
