@@ -20,7 +20,7 @@ public class Receipt : Aggregate<Guid>
             PurchaseDate = purchaseDate,
             Status = ReceiptStatus.Open,
             TotalAmount = 0,
-            Location = location ?? "N/A"
+            Location = string.IsNullOrWhiteSpace(location) ? "N/A" : location
         };
     }
 
