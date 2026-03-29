@@ -13,6 +13,9 @@ public class ReceiptLine : Entity<Guid>
 
     public static ReceiptLine Create(Guid receiptId, string productName,  decimal unitPrice, int quantity)
     {
+        if (receiptId == Guid.Empty)
+            throw new ArgumentException("Receipt id cannot be empty.", nameof(receiptId));
+
         ArgumentException.ThrowIfNullOrWhiteSpace(productName, nameof(productName));
         ArgumentOutOfRangeException.ThrowIfNegative(unitPrice, nameof(unitPrice));
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(quantity, nameof(quantity));
