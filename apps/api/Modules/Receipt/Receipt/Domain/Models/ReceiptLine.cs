@@ -10,4 +10,20 @@ public class ReceiptLine : Entity<Guid>
     public decimal LineTotal => UnitPrice * Quantity;
 
     private ReceiptLine() { }
+
+    public static ReceiptLine Create(Guid receiptId, string productName,  decimal unitPrice, int quantity)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(productName, nameof(productName));
+        ArgumentOutOfRangeException.ThrowIfNegative(unitPrice, nameof(unitPrice));
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(quantity, nameof(quantity));
+
+        return new ReceiptLine
+        {
+            Id = Guid.NewGuid(),
+            ReceiptId = receiptId,
+            ProductName = productName,
+            UnitPrice = unitPrice,
+            Quantity = quantity
+        };
+    }
 }

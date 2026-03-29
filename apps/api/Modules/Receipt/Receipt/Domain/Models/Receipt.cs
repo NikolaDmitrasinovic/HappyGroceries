@@ -24,9 +24,9 @@ public class Receipt : Aggregate<Guid>
         };
     }
 
-    public void AddLine(ReceiptLine line)
+    public void AddLine(string productName, decimal unitPrice, int quantity)
     {
-        _lines.Add(line);
+        _lines.Add(ReceiptLine.Create(Id, productName, unitPrice, quantity));
         RecalculateTotalAmount();
     }
 
