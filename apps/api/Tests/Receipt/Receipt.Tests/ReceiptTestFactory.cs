@@ -1,14 +1,27 @@
-﻿namespace Receipt.Tests;
+﻿using ReceiptModel = Receipt.Domain.Models.Receipt;
+
+namespace Receipt.Tests;
 
 public static class ReceiptTestFactory
 {
-    public static Domain.Models.Receipt CreateReceipt(
-        string purchaseDate = "2026-04-07",
+    public static ReceiptModel CreateOpenReceipt(
+        DateOnly? purchaseDate = null,
         string location = "some-location")
     {
-        var date = DateOnly.Parse(purchaseDate);
+        var date = purchaseDate ?? new DateOnly(2026, 4, 7);
 
         var receipt = Domain.Models.Receipt.Open(date, location);
+        receipt.ClearDomainEvents();
+        return receipt;
+    }
+
+    public static ReceiptModel CreateFinalizedReceipt(
+    DateOnly? purchaseDate = null,
+    string location = "some-location")
+    {
+        var receipt = CreateOpenReceipt(purchaseDate, location);
+        receipt.AddLine("some-product", 1.0m, 1);
+        receipt.MarkAsFinalized();
         receipt.ClearDomainEvents();
         return receipt;
     }

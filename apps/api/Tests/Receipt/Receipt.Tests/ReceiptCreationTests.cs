@@ -19,7 +19,7 @@ public class ReceiptCreationTests
         // Assert
         Assert.Equal(purchaseDate, receipt.PurchaseDate);
         Assert.Equal(ReceiptStatus.Open, receipt.Status);
-        Assert.Equal([], receipt.Lines);
+        Assert.Empty(receipt.Lines);
         Assert.Equal(0, receipt.TotalAmount);
         Assert.Equal(location, receipt.Location);
     }
@@ -27,7 +27,7 @@ public class ReceiptCreationTests
     [Theory]
     [InlineData("")]
     [InlineData(" ")]
-    public void Open_Sets_Location_Correctly_When_Not_Provided(string location)
+    public void Open_Sets_Location_To_NA_When_Location_Is_Empty_Or_Whitespace(string location)
     {
         // Arrange
 
@@ -42,23 +42,35 @@ public class ReceiptCreationTests
     public void AddLine_Adds_Line_And_Recalculates()
     {
         // Arrange
-        var receipt = ReceiptTestFactory.CreateReceipt();
+        var receipt = ReceiptTestFactory.CreateOpenReceipt();
 
         // Act
-        receipt.AddLine("some-product", 1.0m, 1);
+        receipt.AddLine("some-product", 1.5m, 2);
 
         // Assert
         Assert.Single(receipt.Lines);
-        Assert.Equal(1.0m, receipt.TotalAmount);
+        Assert.Equal(3.0m, receipt.TotalAmount);
+    }
+
+    [Fact]
+    public void AddLine_Recalculates_TotalAmount_From_All_Lines()
+    {
+        // Arrange
+        var receipt = ReceiptTestFactory.CreateOpenReceipt();
+
+        // Act
+        receipt.AddLine("product-1", 2.0m, 2);
+        receipt.AddLine("product-2", 1.5m, 2);
+
+        // Assert
+        Assert.Equal(7.0m, receipt.TotalAmount);
     }
 
     [Fact]
     public void AddLine_Throws_When_Finalized()
     {
         // Arrange
-        var receipt = ReceiptTestFactory.CreateReceipt();
-        receipt.AddLine("some-product", 1.0m, 1);
-        receipt.MarkAsFinalized();
+        var receipt = ReceiptTestFactory.CreateFinalizedReceipt();
 
         // Act
         var exception = Assert.Throws<InvalidOperationException>(() => 
@@ -72,7 +84,7 @@ public class ReceiptCreationTests
     public void MarkAsFinalized_Sets_Status_As_Finalized()
     {
         // Arrange
-        var receipt = ReceiptTestFactory.CreateReceipt();
+        var receipt = ReceiptTestFactory.CreateOpenReceipt();
         receipt.AddLine("some-product", 1.0m, 1);
 
         // Act
@@ -86,7 +98,7 @@ public class ReceiptCreationTests
     public void MarkAsFinalized_Throws_When_No_Lines()
     {
         // Arrange
-        var receipt = ReceiptTestFactory.CreateReceipt();
+        var receipt = ReceiptTestFactory.CreateOpenReceipt();
 
         // Act
         var exception = Assert.Throws<InvalidOperationException>(() =>
@@ -100,9 +112,7 @@ public class ReceiptCreationTests
     public void MarkAsFinalized_Is_Idempotent()
     {
         // Arrange
-        var receipt = ReceiptTestFactory.CreateReceipt();
-        receipt.AddLine("some-product", 1.0m, 1);
-        receipt.MarkAsFinalized();
+        var receipt = ReceiptTestFactory.CreateFinalizedReceipt();
 
         // Act
         receipt.MarkAsFinalized();
