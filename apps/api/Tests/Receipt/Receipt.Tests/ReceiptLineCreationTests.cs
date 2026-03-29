@@ -31,7 +31,7 @@ public class ReceiptLineCreationTests
 
         // Act
         var exception = Assert.Throws<ArgumentException>(() => 
-            ReceiptLine.Create(Guid.Parse("00000000-0000-0000-0000-000000000000"), "some-product", 1.5m, 1));
+            ReceiptLine.Create(Guid.Empty, "some-product", 1.5m, 1));
 
         // Assert
         Assert.Equal("receiptId", exception.ParamName);
