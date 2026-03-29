@@ -4,7 +4,7 @@ public class Receipt : Aggregate<Guid>
 {
     private readonly List<ReceiptLine> _lines = [];
 
-    public DateTime PurchaseDate { get; private set; }
+    public DateOnly PurchaseDate { get; private set; }
     public ReceiptStatus Status { get; private set; }
     public IReadOnlyList<ReceiptLine> Lines => _lines.AsReadOnly();
     public decimal TotalAmount { get; private set; }
@@ -12,8 +12,11 @@ public class Receipt : Aggregate<Guid>
 
     private Receipt() { }
 
-    public static Receipt Open(DateTime purchaseDate, string? location)
+    public static Receipt Open(DateOnly purchaseDate, string? location)
     {
+        if (purchaseDate > DateOnly.FromDateTime(DateTime.UtcNow))
+            throw new ArgumentOutOfRangeException(nameof(purchaseDate), "Purchase date cannot be in the future.");
+
         return new Receipt
         {
             Id = Guid.NewGuid(),
