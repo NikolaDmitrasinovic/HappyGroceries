@@ -17,7 +17,6 @@ public class ReceiptLineCreationTests
         var receiptLine = ReceiptLine.Create(guid, productName, unitPrice, quantity);
 
         // Assert
-        Assert.NotNull(receiptLine);
         Assert.Equal(guid, receiptLine.ReceiptId);
         Assert.Equal(productName, receiptLine.ProductName);
         Assert.Equal(unitPrice, receiptLine.UnitPrice);
@@ -83,7 +82,7 @@ public class ReceiptLineCreationTests
     [Theory]
     [InlineData(-1)]
     [InlineData(0)]
-    public void Create_Throws_When_Quntity_Is_Negative_or_Zero(int quantity)
+    public void Create_Throws_When_Quantity_Is_Negative_or_Zero(int quantity)
     {
         // Arrange
 
