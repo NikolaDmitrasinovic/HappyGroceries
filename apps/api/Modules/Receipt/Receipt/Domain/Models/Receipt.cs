@@ -14,9 +14,6 @@ public class Receipt : Aggregate<Guid>
 
     public static Receipt Open(DateOnly purchaseDate, string? location)
     {
-        if (purchaseDate > DateOnly.FromDateTime(DateTime.UtcNow))
-            throw new ArgumentOutOfRangeException(nameof(purchaseDate), "Purchase date cannot be in the future.");
-
         return new Receipt
         {
             Id = Guid.NewGuid(),
