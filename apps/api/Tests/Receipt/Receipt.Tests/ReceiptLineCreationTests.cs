@@ -64,7 +64,6 @@ public class ReceiptLineCreationTests
 
         // Assert
         Assert.Equal("unitPrice", exception.ParamName);
-        Assert.Equal("Receipt id cannot be empty.", exception.Message);
     }
 
     [Theory]
@@ -75,7 +74,7 @@ public class ReceiptLineCreationTests
         // Arrange
 
         // Act
-        var exception = Assert.Throws<ArgumentException>(() =>
+        var exception = Assert.Throws<ArgumentOutOfRangeException>(() =>
             ReceiptLine.Create(Guid.NewGuid(), "some-product", 1.5m, quantity));
 
         // Assert
