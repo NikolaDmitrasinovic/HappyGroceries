@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Shared.Data;
+using Shared.Data.Interceptors;
 
 namespace Receipt;
 
@@ -8,21 +11,37 @@ public static class ReceiptModule
 {
     public static IServiceCollection AddReceiptModule(this IServiceCollection services, IConfiguration configuration)
     {
-        //services
-        //    .AddApplicationServices()
-        //    .AddInfrastructureServices(configuration)
-        //    .AddApiServices(services);
+        // Add services to the container.
+
+        // Api Endpoint services
+
+        // Application Use Case services
+
+        // Data - Infrastructure services
+        var connectionString = configuration.GetConnectionString("Default");
+
+        services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
+        services.AddScoped<ISaveChangesInterceptor, DispatchDomainEventsInterceptor>();
+
+        services.AddDbContext<ReceiptDbContext>((sp, options) =>
+        {
+            options.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
+            options.UseNpgsql(connectionString);
+        });
 
         return services;
     }
 
     public static IApplicationBuilder UseReceiptModule(this IApplicationBuilder app)
     {
-        // HTTP request pipeline
-        //app
-        //    .UseApplicationServices()
-        //    .UseInfrastructureServices()
-        //    .UseApiServices();
+        // Configure the HTTP request pipeline
+
+        // Use Api Endpoint services
+
+        // Use Application Use Case services
+
+        // Use Data - Infrastructure services
+        app.UseMigration<ReceiptDbContext>();
 
         return app;
     }
