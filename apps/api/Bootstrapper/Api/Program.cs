@@ -5,7 +5,9 @@ using System.Net.Sockets;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddApplicationPart(typeof(InventoryModule).Assembly)
+    .AddApplicationPart(typeof(ReceiptModule).Assembly);
 
 builder.Services
     .AddInventoryModule(builder.Configuration)

@@ -2,8 +2,10 @@
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Receipt.Application.Features.OpenPurchaseReceipt;
 using Shared.Data;
 using Shared.Data.Interceptors;
+using Shared.Messaging;
 
 namespace Receipt;
 
@@ -16,6 +18,9 @@ public static class ReceiptModule
         // Api Endpoint services
 
         // Application Use Case services
+        services.AddScoped<IRequestValidator<OpenPurchaseReceiptCommand>, OpenPurchaseReceiptValidator>();
+
+        services.AddScoped<IRequestHandler<OpenPurchaseReceiptCommand, OpenPurchaseReceiptResult>, OpenPurchaseReceiptHandler>();
 
         // Data - Infrastructure services
         var connectionString = configuration.GetConnectionString("Default");
