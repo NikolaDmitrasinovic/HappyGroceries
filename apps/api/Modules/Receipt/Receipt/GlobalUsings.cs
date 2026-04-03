@@ -6,6 +6,5 @@ global using Shared.CQRS;
 global using Shared.DDD;
 global using Shared.Validation;
 
-global using Receipt.Application.Dtos;
 global using Receipt.Domain.Models;
 global using Receipt.Infrastructure;
