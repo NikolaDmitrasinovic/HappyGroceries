@@ -4,18 +4,13 @@ internal class OpenPurchaseReceiptHandler(ReceiptDbContext dbContext) : ICommand
 {
     public async Task<OpenPurchaseReceiptResult> Handle(OpenPurchaseReceiptCommand request, CancellationToken cancellationToken)
     {
-        PurchaseReceipt purchaseReceipt = CreateOpenReceipt(request);
+        var purchaseReceipt = PurchaseReceipt.Open(
+            request.PurchaseDate,
+            request.Location);
 
         await dbContext.PurchaseReceipts.AddAsync(purchaseReceipt, cancellationToken);
         await dbContext.SaveChangesAsync(cancellationToken);
 
         return new OpenPurchaseReceiptResult(purchaseReceipt.Id);
-    }
-
-    private static PurchaseReceipt CreateOpenReceipt(OpenPurchaseReceiptCommand request)
-    {
-        return PurchaseReceipt.Open(
-            request.PurchaseDate,
-            request.Location);
     }
 }

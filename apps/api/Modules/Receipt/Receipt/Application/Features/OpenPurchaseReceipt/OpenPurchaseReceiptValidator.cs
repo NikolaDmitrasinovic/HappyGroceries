@@ -9,8 +9,8 @@ internal class OpenPurchaseReceiptValidator(IClock clock) : IRequestValidator<Op
     {
         List<ValidationFailure> failures = [];
 
-        if (request.PurchaseReceipt.PurchaseDate > DateOnly.FromDateTime(_clock.UtcNow))
-            failures.Add(new ValidationFailure(nameof(request.PurchaseReceipt.PurchaseDate), "Purchase date cannot be in the future."));
+        if (request.PurchaseDate > DateOnly.FromDateTime(_clock.UtcNow))
+            failures.Add(new ValidationFailure(nameof(request.PurchaseDate), "Purchase date cannot be in the future."));
 
         return failures;
     }
