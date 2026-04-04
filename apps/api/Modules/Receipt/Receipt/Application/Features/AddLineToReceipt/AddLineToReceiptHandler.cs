@@ -6,7 +6,9 @@ internal class AddLineToReceiptHandler(ReceiptDbContext dbContext) : IRequestHan
 {
     public async Task<AddLineToReceiptResult> Handle(AddLineToReceiptCommand request, CancellationToken cancellationToken)
     {
-        var _ = await dbContext.PurchaseReceipts.FindAsync([request.ReceiptId], cancellationToken) ?? throw new NotFoundException($"Receipt with id {request.ReceiptId} not found.");
+        var receipt = await dbContext.PurchaseReceipts.FindAsync([request.ReceiptId], cancellationToken) ?? throw new NotFoundException($"Receipt with id {request.ReceiptId} not found.");
+        if (receipt.Status  != ReceiptStatus.Open)
+            throw new InvalidOperationException($"Cannot add line to receipt with status {receipt.Status}.");
 
         var receiptLine = ReceiptLine.Create(request.ReceiptId, request.ProductName, request.UnitPrice, request.Quantity);
 
