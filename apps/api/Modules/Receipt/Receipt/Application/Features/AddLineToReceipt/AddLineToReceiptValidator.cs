@@ -1,12 +1,12 @@
 ﻿namespace Receipt.Application.Features.AddLineToReceipt;
 
-public class AddLineToReceiptValidatior : IRequestValidator<AddLineToReceiptCommand>
+internal class AddLineToReceiptValidator : IRequestValidator<AddLineToReceiptCommand>
 {
     public IReadOnlyCollection<ValidationFailure> Validate(AddLineToReceiptCommand request)
     {
         var failures = new List<ValidationFailure>();
 
-        if (string.IsNullOrEmpty(request.ProductName))
+        if (string.IsNullOrWhiteSpace(request.ProductName))
             failures.Add(new ValidationFailure(nameof(request.ProductName), "Product name is required."));
 
         if (request.UnitPrice < 0)
