@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Receipt.Application.Features.AddLineToReceipt;
+using Receipt.Application.Features.FinalizePurchaseReceipt;
 using Receipt.Application.Features.OpenPurchaseReceipt;
 using Shared.Data;
 using Shared.Data.Interceptors;
@@ -23,6 +24,7 @@ public static class ReceiptModule
 
         services.AddScoped<IRequestHandler<OpenPurchaseReceiptCommand, OpenPurchaseReceiptResult>, OpenPurchaseReceiptHandler>();
         services.AddScoped<IRequestHandler<AddLineToReceiptCommand, AddLineToReceiptResult>, AddLineToReceiptHandler>();
+        services.AddScoped<IRequestHandler<FinalizePurchaseReceiptCommand, FinalizePurchaseReceiptResult>, FinalizePurchaseReceiptHandler>();
 
         // Data - Infrastructure services
         var connectionString = configuration.GetConnectionString("Default");
