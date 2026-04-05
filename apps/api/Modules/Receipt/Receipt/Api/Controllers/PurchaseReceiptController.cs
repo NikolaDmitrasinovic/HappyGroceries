@@ -36,12 +36,12 @@ public class PurchaseReceiptController(IMediator mediator) : ControllerBase
         return Ok(response);
     }
 
-    [HttpPatch]
+    [HttpPatch("{receiptId:guid}")]
     [ProducesResponseType(typeof(FinalizePurchaseReceiptResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<FinalizePurchaseReceiptResponse>> Finalize([FromBody] FinalizePurchaseReceiptRequest request, CancellationToken cancellationToken)
+    public async Task<ActionResult<FinalizePurchaseReceiptResponse>> Finalize([FromRoute] Guid receiptId, CancellationToken cancellationToken)
     {
-        var result = await mediator.Send(new FinalizePurchaseReceiptCommand(request.ReceiptId), cancellationToken);
+        var result = await mediator.Send(new FinalizePurchaseReceiptCommand(receiptId), cancellationToken);
         var response = new FinalizePurchaseReceiptResponse(result.ReceiptId);
         return Ok(response);
     }
