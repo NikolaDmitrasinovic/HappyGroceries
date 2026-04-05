@@ -22,13 +22,13 @@ public class PurchaseReceiptController(IMediator mediator) : ControllerBase
         return Created($"{response.Id}", response);
     }
 
-    [HttpPost]
+    [HttpPost("lines")]
     [ProducesResponseType(typeof(AddLineToReceiptResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<AddLineToReceiptResponse>> AddLine([FromBody] AddLineToReceiptRequest request, CancellationToken cancellationToken)
     {
-        var result = await mediator.Send(new AddLineToReceiptCommand(request.ReceiptId, request.ProductName, request.Unitprice, request.Quantity), cancellationToken);
+        var result = await mediator.Send(new AddLineToReceiptCommand(request.ReceiptId, request.ProductName, request.UnitPrice, request.Quantity), cancellationToken);
         var response = new AddLineToReceiptResponse (result.ReceiptLineId);
-        return Ok($"{response.ReceiptLineId}");
+        return Ok(response);
     }
 }
