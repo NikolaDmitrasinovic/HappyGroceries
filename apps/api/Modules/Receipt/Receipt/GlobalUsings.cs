@@ -4,6 +4,7 @@ global using System.Reflection;
 
 global using Shared.CQRS;
 global using Shared.DDD;
+global using Shared.Messaging;
 global using Shared.Validation;
 
 global using Receipt.Domain.Models;
