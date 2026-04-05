@@ -28,7 +28,7 @@ public class PurchaseReceiptController(IMediator mediator) : ControllerBase
     public async Task<ActionResult<AddLineToReceiptResponse>> AddLine([FromBody] AddLineToReceiptRequest request, CancellationToken cancellationToken)
     {
         var result = await mediator.Send(new AddLineToReceiptCommand(request.ReceiptId, request.ProductName, request.UnitPrice, request.Quantity), cancellationToken);
-        var response = new AddLineToReceiptResponse (result.ReceiptLineId);
+        var response = new AddLineToReceiptResponse(result.ReceiptLineId);
         return Ok(response);
     }
 }
