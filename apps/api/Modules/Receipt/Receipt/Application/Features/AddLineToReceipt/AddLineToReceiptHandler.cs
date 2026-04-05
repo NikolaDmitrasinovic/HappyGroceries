@@ -13,10 +13,10 @@ internal class AddLineToReceiptHandler(ReceiptDbContext dbContext) : ICommandHan
         
         receipt.AddLine(request.ProductName, request.UnitPrice, request.Quantity);
 
-        await dbContext.ReceiptLines.AddAsync(receipt.Lines[receipt.Lines.Count - 1], cancellationToken);
-        await dbContext.SaveChangesAsync(cancellationToken);
-
         var addedLine = receipt.Lines[receipt.Lines.Count - 1];
+
+        await dbContext.ReceiptLines.AddAsync(addedLine, cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
         return new AddLineToReceiptResult(addedLine.Id);
     }
