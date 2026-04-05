@@ -36,7 +36,7 @@ public class PurchaseReceiptController(IMediator mediator) : ControllerBase
         return Ok(response);
     }
 
-    [HttpPatch("{receiptId:guid}")]
+    [HttpPatch("{receiptId:guid}/finalize")]
     [ProducesResponseType(typeof(FinalizePurchaseReceiptResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<FinalizePurchaseReceiptResponse>> Finalize([FromRoute] Guid receiptId, CancellationToken cancellationToken)
