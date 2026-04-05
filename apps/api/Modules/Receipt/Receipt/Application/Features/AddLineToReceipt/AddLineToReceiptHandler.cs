@@ -2,19 +2,22 @@
 
 namespace Receipt.Application.Features.AddLineToReceipt;
 
-internal class AddLineToReceiptHandler(ReceiptDbContext dbContext) : IRequestHandler<AddLineToReceiptCommand, AddLineToReceiptResult>
+internal class AddLineToReceiptHandler(ReceiptDbContext dbContext) : ICommandHandler<AddLineToReceiptCommand, AddLineToReceiptResult>
 {
     public async Task<AddLineToReceiptResult> Handle(AddLineToReceiptCommand request, CancellationToken cancellationToken)
     {
-        var receipt = await dbContext.PurchaseReceipts.FindAsync([request.ReceiptId], cancellationToken) ?? throw new NotFoundException($"Receipt with id {request.ReceiptId} not found.");
-        if (receipt.Status  != ReceiptStatus.Open)
-            throw new InvalidOperationException($"Cannot add line to receipt with status {receipt.Status}.");
+        var receipt = await dbContext.PurchaseReceipts
+            .Include(r => r.Lines)
+            .FirstOrDefaultAsync(r => r.Id == request.ReceiptId, cancellationToken)
+            ?? throw new NotFoundException($"Receipt with id {request.ReceiptId} not found.");
+        
+        receipt.AddLine(request.ProductName, request.UnitPrice, request.Quantity);
 
-        var receiptLine = ReceiptLine.Create(request.ReceiptId, request.ProductName, request.UnitPrice, request.Quantity);
-
-        await dbContext.ReceiptLines.AddAsync(receiptLine, cancellationToken);
+        await dbContext.ReceiptLines.AddAsync(receipt.Lines[receipt.Lines.Count - 1], cancellationToken);
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        return new AddLineToReceiptResult(receiptLine.Id);
+        var addedLine = receipt.Lines[receipt.Lines.Count - 1];
+
+        return new AddLineToReceiptResult(addedLine.Id);
     }
 }
