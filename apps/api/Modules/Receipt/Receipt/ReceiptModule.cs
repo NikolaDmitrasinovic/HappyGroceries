@@ -19,7 +19,7 @@ public static class ReceiptModule
 
         // Application Use Case services
         services.AddScoped<IRequestValidator<OpenPurchaseReceiptCommand>, OpenPurchaseReceiptValidator>();
-        services.AddScoped<IRequestValidator<AddLineToReceiptCommand>, AddLineToReceiptValidatior>();
+        services.AddScoped<IRequestValidator<AddLineToReceiptCommand>, AddLineToReceiptValidator>();
 
         services.AddScoped<IRequestHandler<OpenPurchaseReceiptCommand, OpenPurchaseReceiptResult>, OpenPurchaseReceiptHandler>();
         services.AddScoped<IRequestHandler<AddLineToReceiptCommand, AddLineToReceiptResult>, AddLineToReceiptHandler>();
