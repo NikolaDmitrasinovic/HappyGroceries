@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Receipt.Api.Contracts;
 using Receipt.Application.Features.AddLineToReceipt;
+using Receipt.Application.Features.FinalizePurchaseReceipt;
 using Receipt.Application.Features.OpenPurchaseReceipt;
 
 namespace Receipt.Api.Controllers;
@@ -29,6 +30,16 @@ public class PurchaseReceiptController(IMediator mediator) : ControllerBase
     {
         var result = await mediator.Send(new AddLineToReceiptCommand(request.ReceiptId, request.ProductName, request.UnitPrice, request.Quantity), cancellationToken);
         var response = new AddLineToReceiptResponse(result.ReceiptLineId);
+        return Ok(response);
+    }
+
+    [HttpPatch]
+    [ProducesResponseType(typeof(FinalizePurchaseReceiptResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<FinalizePurchaseReceiptResponse>> Finalize([FromBody] FinalizePurchaseReceiptRequest request, CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(new FinalizePurchaseReceiptCommand(request.ReceiptId), cancellationToken);
+        var response = new FinalizePurchaseReceiptResponse(result.ReceiptId);
         return Ok(response);
     }
 }
