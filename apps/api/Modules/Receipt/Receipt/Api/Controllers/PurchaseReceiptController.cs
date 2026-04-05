@@ -22,7 +22,7 @@ public class PurchaseReceiptController(IMediator mediator) : ControllerBase
         return Created($"{response.Id}", response);
     }
 
-    [HttpPost("{receiptId: guid}/lines")]
+    [HttpPost("{receiptId:guid}/lines")]
     [ProducesResponseType(typeof(AddLineToReceiptResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<AddLineToReceiptResponse>> AddLine(
