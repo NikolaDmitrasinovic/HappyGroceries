@@ -43,7 +43,7 @@ public class OpenPurchaseReceiptValidatorTests
     }
 
     [Fact]
-    public void Validate_ReturnsFailure_When_PurchaseDate_Is_Too_Old()
+    public void Validate_Returns_Failure_When_PurchaseDate_Is_Too_Old()
     {
         // Right now too old is hard coded as older than 10 years
 
