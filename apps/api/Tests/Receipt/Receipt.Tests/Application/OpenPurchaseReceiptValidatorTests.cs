@@ -9,7 +9,7 @@ public class OpenPurchaseReceiptValidatorTests
     public void Validate_Returns_No_Failures_When_PurchaseDate_Is_Valid()
     {
         // Arrange
-        var clock = new FakeClock(new DateTime(2026, 4, 24, 10, 0 , 0, DateTimeKind.Utc));
+        var clock = new FakeClock(new DateTime(2026, 4, 24, 10, 0, 0, DateTimeKind.Utc));
         var validator = new OpenPurchaseReceiptValidator(clock);
 
         var request = new OpenPurchaseReceiptCommand(
