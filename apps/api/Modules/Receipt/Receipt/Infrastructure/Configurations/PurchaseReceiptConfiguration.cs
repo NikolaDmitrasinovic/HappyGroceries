@@ -26,5 +26,13 @@ public class PurchaseReceiptConfiguration : IEntityTypeConfiguration<PurchaseRec
             .WithOne()
             .HasForeignKey(rl => rl.ReceiptId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Metadata
+            .FindNavigation(nameof(PurchaseReceipt.Lines))!
+            .SetField("_lines");
+
+        builder.Metadata
+            .FindNavigation(nameof(PurchaseReceipt.Lines))!
+            .SetPropertyAccessMode(PropertyAccessMode.Field);
     }
 }
