@@ -68,10 +68,11 @@ public class OpenPurchaseReceiptValidatorTests
     {
         // Arrange
         var clock = new FakeClock(new DateTime(2026, 4, 24, 10, 0, 0, DateTimeKind.Utc));
+        var today = DateOnly.FromDateTime(clock.UtcNow);
         var validator = new OpenPurchaseReceiptValidator(clock);
 
         var request = new OpenPurchaseReceiptCommand(
-            new DateOnly(2026, 4, 24),
+            today,
             "some-location");
 
         // Act
@@ -88,10 +89,11 @@ public class OpenPurchaseReceiptValidatorTests
 
         // Arrange
         var clock = new FakeClock(new DateTime(2026, 4, 24, 10, 0, 0, DateTimeKind.Utc));
+        var today = DateOnly.FromDateTime(clock.UtcNow);
         var validator = new OpenPurchaseReceiptValidator(clock);
 
         var request = new OpenPurchaseReceiptCommand(
-            new DateOnly(2016, 4, 24),
+            today.AddYears(-10),
             "some-location");
 
         // Act
