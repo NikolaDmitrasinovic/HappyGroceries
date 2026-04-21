@@ -1,6 +1,6 @@
 ﻿using Receipt.Domain.Models;
 
-namespace Receipt.Tests;
+namespace Receipt.Tests.TestHelpers;
 
 public static class ReceiptTestFactory
 {

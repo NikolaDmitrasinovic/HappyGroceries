@@ -18,7 +18,10 @@ public class PurchaseReceiptController(IMediator mediator) : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<OpenPurchaseReceiptResponse>> Create([FromBody] OpenPurchaseReceiptRequest request, CancellationToken cancellationToken)
     {
-        var result = await mediator.Send(new OpenPurchaseReceiptCommand(request.PurchaseDate, request.Location), cancellationToken);
+        if (request.PurchaseDate is null)
+            return BadRequest("Purchase date is required");
+
+        var result = await mediator.Send(new OpenPurchaseReceiptCommand(request.PurchaseDate.Value, request.Location), cancellationToken);
         var response = new OpenPurchaseReceiptResponse(result.Id);
         return Created($"{response.Id}", response);
     }
