@@ -1,8 +1,8 @@
 ﻿using Receipt.Domain.Models;
 
-namespace Receipt.Tests;
+namespace Receipt.Tests.Domain;
 
-public class ReceiptLineCreationTests
+public class ReceiptLineTests
 {
     [Fact]
     public void Create_Sets_All_Properties_Correctly()
