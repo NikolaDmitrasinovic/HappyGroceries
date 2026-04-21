@@ -64,6 +64,24 @@ public class OpenPurchaseReceiptValidatorTests
     }
 
     [Fact]
+    public void Validate_Returns_No_Failures_When_PurchaseDate_Is_Today()
+    {
+        // Arrange
+        var clock = new FakeClock(new DateTime(2026, 4, 24, 10, 0, 0, DateTimeKind.Utc));
+        var validator = new OpenPurchaseReceiptValidator(clock);
+
+        var request = new OpenPurchaseReceiptCommand(
+            new DateOnly(2026, 4, 24),
+            "some-location");
+
+        // Act
+        var failures = validator.Validate(request);
+
+        // Assert
+        Assert.Empty(failures);
+    }
+
+    [Fact]
     public void Validate_Returns_No_Failures_When_PurchaseDate_Equals_MinimumDate()
     {
         // Right now minimumDate is hard coded as 10 years ago
