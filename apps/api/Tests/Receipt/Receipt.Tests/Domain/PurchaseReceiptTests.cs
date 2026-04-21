@@ -1,6 +1,7 @@
 ﻿using Receipt.Domain.Models;
+using Receipt.Tests.TestHelpers;
 
-namespace Receipt.Tests;
+namespace Receipt.Tests.Domain;
 
 public class PurchaseReceiptTests
 {
