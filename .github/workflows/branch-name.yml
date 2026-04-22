@@ -21,7 +21,7 @@ jobs:
           echo "Validating branch: $BRANCH"
           echo "Actor: $ACTOR"
 
-          if [[ "$ACTOR" == dependabot[bot]" "]] || [[ "$BRANCH" == dependabot* ]]; then
+          if [[ "$ACTOR" == "dependabot[bot]" ]] || [[ "$BRANCH" == dependabot* ]]; then
            echo "✅ Dependabot PR detected. Skipping branch name validation."
            exit 0
           fi
@@ -50,13 +50,13 @@ jobs:
             exit 1
            fi
 
-           if [[ "$TYPE" =~ "docs" ]] && [[ "$SCOPE" != "DOCS" ]]; then
+           if [[ "$TYPE" == "docs" ]] && [[ "$SCOPE" != "DOCS" ]]; then
             echo ""
             echo "❌ DOCS scope required for docs type PR"
             exit 1
            fi
 
-           if [[ "$TYPE" =~ "ci" ]] && [[ "$SCOPE" != "CI" ]]; then
+           if [[ "$TYPE" == "ci" ]] && [[ "$SCOPE" != "CI" ]]; then
             echo ""
             echo "❌ CI scope required for ci type PR"
             exit 1
