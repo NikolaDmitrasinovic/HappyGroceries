@@ -16,7 +16,16 @@ jobs:
           set -euo pipefail
 
           BRANCH="${{ github.head_ref }}"
+          BRANCH="${{ github.head_ref }}"
+          ACTOR="#{{ github.actor }}"
+
           echo "Validating branch: $BRANCH"
+          echo "Actor: $ACTOR"
+
+          if [[ "$ACTOR" == dependabot[bot]" "]] || [[ "$BRANCH" == dependabot* ]]; then
+           echo "✅ Dependabot PR detected. Skipping branch name validation."
+           exit 0
+          fi
 
           # Allowed:
           # <type>/<SCOPE>(-<issueNumber>)?_<kebab-case>
@@ -54,7 +63,7 @@ jobs:
             exit 1
            fi
 
-           if [[ "$SCOPE" =~ ^(BE|FE)$ ]] && [[ "$TYPE" =~ ^(dock|ci)$ ]]; then
+           if [[ "$SCOPE" =~ ^(BE|FE)$ ]] && [[ "$TYPE" =~ ^(docs|ci)$ ]]; then
             echo ""
             echo "❌ Scope '$SCOPE' cannot be used with type '$TYPE'"
             exit 1
