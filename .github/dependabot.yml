@@ -12,6 +12,13 @@ updates:
     prefix: "ci(dependabot)"
    pull-request-branch-name:
     separator: "-"
+   groups:
+    nuget-minor-and-patch:
+     patterns:
+      - "*"
+     update-types:
+      - "minor"
+      - "patch"
 
  - package-ecosystem: "github-actions"
    directory: "/"
@@ -24,3 +31,10 @@ updates:
     prefix: "ci(dependabot)"
    pull-request-branch-name:
     separator: "-"
+   groups:
+    actions-minor-and-patch:
+     patterns:
+      - "*"
+     update-types:
+      - "minor"
+      - "patch"
