@@ -16,7 +16,15 @@ jobs:
       set -euo pipefail
 
       TITLE="${{ github.event.pull_request.title }}"
+      ACTOR="${{ github.actor }}"
+
       echo "PR title: $TITLE"
+      echo "Actor: $ACTOR"
+      
+      if [[ "$ACTOR" == "dependabot[bot]" ]]; then
+       echo "✅ Dependabot PR detected. Skipping branch name validation."
+       exit 0
+      fi      
 
       # Format: type(scope): sumary
 
