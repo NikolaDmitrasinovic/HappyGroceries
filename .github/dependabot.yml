@@ -8,6 +8,8 @@ updates:
    open-pull-requests-limit: 3
    labels:
     - "CI"
+   reviewrs:
+    - "NikolaDmitrasinovic"
    commit-message:
     prefix: "ci(dependabot)"
    pull-request-branch-name:
@@ -27,6 +29,8 @@ updates:
    open-pull-requests-limit: 2
    labels:
     - "CI"
+   reviewrs:
+    - "NikolaDmitrasinovic"
    commit-message:
     prefix: "ci(dependabot)"
    pull-request-branch-name:
