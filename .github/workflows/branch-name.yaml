@@ -51,16 +51,16 @@ jobs:
            echo "Scope : $SCOPE"
            echo "Issue : ${ISSUE:-none}"
 
-           if [[ "$TYPE" =~  ^(${ISSUE_TYPES})$ ]]; then
-            if [[ -z "$ISSUE" ]] then;
-             echo ""
-             echo "❌ Issue number is required for type '$TYPE'"
-             exit 1
-            fi
-            
+           if [[ "$TYPE" =~  ^(${ISSUE_TYPES})$ ]] && [[ -z "$ISSUE" ]]; then
+            echo ""
+            echo "❌ Issue number is required for type '$TYPE'"
+            exit 1
+           fi
+
+           if [[ -n "$ISSUE" ]]; then            
             STATE="$(gh api "repos/${REPOSITORY}/issues/${ISSUE}" --jq '.state' 2>/dev/null || true)"
 
-            if [[ -z "$ISSUE" ]]; then
+            if [[ -z "$STATE" ]]; then
              echo ""
              echo "❌ Issue #$ISSUE does not exist or cannot be accessed."
              exit 1
