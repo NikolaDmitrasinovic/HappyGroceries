@@ -18,13 +18,13 @@ jobs:
         shell: bash
         env:
          GH_TOKEN: ${{ github.token }}
+         BRANCH: ${{ github.head_ref }}
+         ACTOR: ${{ github.actor }}
+         REPOSITORY: ${{ github.repository }}
+         
         run: |
           set -euo pipefail
-
-          BRANCH="${{ github.head_ref }}"
-          ACTOR="${{ github.actor }}"
-          REPOSITORY="${{ github.repository }}"
-
+          
           echo "Validating branch: $BRANCH"
           echo "Actor: $ACTOR"
 

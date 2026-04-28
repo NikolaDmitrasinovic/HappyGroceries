@@ -12,12 +12,13 @@ jobs:
   steps:
    - name: Validate title
      shell: bash
-     run: |
-      set -euo pipefail
+     env:
+      TITLE: ${{ github.event.pull_request.title }}
+      ACTOR: ${{ github.actor }}
+      BRANCH: ${{ github.head_ref }}
 
-      TITLE="${{ github.event.pull_request.title }}"
-      ACTOR="${{ github.actor }}"
-      BRANCH="${{ github.head_ref }}"
+     run: |
+      set -euo pipefail      
 
       echo "PR title: $TITLE"
       echo "Actor: $ACTOR"
