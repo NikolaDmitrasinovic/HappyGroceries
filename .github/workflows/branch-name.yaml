@@ -4,6 +4,10 @@ on:
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
 
+permissions:
+ contents: read
+ issues: read
+
 jobs:
   branch-name:
     name: Check PR source branch name
@@ -12,16 +16,19 @@ jobs:
     steps:
       - name: Validate branch name format
         shell: bash
+        env:
+         GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
 
           BRANCH="${{ github.head_ref }}"
           ACTOR="${{ github.actor }}"
+          REPOSITORY="${{ github.repository }}"
 
           echo "Validating branch: $BRANCH"
           echo "Actor: $ACTOR"
 
-          if [[ "$ACTOR" == "dependabot[bot]" ]]; then
+          if [[ "$ACTOR" == "dependabot[bot]" || "$BRANCH" == dependabot/* ]]; then
            echo "✅ Dependabot PR detected. Skipping branch name validation."
            exit 0
           fi
@@ -30,7 +37,7 @@ jobs:
           # <type>/<SCOPE>(-<issueNumber>)?_<kebab-case>
 
           TYPES='(feat|fix|refactor|chore|docs|test|ci|hotfix)'
-          ISSUE_TYPES='feat|fix|hotfix'
+          ISSUE_TYPES='feat|fix|chore'
           SCOPES='(BE|FE|CI|INFRA|DOCS)'
           REGEX="^${TYPES}\/${SCOPES}(-[0-9]+)?_[a-z0-9]+(-[a-z0-9]+)*$"
 
@@ -44,10 +51,26 @@ jobs:
            echo "Scope : $SCOPE"
            echo "Issue : ${ISSUE:-none}"
 
-           if [[ "$TYPE" =~  ^(${ISSUE_TYPES})$ ]] && [[ -z "$ISSUE" ]]; then
-            echo ""
-            echo "❌ Issue number is required for type '$TYPE'"
-            exit 1
+           if [[ "$TYPE" =~  ^(${ISSUE_TYPES})$ ]]; then
+            if [[ -z "$ISSUE" ]] then;
+             echo ""
+             echo "❌ Issue number is required for type '$TYPE'"
+             exit 1
+            fi
+            
+            STATE="$(gh api "repos/${REPOSITORY}/issues/${ISSUE}" --jq '.state' 2>/dev/null || true)"
+
+            if [[ -z "$ISSUE" ]]; then
+             echo ""
+             echo "❌ Issue #$ISSUE does not exist or cannot be accessed."
+             exit 1
+            fi
+
+            if [[ "$STATE" != "open" ]]; then
+             echo ""
+             echo "❌ Issue #$ISSUE must be open. Current state: $STATE"
+             exit 1
+            fi
            fi
 
            if [[ "$TYPE" == "docs" ]] && [[ "$SCOPE" != "DOCS" ]]; then
