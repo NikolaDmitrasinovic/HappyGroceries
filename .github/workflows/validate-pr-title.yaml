@@ -12,17 +12,20 @@ jobs:
   steps:
    - name: Validate title
      shell: bash
-     run: |
-      set -euo pipefail
+     env:
+      TITLE: ${{ github.event.pull_request.title }}
+      ACTOR: ${{ github.actor }}
+      BRANCH: ${{ github.head_ref }}
 
-      TITLE="${{ github.event.pull_request.title }}"
-      ACTOR="${{ github.actor }}"
+     run: |
+      set -euo pipefail      
 
       echo "PR title: $TITLE"
       echo "Actor: $ACTOR"
+      echo "Branch: $BRANCH"
       
-      if [[ "$ACTOR" == "dependabot[bot]" ]]; then
-       echo "✅ Dependabot PR detected. Skipping branch name validation."
+      if [[ "$ACTOR" == "dependabot[bot]" || "$BRANCH" == dependabot/* ]]; then
+       echo "✅ Dependabot PR detected. Skipping PR title validation."
        exit 0
       fi      
 

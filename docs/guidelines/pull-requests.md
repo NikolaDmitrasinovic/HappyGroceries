@@ -7,6 +7,8 @@ Clear, consistent titles make the project history easy to scan and understand la
 
 Labels are useful in GitHub UI, but they do not appear in git history.
 
+Dependabot-created branches are exempt from these rules.
+
 ---
 
 ## PR Title Format

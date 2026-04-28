@@ -6,6 +6,8 @@ consistent, readable, and easy to reason about.
 Branch names are validated automatically via GitHub Actions.
 Pull requests with invalid branch names cannot be merged.
 
+Dependabot-created branches are exempt from these rules.
+
 ---
 
 ## Format
@@ -60,7 +62,7 @@ An issue number is **required** for the following branch types:
 
 - `feat`
 - `fix`
-- `hotfix`
+- `chore`
 
 Other types may omit the issue number.
 
@@ -80,11 +82,11 @@ Other types may omit the issue number.
 
 feat/BE-12_run-db-via-docker
 fix/FE-31_fix-capacity-form-validation
-hotfix/BE-77_fix-prod-crash
+chore/CI-77_add-issue-and-pr-templates
 
 ### Without issue number
 
-chore/CI_add-issue-and-pr-templates
+hotfix/CI_patch-runner-timeout
 docs/DOCS_add-branch-naming-doc
 ci/CI_add-branch-name-validation
 
