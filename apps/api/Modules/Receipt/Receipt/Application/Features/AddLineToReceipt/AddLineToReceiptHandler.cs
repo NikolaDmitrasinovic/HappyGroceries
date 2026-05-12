@@ -15,7 +15,6 @@ internal class AddLineToReceiptHandler(ReceiptDbContext dbContext) : ICommandHan
 
         var addedLine = receipt.Lines[receipt.Lines.Count - 1];
 
-        await dbContext.ReceiptLines.AddAsync(addedLine, cancellationToken);
         await dbContext.SaveChangesAsync(cancellationToken);
 
         return new AddLineToReceiptResult(addedLine.Id);
