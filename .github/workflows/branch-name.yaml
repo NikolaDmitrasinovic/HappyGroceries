@@ -4,6 +4,10 @@ on:
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
 
+permissions:
+ contents: read
+ issues: read
+
 jobs:
   branch-name:
     name: Check PR source branch name
@@ -12,17 +16,28 @@ jobs:
     steps:
       - name: Validate branch name format
         shell: bash
+        env:
+         GH_TOKEN: ${{ github.token }}
+         BRANCH: ${{ github.head_ref }}
+         ACTOR: ${{ github.actor }}
+         REPOSITORY: ${{ github.repository }}
+         
         run: |
           set -euo pipefail
-
-          BRANCH="${{ github.head_ref }}"
+          
           echo "Validating branch: $BRANCH"
+          echo "Actor: $ACTOR"
+
+          if [[ "$ACTOR" == "dependabot[bot]" || "$BRANCH" == dependabot/* ]]; then
+           echo "✅ Dependabot PR detected. Skipping branch name validation."
+           exit 0
+          fi
 
           # Allowed:
           # <type>/<SCOPE>(-<issueNumber>)?_<kebab-case>
 
           TYPES='(feat|fix|refactor|chore|docs|test|ci|hotfix)'
-          ISSUE_TYPES='feat|fix|hotfix'
+          ISSUE_TYPES='feat|fix|chore'
           SCOPES='(BE|FE|CI|INFRA|DOCS)'
           REGEX="^${TYPES}\/${SCOPES}(-[0-9]+)?_[a-z0-9]+(-[a-z0-9]+)*$"
 
@@ -42,19 +57,35 @@ jobs:
             exit 1
            fi
 
-           if [[ "$TYPE" =~ "docs" ]] && [[ "$SCOPE" != "DOCS" ]]; then
+           if [[ -n "$ISSUE" ]]; then            
+            STATE="$(gh api "repos/${REPOSITORY}/issues/${ISSUE}" --jq '.state' 2>/dev/null || true)"
+
+            if [[ -z "$STATE" ]]; then
+             echo ""
+             echo "❌ Issue #$ISSUE does not exist or cannot be accessed."
+             exit 1
+            fi
+
+            if [[ "$STATE" != "open" ]]; then
+             echo ""
+             echo "❌ Issue #$ISSUE must be open. Current state: $STATE"
+             exit 1
+            fi
+           fi
+
+           if [[ "$TYPE" == "docs" ]] && [[ "$SCOPE" != "DOCS" ]]; then
             echo ""
             echo "❌ DOCS scope required for docs type PR"
             exit 1
            fi
 
-           if [[ "$TYPE" =~ "ci" ]] && [[ "$SCOPE" != "CI" ]]; then
+           if [[ "$TYPE" == "ci" ]] && [[ "$SCOPE" != "CI" ]]; then
             echo ""
             echo "❌ CI scope required for ci type PR"
             exit 1
            fi
 
-           if [[ "$SCOPE" =~ ^(BE|FE)$ ]] && [[ "$TYPE" =~ ^(dock|ci)$ ]]; then
+           if [[ "$SCOPE" =~ ^(BE|FE)$ ]] && [[ "$TYPE" =~ ^(docs|ci)$ ]]; then
             echo ""
             echo "❌ Scope '$SCOPE' cannot be used with type '$TYPE'"
             exit 1

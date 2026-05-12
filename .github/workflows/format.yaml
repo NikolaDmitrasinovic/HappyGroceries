@@ -1,4 +1,4 @@
-name: CI (.NET)
+name: Format
 
 on:
  pull_request:
@@ -10,8 +10,8 @@ permissions:
  contents: read
 
 jobs:
- build_and_test:
-  name: Buid & test
+ format:
+  name: dotnet_format
   runs-on: ubuntu-latest
 
   defaults:
@@ -20,18 +20,15 @@ jobs:
 
   steps:
    - name: Checkout
-     uses: actions/checkout@v4
+     uses: actions/checkout@v6
 
    - name: Setup .NET
-     uses: actions/setup-dotnet@v4
+     uses: actions/setup-dotnet@v5
      with:
       dotnet-version: "10.0.x"
 
    - name: Restore
      run: dotnet restore ./backbone.slnx
 
-   - name: Build
-     run: dotnet build ./backbone.slnx -c Release --no-restore
-
-   - name: Test
-     run: dotnet test ./backbone.slnx -c Release --no-build
+   - name: Verify formatting
+     run: dotnet format ./backbone.slnx --verify-no-changes
