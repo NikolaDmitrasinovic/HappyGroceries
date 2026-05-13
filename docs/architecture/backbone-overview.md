@@ -1,7 +1,17 @@
 # NELI App Overview
 
 ## Purpose
-What problem the app solves and what kind of system it is becoming.
+NELI is a personal groceries and spending tracking application focused on managing household products, purchase receipts, and shopping-related insights.
+
+The backend is being developed as a modular monolith with clear domain boundaries and an emphasis on incremental architectural evolution.
+
+Current functionality focuses on:
+
+tracking inventory products and stock levels
+recording purchase receipts and receipt lines
+preparing the foundation for future spending analysis and shopping workflows
+
+The project is intentionally evolving feature-by-feature to balance learning, maintainability, and real-world architectural practices.
 
 ## Current architecture
 - Modular monolith
@@ -18,10 +28,18 @@ Purpose:
 - Tracks products and stock levels
 
 Current capabilities:
-- Create/update products
-- Track stock and thresholds
-- Identify low-stock products
-- Raise restock warning domain events
+- Create products
+- Query products and low-stock products
+- Track stock and threshold values
+- Raise restock warning domain events when stock crosses into low-stock state
+
+Current scope:
+- Inventory currently exposes only the endpoints needed for the initial MVP flow
+- Full CRUD support is intentionally deferred until broader application workflows are implemented
+
+Implementation notes:
+- Product update logic already exists at the application/domain level
+- Public API surface remains intentionally minimal during early development
 
 ### Receipt
 Purpose:
