@@ -6,16 +6,14 @@ This project is built as a **modular monolith** with a web frontend, designed to
 
 ## Backend
 
-- **Platform**: .NET (ASP.NET Core, targeting .NET 8+)
+- **Platform**: .NET / ASP.NET Core
 - **Language**: C#
 - **Architecture**:
   - Modular monolith
-  - Layered structure:
-    - Api
-    - Domain
-    - Application
-    - Infrastructure
-  - Domain-centric design with explicit boundaries per feature
+  - Domain-centric backend structure
+  - Shared API/bootstrapper layer
+  - Module boundaries evolved incrementally
+  - Layering introduced where it provides value
 - **API Style**:
   - REST
   - OpenAPI (Swagger) as the contract source of truth
