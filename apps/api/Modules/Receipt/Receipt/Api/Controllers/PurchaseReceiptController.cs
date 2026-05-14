@@ -34,7 +34,7 @@ public class PurchaseReceiptController(IMediator mediator) : ControllerBase
         [FromBody] AddLineToReceiptRequest request,
         CancellationToken cancellationToken)
     {
-        var result = await mediator.Send(new AddLineToReceiptCommand(receiptId, request.ProductName, request.UnitPrice, request.Quantity), cancellationToken);
+        var result = await mediator.Send(new AddLineToReceiptCommand(receiptId, request.ProductId, request.ProductName, request.UnitPrice, request.Quantity), cancellationToken);
         var response = new AddLineToReceiptResponse(result.ReceiptLineId);
         return Ok(response);
     }
