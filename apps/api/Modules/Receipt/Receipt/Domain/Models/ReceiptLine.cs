@@ -3,6 +3,7 @@
 public class ReceiptLine : Entity<Guid>
 {
     public Guid ReceiptId { get; private set; }
+    public Guid ProductId { get; private set; }
     public string ProductName { get; private set; } = default!;
     public decimal UnitPrice { get; private set; }
     public int Quantity { get; private set; }
@@ -11,7 +12,7 @@ public class ReceiptLine : Entity<Guid>
 
     private ReceiptLine() { }
 
-    public static ReceiptLine Create(Guid receiptId, string productName, decimal unitPrice, int quantity)
+    public static ReceiptLine Create(Guid receiptId, Guid productId, string productName, decimal unitPrice, int quantity)
     {
         if (receiptId == Guid.Empty)
             throw new ArgumentException("Receipt id cannot be empty.", nameof(receiptId));
@@ -23,6 +24,7 @@ public class ReceiptLine : Entity<Guid>
         return new ReceiptLine
         {
             ReceiptId = receiptId,
+            ProductId =  productId,
             ProductName = productName,
             UnitPrice = unitPrice,
             Quantity = quantity
