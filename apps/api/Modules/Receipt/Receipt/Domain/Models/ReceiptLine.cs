@@ -22,7 +22,6 @@ public class ReceiptLine : Entity<Guid>
 
         return new ReceiptLine
         {
-            Id = Guid.NewGuid(),
             ReceiptId = receiptId,
             ProductName = productName,
             UnitPrice = unitPrice,
