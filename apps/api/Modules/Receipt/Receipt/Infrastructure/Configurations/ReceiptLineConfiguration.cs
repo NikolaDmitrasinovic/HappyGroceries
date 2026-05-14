@@ -11,7 +11,8 @@ public class ReceiptLineConfiguration : IEntityTypeConfiguration<ReceiptLine>
         builder.Property(x => x.ReceiptId)
             .IsRequired();
 
-        builder.Property(x => x.ProductId);
+        builder.Property(x => x.ProductId)
+            .IsRequired(false);
 
         builder.Property(x => x.ProductName)
             .HasMaxLength(100)
