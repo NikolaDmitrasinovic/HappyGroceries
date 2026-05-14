@@ -9,12 +9,13 @@ public class ReceiptLineTests
     {
         // Arrange
         var receiptId = Guid.NewGuid();
+        var productId = Guid.NewGuid();
         var productName = "some-product";
         var unitPrice = 1.5m;
         var quantity = 1;
 
         // Act
-        var receiptLine = ReceiptLine.Create(receiptId, productName, unitPrice, quantity);
+        var receiptLine = ReceiptLine.Create(receiptId, productId, productName, unitPrice, quantity);
 
         // Assert
         Assert.Equal(receiptId, receiptLine.ReceiptId);
@@ -30,7 +31,7 @@ public class ReceiptLineTests
 
         // Act
         var exception = Assert.Throws<ArgumentException>(() =>
-            ReceiptLine.Create(Guid.Empty, "some-product", 1.5m, 1));
+            ReceiptLine.Create(Guid.Empty, Guid.NewGuid(), "some-product", 1.5m, 1));
 
         // Assert
         Assert.Equal("receiptId", exception.ParamName);
@@ -45,7 +46,7 @@ public class ReceiptLineTests
 
         // Act
         var exception = Assert.Throws<ArgumentException>(() =>
-            ReceiptLine.Create(Guid.NewGuid(), productName, 1.5m, 1));
+            ReceiptLine.Create(Guid.NewGuid(), Guid.NewGuid(),  productName, 1.5m, 1));
 
         // Assert
         Assert.Equal("productName", exception.ParamName);
@@ -58,7 +59,7 @@ public class ReceiptLineTests
         var unitPrice = 0m;
 
         // Act
-        var receiptLine = ReceiptLine.Create(Guid.NewGuid(), "some-product", unitPrice, 1);
+        var receiptLine = ReceiptLine.Create(Guid.NewGuid(), Guid.NewGuid(),"some-product", unitPrice, 1);
 
         // Assert
         Assert.Equal(unitPrice, receiptLine.UnitPrice);
@@ -69,11 +70,11 @@ public class ReceiptLineTests
     public void Create_Throws_When_UnitPrice_Is_Negative()
     {
         // Arrange
-        var negativePrice = -1.5m;
+        const decimal negativePrice = -1.5m;
 
         // Act
         var exception = Assert.Throws<ArgumentOutOfRangeException>(() =>
-            ReceiptLine.Create(Guid.NewGuid(), "some-product", negativePrice, 1));
+            ReceiptLine.Create(Guid.NewGuid(), Guid.NewGuid(), "some-product", negativePrice, 1));
 
         // Assert
         Assert.Equal("unitPrice", exception.ParamName);
@@ -88,7 +89,7 @@ public class ReceiptLineTests
 
         // Act
         var exception = Assert.Throws<ArgumentOutOfRangeException>(() =>
-            ReceiptLine.Create(Guid.NewGuid(), "some-product", 1.5m, quantity));
+            ReceiptLine.Create(Guid.NewGuid(), Guid.NewGuid(),"some-product", 1.5m, quantity));
 
         // Assert
         Assert.Equal("quantity", exception.ParamName);
@@ -98,11 +99,11 @@ public class ReceiptLineTests
     public void Create_Calculates_LineTotal_Correctly()
     {
         // Arrange
-        var unitPrice = 1.0m;
-        var quantity = 2;
+        const decimal unitPrice = 1.0m;
+        const int quantity = 2;
 
         // Act
-        var receiptLine = ReceiptLine.Create(Guid.NewGuid(), "some-product", unitPrice, quantity);
+        var receiptLine = ReceiptLine.Create(Guid.NewGuid(), Guid.NewGuid(), "some-product", unitPrice, quantity);
 
         // Assert
         Assert.Equal(unitPrice * quantity, receiptLine.LineTotal);

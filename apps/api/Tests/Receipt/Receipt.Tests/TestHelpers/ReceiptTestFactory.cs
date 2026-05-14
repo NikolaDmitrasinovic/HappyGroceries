@@ -20,7 +20,7 @@ public static class ReceiptTestFactory
     string location = "some-location")
     {
         var receipt = CreateOpenReceipt(purchaseDate, location);
-        receipt.AddLine("some-product", 1.0m, 1);
+        receipt.AddLine(Guid.NewGuid(),"some-product", 1.0m, 1);
         receipt.MarkAsFinalized();
         receipt.ClearDomainEvents();
         return receipt;

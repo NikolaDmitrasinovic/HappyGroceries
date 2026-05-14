@@ -10,7 +10,7 @@ public class PurchaseReceiptTests
     {
         // Arrange
         var purchaseDate = DateOnly.Parse("2026-04-01");
-        var location = "some-location";
+        const string location = "some-location";
 
         // Act
         var receipt = PurchaseReceipt.Open(purchaseDate, location);
@@ -45,7 +45,7 @@ public class PurchaseReceiptTests
         var receipt = ReceiptTestFactory.CreateOpenReceipt();
 
         // Act
-        receipt.AddLine("some-product", 1.5m, 2);
+        receipt.AddLine(Guid.NewGuid(), "some-product", 1.5m, 2);
 
         // Assert
         Assert.Single(receipt.Lines);
@@ -59,8 +59,8 @@ public class PurchaseReceiptTests
         var receipt = ReceiptTestFactory.CreateOpenReceipt();
 
         // Act
-        receipt.AddLine("product-1", 2.0m, 2);
-        receipt.AddLine("product-2", 1.5m, 2);
+        receipt.AddLine(Guid.NewGuid(), "product-1", 2.0m, 2);
+        receipt.AddLine(Guid.NewGuid(), "product-2", 1.5m, 2);
 
         // Assert
         Assert.Equal(7.0m, receipt.TotalAmount);
@@ -74,7 +74,7 @@ public class PurchaseReceiptTests
 
         // Act
         var exception = Assert.Throws<InvalidOperationException>(() =>
-            receipt.AddLine("some-product", 1.0m, 1));
+            receipt.AddLine(Guid.NewGuid(), "some-product", 1.0m, 1));
 
         // Assert
         Assert.Equal("Lines can only be added to an open receipt.", exception.Message);
@@ -85,7 +85,7 @@ public class PurchaseReceiptTests
     {
         // Arrange
         var receipt = ReceiptTestFactory.CreateOpenReceipt();
-        receipt.AddLine("some-product", 1.0m, 1);
+        receipt.AddLine(Guid.NewGuid(), "some-product", 1.0m, 1);
 
         // Act
         receipt.MarkAsFinalized();
