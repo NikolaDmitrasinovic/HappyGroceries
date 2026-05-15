@@ -11,7 +11,7 @@ internal class AddLineToReceiptHandler(ReceiptDbContext dbContext) : ICommandHan
             .FirstOrDefaultAsync(r => r.Id == request.ReceiptId, cancellationToken)
             ?? throw new NotFoundException($"Receipt with id {request.ReceiptId} not found.");
 
-        receipt.AddLine(request.ProductName, request.UnitPrice, request.Quantity);
+        receipt.AddLine(request.ProductId, request.ProductName, request.UnitPrice, request.Quantity);
 
         var addedLine = receipt.Lines[receipt.Lines.Count - 1];
 

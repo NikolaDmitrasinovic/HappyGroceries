@@ -24,12 +24,12 @@ public class PurchaseReceipt : Aggregate<Guid>
         };
     }
 
-    public void AddLine(string productName, decimal unitPrice, int quantity)
+    public void AddLine(Guid? productId, string productName, decimal unitPrice, int quantity)
     {
         if (Status != ReceiptStatus.Open)
             throw new InvalidOperationException("Lines can only be added to an open receipt.");
 
-        _lines.Add(ReceiptLine.Create(Id, productName, unitPrice, quantity));
+        _lines.Add(ReceiptLine.Create(Id, productId, productName, unitPrice, quantity));
         RecalculateTotalAmount();
     }
 
