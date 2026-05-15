@@ -24,12 +24,12 @@ public class ReceiptLineTests
         Assert.Equal(unitPrice, receiptLine.UnitPrice);
         Assert.Equal(quantity, receiptLine.Quantity);
     }
-    
+
     [Fact]
     public void Create_Allows_Null_ProductId()
     {
         // This is intended behavior until we wire Inventory-Receipt modules
-        
+
         // Arrange
         Guid? productId = null;
 
@@ -62,7 +62,7 @@ public class ReceiptLineTests
 
         // Act
         var exception = Assert.Throws<ArgumentException>(() =>
-            ReceiptLine.Create(Guid.NewGuid(), Guid.NewGuid(),  productName, 1.5m, 1));
+            ReceiptLine.Create(Guid.NewGuid(), Guid.NewGuid(), productName, 1.5m, 1));
 
         // Assert
         Assert.Equal("productName", exception.ParamName);
@@ -75,7 +75,7 @@ public class ReceiptLineTests
         var unitPrice = 0m;
 
         // Act
-        var receiptLine = ReceiptLine.Create(Guid.NewGuid(), Guid.NewGuid(),"some-product", unitPrice, 1);
+        var receiptLine = ReceiptLine.Create(Guid.NewGuid(), Guid.NewGuid(), "some-product", unitPrice, 1);
 
         // Assert
         Assert.Equal(unitPrice, receiptLine.UnitPrice);
@@ -105,7 +105,7 @@ public class ReceiptLineTests
 
         // Act
         var exception = Assert.Throws<ArgumentOutOfRangeException>(() =>
-            ReceiptLine.Create(Guid.NewGuid(), Guid.NewGuid(),"some-product", 1.5m, quantity));
+            ReceiptLine.Create(Guid.NewGuid(), Guid.NewGuid(), "some-product", 1.5m, quantity));
 
         // Assert
         Assert.Equal("quantity", exception.ParamName);
