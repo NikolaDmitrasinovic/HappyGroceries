@@ -10,18 +10,34 @@ public class ReceiptLineTests
         // Arrange
         var receiptId = Guid.NewGuid();
         var productId = Guid.NewGuid();
-        var productName = "some-product";
-        var unitPrice = 1.5m;
-        var quantity = 1;
+        const string productName = "some-product";
+        const decimal unitPrice = 1.5m;
+        const int quantity = 1;
 
         // Act
         var receiptLine = ReceiptLine.Create(receiptId, productId, productName, unitPrice, quantity);
 
         // Assert
         Assert.Equal(receiptId, receiptLine.ReceiptId);
+        Assert.Equal(productId, receiptLine.ProductId);
         Assert.Equal(productName, receiptLine.ProductName);
         Assert.Equal(unitPrice, receiptLine.UnitPrice);
         Assert.Equal(quantity, receiptLine.Quantity);
+    }
+    
+    [Fact]
+    public void Create_Allows_Null_ProductId()
+    {
+        // This is intended behavior until we wire Inventory-Receipt modules
+        
+        // Arrange
+        Guid? productId = null;
+
+        // Act
+        var receiptLine = ReceiptLine.Create(Guid.NewGuid(), productId, "some-product", 1.5m, 1);
+
+        // Assert
+        Assert.Null(receiptLine.ProductId);
     }
 
     [Fact]
