@@ -56,6 +56,13 @@ public class Product : Aggregate<Guid>
             AddDomainEvent(new RestockWarningEvent(this));
     }
 
+    public void ConsumeStock(int delta)
+    {
+        ArgumentOutOfRangeException.ThrowIfNegative(delta, nameof(delta));
+
+        AdjustStock(-delta);
+    }
+
     public void AdjustStock(int delta)
     {
         var wasLowStock = IsLowStock;
