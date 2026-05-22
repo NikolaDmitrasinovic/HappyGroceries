@@ -71,6 +71,7 @@ public class Product : Aggregate<Guid>
 
     public void AdjustStock(int delta)
     {
+        // method must stay public until v1 is deprecated
         var wasLowStock = IsLowStock;
 
         ArgumentOutOfRangeException.ThrowIfNegative(Stock + delta, nameof(delta));
