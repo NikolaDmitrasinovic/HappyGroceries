@@ -16,7 +16,7 @@ public class ProductStockAdjustmentTests
     }
 
     [Fact]
-    public void ReplenishStock_Decreases_Stock()
+    public void ReplenishStock_Increases_Stock()
     {
         // Arrange
         var product = ProductTestFactory.CreateProduct(stock: 5);
