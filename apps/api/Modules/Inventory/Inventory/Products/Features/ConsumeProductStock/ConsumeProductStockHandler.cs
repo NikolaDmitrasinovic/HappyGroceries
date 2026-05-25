@@ -2,7 +2,7 @@ namespace Inventory.Products.Features.ConsumeProductStock;
 
 public record ConsumeProductStockCommand(Guid Id, int Delta)
     : ICommand<ConsumeProductStockResult>;
-    
+
 public record ConsumeProductStockResult(Guid Id);
 
 internal sealed class ConsumeProductStockValidator : IRequestValidator<ConsumeProductStockCommand>
@@ -16,7 +16,7 @@ internal sealed class ConsumeProductStockValidator : IRequestValidator<ConsumePr
 
         if (request.Delta == 0)
             failures.Add(new ValidationFailure(nameof(request.Delta), "Delta cannot be 0."));
-        
+
         if (request.Delta < 0)
             failures.Add(new ValidationFailure(nameof(request.Delta), "Delta cannot be negative."));
 
@@ -34,7 +34,7 @@ internal class ConsumeProductStockHandler(InventoryDbContext dbContext)
 
         product.ConsumeStock(command.Delta);
         await dbContext.SaveChangesAsync(cancellationToken);
-        
+
         return new ConsumeProductStockResult(product.Id);
     }
 }

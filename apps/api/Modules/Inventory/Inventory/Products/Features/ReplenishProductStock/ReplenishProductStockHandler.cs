@@ -16,7 +16,7 @@ internal sealed class ReplenishProductStockValidator : IRequestValidator<Repleni
 
         if (request.Delta == 0)
             failures.Add(new ValidationFailure(nameof(request.Delta), "Delta cannot be 0."));
-        
+
         if (request.Delta < 0)
             failures.Add(new ValidationFailure(nameof(request.Delta), "Delta cannot be negative."));
 
@@ -24,7 +24,7 @@ internal sealed class ReplenishProductStockValidator : IRequestValidator<Repleni
     }
 }
 
-internal class ReplenishProductStockHandler(InventoryDbContext dbContext) 
+internal class ReplenishProductStockHandler(InventoryDbContext dbContext)
     : ICommandHandler<ReplenishProductStockCommand, ReplenishProductStockResult>
 {
     public async Task<ReplenishProductStockResult> Handle(ReplenishProductStockCommand command, CancellationToken cancellationToken)
@@ -34,7 +34,7 @@ internal class ReplenishProductStockHandler(InventoryDbContext dbContext)
 
         product.ReplenishStock(command.Delta);
         await dbContext.SaveChangesAsync(cancellationToken);
-        
+
         return new ReplenishProductStockResult(product.Id);
     }
 }

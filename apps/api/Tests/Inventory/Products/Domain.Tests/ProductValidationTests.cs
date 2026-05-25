@@ -40,7 +40,7 @@ public class ProductValidationTests
         // Assert
         Assert.Equal("delta", exception.ParamName);
     }
-    
+
     [Fact]
     public void ConsumeStock_Throws_When_Delta_Is_Negative()
     {
@@ -53,7 +53,7 @@ public class ProductValidationTests
         // Assert
         Assert.Equal("delta", exception.ParamName);
     }
-    
+
     [Fact]
     public void ConsumeStock_Throws_When_Result_Negative()
     {
@@ -66,7 +66,7 @@ public class ProductValidationTests
         // Assert
         Assert.Equal("delta", exception.ParamName);
     }
-    
+
     [Fact]
     public void ReplenishStock_Throws_When_Delta_Is_Negative()
     {
