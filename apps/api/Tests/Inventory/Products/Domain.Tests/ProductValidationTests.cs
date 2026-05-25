@@ -61,7 +61,7 @@ public class ProductValidationTests
         var product = ProductTestFactory.CreateProduct(stock: 1);
 
         // Act
-        var exception = Assert.Throws<ArgumentOutOfRangeException>(() => product.ConsumeStock(-5));
+        var exception = Assert.Throws<ArgumentOutOfRangeException>(() => product.ConsumeStock(5));
 
         // Assert
         Assert.Equal("delta", exception.ParamName);
