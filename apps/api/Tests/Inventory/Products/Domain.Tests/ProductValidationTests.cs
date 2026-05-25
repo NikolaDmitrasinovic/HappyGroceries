@@ -40,4 +40,43 @@ public class ProductValidationTests
         // Assert
         Assert.Equal("delta", exception.ParamName);
     }
+
+    [Fact]
+    public void ConsumeStock_Throws_When_Delta_Is_Negative()
+    {
+        // Arrange
+        var product = ProductTestFactory.CreateProduct();
+
+        // Act
+        var exception = Assert.Throws<ArgumentOutOfRangeException>(() => product.ConsumeStock(-5));
+
+        // Assert
+        Assert.Equal("delta", exception.ParamName);
+    }
+
+    [Fact]
+    public void ConsumeStock_Throws_When_Result_Negative()
+    {
+        // Arrange
+        var product = ProductTestFactory.CreateProduct(stock: 1);
+
+        // Act
+        var exception = Assert.Throws<ArgumentOutOfRangeException>(() => product.ConsumeStock(5));
+
+        // Assert
+        Assert.Equal("delta", exception.ParamName);
+    }
+
+    [Fact]
+    public void ReplenishStock_Throws_When_Delta_Is_Negative()
+    {
+        // Arrange
+        var product = ProductTestFactory.CreateProduct();
+
+        // Act
+        var exception = Assert.Throws<ArgumentOutOfRangeException>(() => product.ReplenishStock(-5));
+
+        // Assert
+        Assert.Equal("delta", exception.ParamName);
+    }
 }
