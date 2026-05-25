@@ -24,7 +24,7 @@ jobs:
       echo "Actor: $ACTOR"
       echo "Branch: $BRANCH"
       
-      if [[ "$ACTOR" == "dependabot[bot]" || "$BRANCH" == dependabot-* ]]; then
+      if [[ "$ACTOR" == "dependabot[bot]" || "$BRANCH" == dependabot/* ]]; then
        echo "✅ Dependabot PR detected. Skipping PR title validation."
        exit 0
       fi      
