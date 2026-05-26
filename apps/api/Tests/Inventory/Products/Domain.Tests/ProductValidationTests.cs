@@ -1,4 +1,6 @@
-﻿namespace Domain.Tests;
+﻿using Inventory.Products.Exceptions;
+
+namespace Domain.Tests;
 
 public class ProductValidationTests
 {
@@ -61,10 +63,12 @@ public class ProductValidationTests
         var product = ProductTestFactory.CreateProduct(stock: 1);
 
         // Act
-        var exception = Assert.Throws<ArgumentOutOfRangeException>(() => product.ConsumeStock(5));
+        var exception = Assert.Throws<InsufficientStockException>(() => product.ConsumeStock(5));
 
         // Assert
-        Assert.Equal("delta", exception.ParamName);
+        Assert.Equal(product.Id, exception.ProductId);
+        Assert.Equal(product.Stock, exception.AvailableStock);
+        Assert.Equal(-5, exception.RequestedAmount); // Exception is thrown form AdjustStock TODO: refactor when method becomes private
     }
 
     [Fact]
