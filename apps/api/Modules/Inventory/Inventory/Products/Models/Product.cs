@@ -71,10 +71,12 @@ public class Product : Aggregate<Guid>
 
     public void AdjustStock(int delta)
     {
-        // method must stay public until v1 is deprecated
+        // Method must stay public until v1 is deprecated
         var wasLowStock = IsLowStock;
 
-        ArgumentOutOfRangeException.ThrowIfNegative(Stock + delta, nameof(delta));
+        // TODO: Migrate to ConsumeStock to make intent clearer when method becomes private 
+        if (Stock + delta < 0)
+            throw new InsufficientStockException(Id, Stock, delta);
 
         Stock += delta;
 
