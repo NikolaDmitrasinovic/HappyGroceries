@@ -33,14 +33,17 @@ public class ProductValidationTests
     [Fact]
     public void AdjustStock_Throws_When_Result_Negative()
     {
+        // This test will be removed when method becomes private
         // Arrange
         var product = ProductTestFactory.CreateProduct(stock: 1);
 
         // Act
-        var exception = Assert.Throws<ArgumentOutOfRangeException>(() => product.AdjustStock(-5));
+        var exception = Assert.Throws<InsufficientStockException>(() => product.AdjustStock(-5));
 
         // Assert
-        Assert.Equal("delta", exception.ParamName);
+        Assert.Equal(product.Id, exception.ProductId);
+        Assert.Equal(product.Stock, exception.AvailableStock);
+        Assert.Equal(-5, exception.RequestedAmount);
     }
 
     [Fact]
