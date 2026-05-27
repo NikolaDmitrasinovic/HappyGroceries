@@ -1,7 +1,9 @@
 ﻿using Inventory.Products.Features.AdjustProductStock;
+using Inventory.Products.Features.ConsumeProductStock;
 using Inventory.Products.Features.CreateProduct;
 using Inventory.Products.Features.GetLowStockProducts;
 using Inventory.Products.Features.GetProducts;
+using Inventory.Products.Features.ReplenishProductStock;
 using Inventory.Products.Features.SetProductThreshold;
 using Inventory.Products.Features.UpdateProduct;
 using Microsoft.AspNetCore.Builder;
@@ -26,12 +28,16 @@ public static class InventoryModule
         services.AddScoped<IRequestValidator<UpdateProductCommand>, UpdateProductCommandValidator>();
         services.AddScoped<IRequestValidator<SetProductThresholdCommand>, SetProductThresholdCommandValidator>();
         services.AddScoped<IRequestValidator<AdjustProductStockCommand>, AdjustProductStockCommandValidator>();
+        services.AddScoped<IRequestValidator<ConsumeProductStockCommand>, ConsumeProductStockCommandValidator>();
+        services.AddScoped<IRequestValidator<ReplenishProductStockCommand>, ReplenishProductStockCommandValidator>();
 
         services.AddScoped<IRequestHandler<GetProductsQuery, GetProductsResult>, GetProductsHandler>();
         services.AddScoped<IRequestHandler<GetLowStockProductsQuery, GetLowStockProductsResult>, GetLowStockProductsHandler>();
         services.AddScoped<IRequestHandler<CreateProductCommand, CreateProductResult>, CreateProductHandler>();
         services.AddScoped<IRequestHandler<SetProductThresholdCommand, SetProductThresholdResult>, SetProductThresholdHandler>();
         services.AddScoped<IRequestHandler<AdjustProductStockCommand, AdjustProductStockResult>, AdjustProductStockHandler>();
+        services.AddScoped<IRequestHandler<ConsumeProductStockCommand, ConsumeProductStockResult>, ConsumeProductStockHandler>();
+        services.AddScoped<IRequestHandler<ReplenishProductStockCommand, ReplenishProductStockResult>, ReplenishProductStockHandler>();
 
         // Data - Infrastructure services
         var connectionString = configuration.GetConnectionString("Default");

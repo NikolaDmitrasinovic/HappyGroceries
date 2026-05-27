@@ -7,9 +7,9 @@ The backend is being developed as a modular monolith with clear domain boundarie
 
 Current functionality focuses on:
 
-tracking inventory products and stock levels
-recording purchase receipts and receipt lines
-preparing the foundation for future spending analysis and shopping workflows
+- tracking inventory products and stock levels
+- recording purchase receipts and receipt lines
+- preparing the foundation for future spending analysis and shopping workflows
 
 The project is intentionally evolving feature-by-feature to balance learning, maintainability, and real-world architectural practices.
 
@@ -31,15 +31,18 @@ Current capabilities:
 - Create products
 - Query products and low-stock products
 - Track stock and threshold values
+- Consume product stock
+- Replenish product stock
 - Raise restock warning domain events when stock crosses into low-stock state
 
 Current scope:
 - Inventory currently exposes only the endpoints needed for the initial MVP flow
-- Full CRUD support is intentionally deferred until broader application workflows are implemented
+- API surface is intentionally introduced incrementally through versioned endpoints
 
 Implementation notes:
 - Product update logic already exists at the application/domain level
-- Public API surface remains intentionally minimal during early development
+- Stock operations are currently evolving through the v2 API
+- Some earlier endpoints remain temporarily for backward compatibility during API evolution
 
 ### Receipt
 Purpose:
@@ -50,10 +53,11 @@ Current capabilities:
 - Add receipt lines
 - Finalize receipt
 - Store purchase snapshots such as product name, price, quantity
+- Store optional ProductId references for future Inventory integration
 
 Planned direction:
-- Add ProductId placeholder
-- Later connect receipt lines to Inventory products
+- Connect receipt lines to Inventory products
+- Expand shopping and spending analysis workflows
 
 ## Cross-cutting concerns
 - Exception handling with ProblemDetails
@@ -66,12 +70,12 @@ Planned direction:
 
 ## Current boundaries / decisions
 - Receipt is not yet integrated with Inventory
-- Receipt lines store snapshots
+- Receipt lines store purchase snapshots
 - Domain currently generates IDs
 - Strongly typed IDs are a future consideration
 
 ## Near-term roadmap
-- ProductId on ReceiptLine
 - Seq/logging improvements
 - Integration tests
 - Build/test CI pipeline improvements
+- Continue API v2 evolution and endpoint cleanup

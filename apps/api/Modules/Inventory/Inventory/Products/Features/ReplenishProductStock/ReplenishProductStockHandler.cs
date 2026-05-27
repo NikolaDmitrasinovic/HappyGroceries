@@ -5,7 +5,7 @@ public record ReplenishProductStockCommand(Guid Id, int Delta)
 
 public record ReplenishProductStockResult(Guid Id);
 
-internal sealed class ReplenishProductStockValidator : IRequestValidator<ReplenishProductStockCommand>
+internal sealed class ReplenishProductStockCommandValidator : IRequestValidator<ReplenishProductStockCommand>
 {
     public IReadOnlyCollection<ValidationFailure> Validate(ReplenishProductStockCommand request)
     {
