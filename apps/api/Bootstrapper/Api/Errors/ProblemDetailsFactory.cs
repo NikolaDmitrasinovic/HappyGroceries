@@ -42,7 +42,7 @@ public class ProblemDetailsFactory
             message);
     }
 
-    public static ProblemDetails CreateInsufficientResources(HttpContext context, string message)
+    public static ProblemDetails CreateInsufficientResource(HttpContext context, string message)
     {
         return Create(
             context,
