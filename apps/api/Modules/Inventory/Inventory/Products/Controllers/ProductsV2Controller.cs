@@ -15,6 +15,8 @@ public class ProductsV2Controller(IMediator mediator) : ControllerBase
     [HttpPost("{productId:guid}/consume")]
     [ProducesResponseType(typeof(ConsumeProductStockResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<ActionResult<ConsumeProductStockResponse>> ConsumeStock(
         [FromRoute] Guid productId,
         [FromBody] ConsumeProductStockRequest request,
@@ -27,6 +29,7 @@ public class ProductsV2Controller(IMediator mediator) : ControllerBase
     [HttpPost("{productId:guid}/replenish")]
     [ProducesResponseType(typeof(ReplenishProductStockResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<ReplenishProductStockResponse>> ReplenishStock(
         [FromRoute] Guid productId,
         [FromBody] ReplenishProductStockRequest request,
