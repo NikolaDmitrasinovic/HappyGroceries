@@ -16,20 +16,20 @@ public class ProductsV2Controller(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(ConsumeProductStockResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<ConsumeProductStockResponse>> ConsumeStock(
-        [FromRoute]Guid productId, 
-        [FromBody]ConsumeProductStockRequest request,
+        [FromRoute] Guid productId,
+        [FromBody] ConsumeProductStockRequest request,
         CancellationToken cancellationToken)
     {
         var response = await mediator.Send(new ConsumeProductStockCommand(productId, request.Delta), cancellationToken);
         return Ok(response);
     }
-    
+
     [HttpPost("{productId:guid}/replenish")]
     [ProducesResponseType(typeof(ReplenishProductStockResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<ReplenishProductStockResponse>> ReplenishStock(
-        [FromRoute]Guid productId, 
-        [FromBody]ReplenishProductStockRequest request, 
+        [FromRoute] Guid productId,
+        [FromBody] ReplenishProductStockRequest request,
         CancellationToken cancellationToken)
     {
         var response = await mediator.Send(new ReplenishProductStockCommand(productId, request.Delta), cancellationToken);
