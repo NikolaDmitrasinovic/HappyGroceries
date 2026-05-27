@@ -5,7 +5,7 @@ public record ConsumeProductStockCommand(Guid Id, int Delta)
 
 public record ConsumeProductStockResult(Guid Id);
 
-internal sealed class ConsumeProductStockValidator : IRequestValidator<ConsumeProductStockCommand>
+internal sealed class ConsumeProductStockCommandValidator : IRequestValidator<ConsumeProductStockCommand>
 {
     public IReadOnlyCollection<ValidationFailure> Validate(ConsumeProductStockCommand request)
     {

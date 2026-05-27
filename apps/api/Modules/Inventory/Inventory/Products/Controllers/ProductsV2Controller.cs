@@ -12,21 +12,27 @@ namespace Inventory.Products.Controllers;
 [Route("api/v{version:apiVersion}/inventory/products")]
 public class ProductsV2Controller(IMediator mediator) : ControllerBase
 {
-    [HttpPost("consume")]
+    [HttpPost("{productId:guid}/consume")]
     [ProducesResponseType(typeof(ConsumeProductStockResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<ConsumeProductStockResponse>> ConsumeStock(ConsumeProductStockRequest request, CancellationToken cancellationToken)
+    public async Task<ActionResult<ConsumeProductStockResponse>> ConsumeStock(
+        [FromRoute]Guid productId, 
+        [FromBody]ConsumeProductStockRequest request,
+        CancellationToken cancellationToken)
     {
-        var response = await mediator.Send(new ConsumeProductStockCommand(request.Id, request.Delta), cancellationToken);
+        var response = await mediator.Send(new ConsumeProductStockCommand(productId, request.Delta), cancellationToken);
         return Ok(response);
     }
     
-    [HttpPost("replenish")]
+    [HttpPost("{productId:guid}/replenish")]
     [ProducesResponseType(typeof(ReplenishProductStockResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<ReplenishProductStockResponse>> ReplenishStock(ReplenishProductStockRequest request, CancellationToken cancellationToken)
+    public async Task<ActionResult<ReplenishProductStockResponse>> ReplenishStock(
+        [FromRoute]Guid productId, 
+        [FromBody]ReplenishProductStockRequest request, 
+        CancellationToken cancellationToken)
     {
-        var response = await mediator.Send(new ReplenishProductStockCommand(request.Id, request.Delta), cancellationToken);
+        var response = await mediator.Send(new ReplenishProductStockCommand(productId, request.Delta), cancellationToken);
         return Ok(response);
     }
 }
