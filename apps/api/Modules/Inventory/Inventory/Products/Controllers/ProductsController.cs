@@ -39,7 +39,7 @@ public class ProductsController(IMediator mediator) : ControllerBase
     public async Task<ActionResult<CreateProductResponse>> Create(CreateProductRequest request, CancellationToken cancellationToken)
     {
         var response = await mediator.Send(new CreateProductCommand(request.Product), cancellationToken);
-        return Created($"{response.Id}", response);
+        return Created($"{response.Id}", response); // Consider returning the URI with CreatedAtAction of the created resource 
     }
 
     [HttpPatch("threshold")]
