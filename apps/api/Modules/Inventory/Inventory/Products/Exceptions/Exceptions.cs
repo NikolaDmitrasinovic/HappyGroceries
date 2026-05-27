@@ -5,7 +5,7 @@ namespace Inventory.Products.Exceptions;
 public class ProductNotFoundException(Guid id) : NotFoundException($"Product with id '{id}' was not found.");
 
 public class InsufficientStockException(Guid productId, int availableStock, int requestedAmount)
-    : InsufficientResourcesException($"Product with id '{productId}' has insufficient stock." +
+    : InsufficientResourceException($"Product with id '{productId}' has insufficient stock." +
                 $" Available stock: {availableStock}, Requested amount: {requestedAmount}.")
 {
     public Guid ProductId { get; } = productId;

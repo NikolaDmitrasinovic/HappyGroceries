@@ -16,7 +16,7 @@ public class ExceptionToProblemDetailsMapper
             NotFoundException notFoundException
                 => ProblemDetailsFactory.CreateNotFound(context, notFoundException.Message),
 
-            InsufficientResourcesException insufficientResourcesException
+            InsufficientResourceException insufficientResourcesException
                 => ProblemDetailsFactory.CreateInsufficientResources(context, insufficientResourcesException.Message),
 
             _ => ProblemDetailsFactory.Create(

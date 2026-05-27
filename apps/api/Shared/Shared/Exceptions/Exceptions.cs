@@ -2,4 +2,4 @@
 
 public class NotFoundException(string message) : Exception(message);
 
-public class InsufficientResourcesException(string message) : Exception(message);
+public class InsufficientResourceException(string message) : Exception(message);
