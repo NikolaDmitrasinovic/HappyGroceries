@@ -41,4 +41,13 @@ public class ProblemDetailsFactory
             "Resource not found.",
             message);
     }
+
+    public static ProblemDetails CreateInsufficientResources(HttpContext context, string message)
+    {
+        return Create(
+            context,
+            StatusCodes.Status409Conflict,
+            "Insufficient resources.",
+            message);
+    }
 }

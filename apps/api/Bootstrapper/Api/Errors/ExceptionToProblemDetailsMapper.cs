@@ -16,6 +16,9 @@ public class ExceptionToProblemDetailsMapper
             NotFoundException notFoundException
                 => ProblemDetailsFactory.CreateNotFound(context, notFoundException.Message),
 
+            InsufficientResourcesException insufficientResourcesException
+                => ProblemDetailsFactory.CreateInsufficientResources(context, insufficientResourcesException.Message),
+
             _ => ProblemDetailsFactory.Create(
                 context,
                 StatusCodes.Status500InternalServerError,
