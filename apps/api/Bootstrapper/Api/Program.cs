@@ -27,9 +27,11 @@ builder.Services
     })
     .AddMvc();
 
+builder.Logging.AddSeq(builder.Configuration.GetSection("Seq"));
+
 var app = builder.Build();
 
-// Proof of concept - conainerized postgres reachable
+// Proof of concept - containerized postgres reachable
 var host = builder.Configuration["Db:Host"]!;
 var port = int.Parse(builder.Configuration["Db:Port"]!);
 
