@@ -27,7 +27,10 @@ builder.Services
     })
     .AddMvc();
 
-builder.Logging.AddSeq(builder.Configuration.GetSection("Seq"));
+if (builder.Environment.IsDevelopment())
+{
+    builder.Logging.AddSeq(builder.Configuration.GetSection("Seq"));
+}
 
 var app = builder.Build();
 
