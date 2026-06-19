@@ -39,7 +39,12 @@ Link to:
 
 ### Local setup
 The project uses Docker Compose for local PostgreSQL development.
+The following services are started through Docker Compose:
+- PostgreSQL
+- Seq (structured log viewer)
 Database migrations are applied automatically when the API starts.
+
+Seq is available at: http://localhost:5341
 
 ### Visual Studio
 The recommended local setup is using Visual Studio multi-project startup.
